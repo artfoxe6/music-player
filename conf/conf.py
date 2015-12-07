@@ -1,5 +1,5 @@
 
 conf = \
 {
-	'footer':'red'
+	'footer':'grey'
 }

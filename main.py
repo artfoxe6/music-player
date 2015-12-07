@@ -4,9 +4,9 @@
 
 import sys,ctypes
 from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLabel,QProgressBar,QListWidget,
-	QSystemTrayIcon,QMenu,QAction,QGraphicsDropShadowEffect,QGraphicsBlurEffect)
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QCursor,QIcon
+	QSystemTrayIcon,QMenu,QAction,QGraphicsDropShadowEffect,QGraphicsBlurEffect,QListWidgetItem)
+from PyQt5.QtCore import Qt,QSize,QUrl
+from PyQt5.QtGui import QCursor,QIcon,QBrush,QColor,QDesktopServices 
 from conf.conf import conf
 
 
@@ -32,7 +32,7 @@ class Music(QWidget):
 		self.setWindowFlags(Qt.FramelessWindowHint)
 		self.resize(300,600)
 		self.setObjectName("mainBox")
-		self.setStyleSheet("#mainBox{ background-color:white;padding:10px }")
+		self.setStyleSheet("#mainBox{ background-color:white; } QWidget{ border:none }")
 		#当前播放歌曲的歌手图片
 		songer_img = DragLabel(self)
 		songer_img.setParent(self)
@@ -55,47 +55,89 @@ class Music(QWidget):
 		#关闭程序按钮
 		btn = QPushButton("关闭",top_tools)
 		btn.setGeometry(260,0,40,20)
-		btn.setStyleSheet("QPushButton{ color:white;border:none }")
+		btn.setCursor(QCursor(Qt.PointingHandCursor))
+		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:transparent } ")
 		btn.clicked.connect(self.close)
-		#最小化程序按钮
-		btn = QPushButton("最小化",top_tools)
-		btn.setGeometry(220,0,40,20)
-		btn.setStyleSheet("QPushButton{ color:white;border:none }")
-		btn.clicked.connect(self.hide)
-		#设置按钮
-		btn = QPushButton("设置",top_tools)
-		btn.setGeometry(180,0,40,20)
-		btn.setStyleSheet("QPushButton{ color:white;border:none }")
-		btn.clicked.connect(self.newwindow)
 		#设置播放按钮
 		btn = QPushButton("",songer_img)
-		btn.setGeometry(126,140,48,48)
+		btn.setGeometry(126,120,48,48)
 		btn.setStyleSheet("QPushButton{ border-image:url(image/play11.png);border:none }")
 		btn.clicked.connect(self.close)
 		btn = QPushButton("",songer_img)
-		btn.setGeometry(198,154,24,24)
+		btn.setGeometry(198,134,24,24)
 		btn.setStyleSheet("QPushButton{ border-image:url(image/next11.png);border:none }")
 		btn.clicked.connect(self.close)
 		btn = QPushButton("",songer_img)
-		btn.setGeometry(78,154,24,24)
+		btn.setGeometry(78,134,24,24)
 		btn.setStyleSheet("QPushButton{ border-image:url(image/pre11.png);border:none }")
 		btn.clicked.connect(self.close)
-		#歌曲进度条
 		progressBar = QProgressBar(self)
-		progressBar.setGeometry(0,200,300,5)
-		progressBar.setStyleSheet("QProgressBar{ background:#B4FFA3;border:none }")
+		progressBar.setGeometry(100,178,100,5)
+		progressBar.setValue(60)
+		progressBar.setTextVisible(False)
+		progressBar.setStyleSheet("QProgressBar{ background:transparent;border:none;border-radius:2px; } QProgressBar::chunk { background:transparent; border-radius:2px } QProgressBar:hover{background:#B4FFA3;} QProgressBar::chunk:hover{ background:pink }")
+		#当前歌曲名
+		label = QLabel("红色高跟鞋 - 蔡健雅",songer_img)
+		# print(dir(label))
+		label.setGeometry(0,50,300,40)
+		label.setAlignment(Qt.AlignHCenter)
+		label.setStyleSheet("QLabel{ color:white ;font-weight:100;font-size:16px;}")
+		#歌曲进度条
+		progressBar = QProgressBar(self) 
+		progressBar.setGeometry(0,200,300,10)
+		progressBar.setValue(30)
+		progressBar.setTextVisible(False)
+		progressBar.setStyleSheet("QProgressBar{ background:pink;border:none } QProgressBar::chunk { background-color: #B4FFA3;  }")
 		#歌曲列表
 		listWgt = QWidget(self)
-		listWgt.setGeometry(0, 205, 300,370)
-		listWgt.setStyleSheet("QWidget{ background:pink }")
+		listWgt.setGeometry(0, 210, 300,370)
+		listWgt.setStyleSheet("QWidget{ background:white }")
+		#播放列表前面补空
+		blank = QWidget(self)
+		blank.setGeometry(0, 210, 10,370)
+		blank.setStyleSheet("QWidget{ background:#E8FFE3 }")
+		#列表
 		songList = QListWidget(listWgt)
-		songList.resize(300,370)   
-		songList.setStyleSheet("QListWidget{ background:white }")
-		songList.setObjectName("songlist")
+		songList.setGeometry(10,0,240,370)   
+		songList.setStyleSheet("QListWidget{ background:white;font-size:14px;border:none;margin-left:10px;} \
+		QListWidget::item{ color:#789EFF ;height:40px;}  QListWidget::item:hover{background:#E8FFE3} QListWidget::item:selected{background:#E8FFE3;} QScrollBar:vertical{width:5px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}\
+QScrollBar::handle:vertical{width:5px;background:#A6D8F8; border-radius:2px;  }\
+QScrollBar::handle:vertical:hover{width:5px;background:grey;border-radius:2px;}\
+QScrollBar::add-line:vertical {height:9px;width:5px;background:white;subcontrol-position:bottom;}\
+QScrollBar::sub-line:vertical {height:9px;width:5px;background:white;subcontrol-position:top;}\
+QScrollBar::add-line:vertical:hover {height:9px;width:5px;background:white;subcontrol-position:bottom;}\
+QScrollBar::sub-line:vertical:hover{ height:9px;width:5px; background:white;subcontrol-position:top; }\
+QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;border-radius:4px;} ")
+		for x in range(10):
+			item = QListWidgetItem(" %02d 越来越不懂爱 - 蔡健雅" % (x+1))
+			songList.addItem(item)
+		#歌曲列表右边的功能列表
+		funcList = QListWidget(listWgt)
+		funcList.setGeometry(250,0,50,370)   
+		funcList.setStyleSheet("QListWidget{ background:#E8FFE3;color:red ;border:none} QPushButton{ background:#E8FFE3;border:none;color:grey } QPushButton:hover{ background:white;color:black } ")
+		btn = QPushButton("搜索",funcList)
+		btn.setGeometry(0,0,50,40)
+		btn = QPushButton("设置",funcList)
+		btn.setGeometry(0,40,50,40)
+		btn = QPushButton("推荐",funcList)
+		btn.setGeometry(0,80,50,40)
+		btn = QPushButton("聊天",funcList)
+		btn.setGeometry(0,120,50,40)
+		btn = QPushButton("其他",funcList)
+		btn.setGeometry(0,160,50,40)
+		btn = QPushButton("站位",funcList)
+		btn.setGeometry(0,200,50,40)
 		#底部状态栏
 		wg = QWidget(self)
-		wg.setGeometry(0, 575, 300,25)
-		wg.setStyleSheet("QWidget{ background:%s }" % conf['footer'])
+		wg.setGeometry(0, 580, 300,20)
+		wg.setStyleSheet("QWidget{ background:%s } QLabel{ color:white }" % conf['footer'])
+		# QLabel(" ",wg)
+		ql = QLabel(" <a style='color:white;text-decoration:none;'  href ='https://github.com/codeAB/music-player' >:）加入我们&nbsp;</a>",wg)
+		ql.resize(300,20)
+		ql.setAlignment(Qt.AlignRight)
+		ql.linkActivated.connect(self.openurl)
+
+
 		#设置托盘图标
 		tray = QSystemTrayIcon(self)
 		tray.setIcon(QIcon('image/tray.png'))
@@ -120,7 +162,8 @@ class Music(QWidget):
 		te = QWidget()
 		te.setGeometry(100,100,300,300)
 		te.show()
-		# print("qwe")
+	def openurl(self):
+		QDesktopServices.openUrl(QUrl("https://github.com/codeAB/music-player"))
 	
 #自定义label，用于鼠标拖动主窗口
 #第二个参数就是要拖动的对象
@@ -147,4 +190,5 @@ class DragLabel(QLabel):
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
 	music = Music()
+	# app.exec_()
 	sys.exit(app.exec_())
