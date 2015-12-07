@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+	<link rel="stylesheet" href="css/swiper.css">
+	<script src="js/jquery.js" ></script>
+	<script src="js/swiper.js" ></script>
+</head>
+<body>
+	<!-- <div class="box" > -->
+		<!-- <div class="slide">
+			<img style="width:100%;;" src="../image/slider1.jpg" >
+		</div> -->
+		<div class="swiper-container">
+		    <div class="swiper-wrapper">
+		        <div class="swiper-slide"><img src="../image/slider1.jpg" ></div>
+		        <div class="swiper-slide"><img src="../image/slider2.jpg" ></div>
+		        <div class="swiper-slide"><img src="../image/slider3.jpg" ></div>
+		    </div>
+		    <!-- 如果需要分页器 -->
+		    <div class="swiper-pagination"></div>
+		    
+		    <!-- 如果需要导航按钮 -->
+		    <!-- <div class="swiper-button-prev"></div> -->
+		    <!-- <div class="swiper-button-next"></div> -->
+		    
+		    <!-- 如果需要滚动条 -->
+		    <!-- <div class="swiper-scrollbar"></div> -->
+		</div>
+		<div class="item">
+			<div><img src="../image/item1.jpg" ><br>华语排行</div>
+			<div><img src="../image/item1.jpg" ><br>华语排行</div>
+			<div><img src="../image/item1.jpg" ><br>华语排行</div>
+			<div><img src="../image/item1.jpg" ><br>华语排行</div>
+			<div><img src="../image/item1.jpg" ><br>华语排行</div>
+			<div><img src="../image/item1.jpg" ><br>华语排行</div>
+			<div><img src="../image/item1.jpg" ><br>华语排行</div>
+			<div><img src="../image/item1.jpg" ><br>华语排行</div>
+		</div>
+	<!-- </div> -->
+	
+</body>
+</html>
+
+<style>
+	body,img,div{ margin:0;padding:0;-webkit-user-select: none; }
+	/*.swiper-container{ height:100px; }*/
+	/*.box{ width:600px;height:600px;position:absolute;background:grey; overflow: auto}*/
+	.item div{ width:25%;height:130px;display:block;float:left;background:none;text-align:center;color:black; }
+	.item div img{ width:80px;height:80px;border-radius:40px;margin-top:15px; }
+	.swiper-wrapper{ height:230px; }
+	.swiper-wrapper img{ display:block;width:100%; }
+</style>
+
+<script>
+var mySwiper = new Swiper ('.swiper-container', {
+	// direction: 'vertical',
+	loop: true,
+	autoplay:3000,
+
+	// 如果需要分页器
+	pagination: '.swiper-pagination',
+
+	// 如果需要前进后退按钮
+	// nextButton: '.swiper-button-next',
+	// prevButton: '.swiper-button-prev',
+
+	// 如果需要滚动条
+	// scrollbar: '.swiper-scrollbar',
+})       
+</script>
