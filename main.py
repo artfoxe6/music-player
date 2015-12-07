@@ -7,6 +7,8 @@ from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLabel,QProgressBa
 	QSystemTrayIcon,QMenu,QAction,QGraphicsDropShadowEffect,QGraphicsBlurEffect)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QCursor,QIcon
+from conf.conf import conf
+
 
 # ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
 class Music(QWidget):
@@ -93,7 +95,7 @@ class Music(QWidget):
 		#底部状态栏
 		wg = QWidget(self)
 		wg.setGeometry(0, 575, 300,25)
-		wg.setStyleSheet("QWidget{ background:grey }")
+		wg.setStyleSheet("QWidget{ background:%s }" % conf['footer'])
 		#设置托盘图标
 		tray = QSystemTrayIcon(self)
 		tray.setIcon(QIcon('image/tray.png'))
