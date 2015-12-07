@@ -5,9 +5,10 @@
 import sys,ctypes
 from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLabel,QProgressBar,QListWidget,
 	QSystemTrayIcon,QMenu,QAction,QGraphicsDropShadowEffect,QGraphicsBlurEffect,QListWidgetItem)
-from PyQt5.QtCore import Qt,QSize,QUrl
+from PyQt5.QtCore import Qt,QSize,QUrl,QThread
 from PyQt5.QtGui import QCursor,QIcon,QBrush,QColor,QDesktopServices 
 from conf.conf import conf
+import window
 
 
 # ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
@@ -57,7 +58,7 @@ class Music(QWidget):
 		btn.setGeometry(260,0,40,20)
 		btn.setCursor(QCursor(Qt.PointingHandCursor))
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:transparent } ")
-		btn.clicked.connect(self.close)
+		btn.clicked.connect(self.myclose)
 		#设置播放按钮
 		btn = QPushButton("",songer_img)
 		btn.setGeometry(126,120,48,48)
@@ -94,11 +95,11 @@ class Music(QWidget):
 		listWgt.setStyleSheet("QWidget{ background:white }")
 		#播放列表前面补空
 		blank = QWidget(self)
-		blank.setGeometry(0, 210, 10,370)
+		blank.setGeometry(0, 210, 2,370)
 		blank.setStyleSheet("QWidget{ background:#E8FFE3 }")
 		#列表
 		songList = QListWidget(listWgt)
-		songList.setGeometry(10,0,240,370)   
+		songList.setGeometry(2,0,268,370)   
 		songList.setStyleSheet("QListWidget{ background:white;font-size:14px;border:none;margin-left:10px;} \
 		QListWidget::item{ color:#789EFF ;height:40px;}  QListWidget::item:hover{background:#E8FFE3} QListWidget::item:selected{background:#E8FFE3;} QScrollBar:vertical{width:5px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}\
 QScrollBar::handle:vertical{width:5px;background:#A6D8F8; border-radius:2px;  }\
@@ -114,28 +115,28 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;bo
 		#歌曲列表右边的功能列表
 		funcList = QListWidget(listWgt)
 		funcList.setGeometry(250,0,50,370)   
-		funcList.setStyleSheet("QListWidget{ background:#E8FFE3;color:red ;border:none} QPushButton{ background:#E8FFE3;border:none;color:grey } QPushButton:hover{ background:white;color:black } ")
+		funcList.setStyleSheet("QListWidget{ background:white;color:red ;border:none;border-right:2px solid #E8FFE3} QPushButton{ background:white;border:none;color:grey } QPushButton:hover{ background:white;color:black } ")
 		btn = QPushButton("搜索",funcList)
-		btn.setGeometry(0,0,50,40)
+		btn.setGeometry(0,0,48,40)
 		btn = QPushButton("设置",funcList)
-		btn.setGeometry(0,40,50,40)
+		btn.setGeometry(0,40,48,40)
 		btn = QPushButton("推荐",funcList)
-		btn.setGeometry(0,80,50,40)
+		btn.setGeometry(0,80,48,40)
 		btn = QPushButton("聊天",funcList)
-		btn.setGeometry(0,120,50,40)
+		btn.setGeometry(0,120,48,40)
 		btn = QPushButton("其他",funcList)
-		btn.setGeometry(0,160,50,40)
+		btn.setGeometry(0,160,48,40)
 		btn = QPushButton("站位",funcList)
-		btn.setGeometry(0,200,50,40)
+		btn.clicked.connect(self.newwindow)
+		btn.setGeometry(0,200,48,40)
 		#底部状态栏
 		wg = QWidget(self)
 		wg.setGeometry(0, 580, 300,20)
 		wg.setStyleSheet("QWidget{ background:%s } QLabel{ color:white }" % conf['footer'])
-		# QLabel(" ",wg)
-		ql = QLabel(" <a style='color:white;text-decoration:none;'  href ='https://github.com/codeAB/music-player' >:）加入我们&nbsp;</a>",wg)
-		ql.resize(300,20)
-		ql.setAlignment(Qt.AlignRight)
-		ql.linkActivated.connect(self.openurl)
+		# ql = QLabel(" <a style='color:white;text-decoration:none;'  href ='https://github.com/codeAB/music-player' >:）加入我们&nbsp;</a>",wg)
+		# ql.resize(300,20)
+		# ql.setAlignment(Qt.AlignRight)
+		# ql.linkActivated.connect(self.openurl)
 
 
 		#设置托盘图标
@@ -155,16 +156,58 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;bo
 		tray.setContextMenu(trayIconMenu)
 		tray.show()
 		tray.activated.connect(self.dbclick_tray)
+
+		self.destroyed.connect(self.func)
 	def dbclick_tray(self,event):
 		if event==QSystemTrayIcon.DoubleClick:
 			self.show()
 	def newwindow(self):
-		te = QWidget()
-		te.setGeometry(100,100,300,300)
-		te.show()
+		if not hasattr(self,'widget1'):
+			self.widget1 = window.mywindow()
+			self.widget1.show()
+			self.widget1.destroyed.connect(self.func)
+		else:
+			self.widget1.show()
+		# 获取屏幕宽高
+		wh = QApplication.desktop().screenGeometry()
+		self.screen_w , self.screen_h = wh.width() ,wh.height()
+		self.move(int((self.screen_w-900)/2),int((self.screen_h-600)/2))
+		# print(dir(self))
+		self.widget1.move(int((self.screen_w-900)/2)+300,int((self.screen_h-600)/2))
+
+	def func():
+		print("close")
 	def openurl(self):
 		QDesktopServices.openUrl(QUrl("https://github.com/codeAB/music-player"))
-	
+	def myclose(self):
+		if hasattr(self,'widget1'):
+			self.widget1.close() and self.close()
+		else:
+			self.close()
+		
+#定义一个公用类  提供公用的静态方法
+class Myclass():
+	def __init__(self):
+		pass
+	@staticmethod
+	def newWindow():
+		itm = QWidget()
+		return itm
+#自定义线程类
+class MyThread(QThread):
+	def __init__(self):
+		super(QThread,self).__init__()
+	def __del__(self):
+		self.wait()
+	def run(self):
+		print("do somethis")
+		app = QApplication(sys.argv)
+		sds = QWidget()
+		sds.show()
+		app.exec_()
+		# fun()
+
+
 #自定义label，用于鼠标拖动主窗口
 #第二个参数就是要拖动的对象
 class DragLabel(QLabel):
@@ -174,12 +217,18 @@ class DragLabel(QLabel):
 	def mousePressEvent(self, event):
 		if event.button()==Qt.LeftButton:
 			self.drag_flag=True
+			if hasattr(self.window,'widget1'):
+				self.begin_position2=event.globalPos()-self.window.widget1.pos()
 			self.begin_position=event.globalPos()-self.window.pos()
 			event.accept()
 			self.setCursor(QCursor(Qt.OpenHandCursor))
 	def mouseMoveEvent(self, QMouseEvent):
 		if Qt.LeftButton and self.drag_flag:
-			self.window.move(QMouseEvent.globalPos()-self.begin_position)
+			if hasattr(self.window,'widget1'):
+				self.window.widget1.move(QMouseEvent.globalPos()-self.begin_position2) 
+				self.window.move(QMouseEvent.globalPos()-self.begin_position)
+			else:
+				self.window.move(QMouseEvent.globalPos()-self.begin_position)
 			QMouseEvent.accept()
 	def mouseReleaseEvent(self, QMouseEvent):
 		self.drag_flag=False
