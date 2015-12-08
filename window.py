@@ -1,14 +1,16 @@
-
+#!/usr/bin/python3
+# -*- coding: utf8 -*-
 
 import sys,os
 from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLineEdit)
-from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtWebKitWidgets import QWebPage,QWebView
 from PyQt5.QtCore import Qt,QUrl
 from PyQt5.QtGui import QCursor,QIcon
 
 class mywindow(QWidget):
 	def __init__(self):
 		super().__init__()
+		# print(dir(QWebView))
 		self.initUI()
 		self.show()
 	def initUI(self):
@@ -44,10 +46,23 @@ class mywindow(QWidget):
 		# btn = QPushButton("搜歌",wg)
 		# btn.setGeometry(400,5,60,30)
 		#内嵌web网页
-		web = QWebEngineView(self)
+		web = QWebView(self)
 		web.setGeometry(0,0,600,580)
 		web.load(QUrl.fromLocalFile(os.path.abspath("web/index.html")))
+		web.linkClicked.connect(self.close)
+		# print(dir(web.page()))
+		# page = web.page()
+		# page.linkClicked.connect(self.pp)
+
 		#
+		btn = QPushButton("<",self)
+		btn.setGeometry(540,5,60,30)
+		btn.setCursor(QCursor(Qt.PointingHandCursor))
+		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
+		btn.clicked.connect(self.myclose)
+
+	def pp(self,e):
+		print(dir(e))
 
 	def mousePressEvent(self, event):
 		if event.button()==Qt.LeftButton:

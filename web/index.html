@@ -18,25 +18,20 @@
 		        <div class="swiper-slide"><img src="../image/slider2.jpg" ></div>
 		        <div class="swiper-slide"><img src="../image/slider3.jpg" ></div>
 		    </div>
-		    <!-- 如果需要分页器 -->
-		    <div class="swiper-pagination"></div>
-		    
-		    <!-- 如果需要导航按钮 -->
-		    <!-- <div class="swiper-button-prev"></div> -->
-		    <!-- <div class="swiper-button-next"></div> -->
-		    
-		    <!-- 如果需要滚动条 -->
-		    <!-- <div class="swiper-scrollbar"></div> -->
+		</div>
+		<div class="search">
+			<input type="text" placeholder="输入关键字搜索" />  
+			<button type="button" >搜索</button>
 		</div>
 		<div class="item">
-			<div><img src="../image/item1.jpg" ><br>华语排行</div>
-			<div><img src="../image/item1.jpg" ><br>华语排行</div>
-			<div><img src="../image/item1.jpg" ><br>华语排行</div>
-			<div><img src="../image/item1.jpg" ><br>华语排行</div>
-			<div><img src="../image/item1.jpg" ><br>华语排行</div>
-			<div><img src="../image/item1.jpg" ><br>华语排行</div>
-			<div><img src="../image/item1.jpg" ><br>华语排行</div>
-			<div><img src="../image/item1.jpg" ><br>华语排行</div>
+			<div><a href="http:qing51.com"><img src="../image/item1.jpg" ></a><br>华语排行</div>
+			<div><a href="http:qing51.com"><img src="../image/item2.jpg" ></a><br>华语排行</div>
+			<div><a href="http:qing51.com"><img src="../image/item3.jpg" ></a><br>华语排行</div>
+			<div><a href="http:qing51.com"><img src="../image/item4.jpg" ></a><br>华语排行</div>
+			<div><a href="http:qing51.com"><img src="../image/item5.jpg" ></a><br>华语排行</div>
+			<div><a href="http:qing51.com"><img src="../image/item6.jpg" ></a><br>华语排行</div>
+			<div><a href="http:qing51.com"><img src="../image/item7.jpg" ></a><br>华语排行</div>
+			<div><a href="http:qing51.com"><img src="../image/item8.jpg" ></a><br>华语排行</div>
 		</div>
 	<!-- </div> -->
 	
@@ -45,28 +40,18 @@
 
 <style>
 	body,img,div{ margin:0;padding:0;-webkit-user-select: none; }
-	/*.swiper-container{ height:100px; }*/
-	/*.box{ width:600px;height:600px;position:absolute;background:grey; overflow: auto}*/
-	.item div{ width:25%;height:130px;display:block;float:left;background:none;text-align:center;color:black; }
-	.item div img{ width:80px;height:80px;border-radius:40px;margin-top:15px; }
-	.swiper-wrapper{ height:230px; }
-	.swiper-wrapper img{ display:block;width:100%; }
+	.search{ background:#EAD9EA;height:60px;line-height:60px;text-align:center; }
+	.search input{ height:30px;width:300px;border:none;border-radius:2px;text-indent:2em;outline: none;font-size: 12px;background:white; }
+	.search button{ height:32px;width:60px;border:none;border-radius:5px;background:#770077;color:white;outline: none;font-size: 12px;cursor:pointer;  }
+	.item div{ width:25%;height:130px;display:block;float:left;background:none;text-align:center;color:#999;font-size: 14px; }
+	.item div img{ width:80px;height:80px;border-radius:40px;margin-top:15px;cursor:pointer;; }
+	.swiper-wrapper{ height:200px; }
+	.swiper-wrapper img{ display:block;width:100%;cursor:pointer;cursor:pointer; }
 </style>
 
 <script>
 var mySwiper = new Swiper ('.swiper-container', {
-	// direction: 'vertical',
 	loop: true,
 	autoplay:3000,
-
-	// 如果需要分页器
-	pagination: '.swiper-pagination',
-
-	// 如果需要前进后退按钮
-	// nextButton: '.swiper-button-next',
-	// prevButton: '.swiper-button-prev',
-
-	// 如果需要滚动条
-	// scrollbar: '.swiper-scrollbar',
 })       
 </script>

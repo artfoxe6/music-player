@@ -54,10 +54,10 @@ class Music(QWidget):
 		top_tools.setObjectName("top_tools")
 		top_tools.setStyleSheet("QWidget{ background-color:transparent; }")
 		#关闭程序按钮
-		btn = QPushButton("关闭",top_tools)
+		btn = QPushButton("x",top_tools)
 		btn.setGeometry(260,0,40,20)
 		btn.setCursor(QCursor(Qt.PointingHandCursor))
-		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:transparent } ")
+		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
 		btn.clicked.connect(self.myclose)
 		#设置播放按钮
 		btn = QPushButton("",songer_img)
@@ -96,10 +96,10 @@ class Music(QWidget):
 		#播放列表前面补空
 		blank = QWidget(self)
 		blank.setGeometry(0, 210, 2,370)
-		blank.setStyleSheet("QWidget{ background:#E8FFE3 }")
+		blank.setStyleSheet("QWidget{ background:#ddd }")
 		#列表
 		songList = QListWidget(listWgt)
-		songList.setGeometry(2,0,268,370)   
+		songList.setGeometry(2,0,248,370)   
 		songList.setStyleSheet("QListWidget{ background:white;font-size:14px;border:none;margin-left:10px;} \
 		QListWidget::item{ color:#789EFF ;height:40px;}  QListWidget::item:hover{background:#E8FFE3} QListWidget::item:selected{background:#E8FFE3;} QScrollBar:vertical{width:5px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}\
 QScrollBar::handle:vertical{width:5px;background:#A6D8F8; border-radius:2px;  }\
@@ -115,7 +115,7 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;bo
 		#歌曲列表右边的功能列表
 		funcList = QListWidget(listWgt)
 		funcList.setGeometry(250,0,50,370)   
-		funcList.setStyleSheet("QListWidget{ background:white;color:red ;border:none;border-right:2px solid #E8FFE3} QPushButton{ background:white;border:none;color:grey } QPushButton:hover{ background:white;color:black } ")
+		funcList.setStyleSheet("QListWidget{ background:white;color:red ;border:none;border-right:2px solid #EAD9EA} QPushButton{ background:white;border:none;color:grey } QPushButton:hover{ background:white;color:black } ")
 		btn = QPushButton("搜索",funcList)
 		btn.setGeometry(0,0,48,40)
 		btn = QPushButton("设置",funcList)
