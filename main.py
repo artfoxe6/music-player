@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLabel,QProgressBa
 from PyQt5.QtCore import Qt,QSize,QUrl,QThread
 from PyQt5.QtGui import QCursor,QIcon,QBrush,QColor,QDesktopServices 
 from conf.conf import conf
-import window
+from mywidget import *
 
 
 # ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
@@ -99,7 +99,7 @@ class Music(QWidget):
 		blank.setStyleSheet("QWidget{ background:#ddd }")
 		#列表
 		songList = QListWidget(listWgt)
-		songList.setGeometry(2,0,248,370)   
+		songList.setGeometry(2,0,258,370)   
 		songList.setStyleSheet("QListWidget{ background:white;font-size:14px;border:none;margin-left:10px;} \
 		QListWidget::item{ color:#789EFF ;height:40px;}  QListWidget::item:hover{background:#E8FFE3} QListWidget::item:selected{background:#E8FFE3;} QScrollBar:vertical{width:5px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}\
 QScrollBar::handle:vertical{width:5px;background:#A6D8F8; border-radius:2px;  }\
@@ -116,8 +116,9 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;bo
 		funcList = QListWidget(listWgt)
 		funcList.setGeometry(250,0,50,370)   
 		funcList.setStyleSheet("QListWidget{ background:white;color:red ;border:none;border-right:2px solid #EAD9EA} QPushButton{ background:white;border:none;color:grey } QPushButton:hover{ background:white;color:black } ")
-		btn = QPushButton("搜索",funcList)
+		btn = QPushButton("首页",funcList)
 		btn.setGeometry(0,0,48,40)
+		btn.clicked.connect(self.newwindow)
 		btn = QPushButton("设置",funcList)
 		btn.setGeometry(0,40,48,40)
 		btn = QPushButton("推荐",funcList)
@@ -127,7 +128,7 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;bo
 		btn = QPushButton("其他",funcList)
 		btn.setGeometry(0,160,48,40)
 		btn = QPushButton("站位",funcList)
-		btn.clicked.connect(self.newwindow)
+		
 		btn.setGeometry(0,200,48,40)
 		#底部状态栏
 		wg = QWidget(self)
@@ -163,7 +164,7 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;bo
 			self.show()
 	def newwindow(self):
 		if not hasattr(self,'widget1'):
-			self.widget1 = window.mywindow()
+			self.widget1 = mywindow()
 			self.widget1.show()
 			self.widget1.destroyed.connect(self.func)
 		else:
@@ -207,32 +208,6 @@ class MyThread(QThread):
 		app.exec_()
 		# fun()
 
-
-#自定义label，用于鼠标拖动主窗口
-#第二个参数就是要拖动的对象
-class DragLabel(QLabel):
-	def __init__(self,window):
-		super().__init__()
-		self.window = window
-	def mousePressEvent(self, event):
-		if event.button()==Qt.LeftButton:
-			self.drag_flag=True
-			if hasattr(self.window,'widget1'):
-				self.begin_position2=event.globalPos()-self.window.widget1.pos()
-			self.begin_position=event.globalPos()-self.window.pos()
-			event.accept()
-			self.setCursor(QCursor(Qt.OpenHandCursor))
-	def mouseMoveEvent(self, QMouseEvent):
-		if Qt.LeftButton and self.drag_flag:
-			if hasattr(self.window,'widget1'):
-				self.window.widget1.move(QMouseEvent.globalPos()-self.begin_position2) 
-				self.window.move(QMouseEvent.globalPos()-self.begin_position)
-			else:
-				self.window.move(QMouseEvent.globalPos()-self.begin_position)
-			QMouseEvent.accept()
-	def mouseReleaseEvent(self, QMouseEvent):
-		self.drag_flag=False
-		self.setCursor(QCursor(Qt.ArrowCursor))
 
 
 

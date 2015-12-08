@@ -1,36 +1,31 @@
-import sys
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (QWidget, QLCDNumber, QSlider, 
-    QVBoxLayout, QApplication)
+class NativePythonObject(object):
+    def __init__(self, message):
+        self.message = message
 
+    def printMessage(self):
+        print(self.message)
+        sys.exit()
 
-class Example(QWidget):
-    
-    def __init__(self):
-        super().__init__()
-        
-        self.initUI()
-        
-        
-    def initUI(self):
-        
-        lcd = QLCDNumber(self)
-        sld = QSlider(Qt.Horizontal, self)
+class SignalEmitter(QObject):
+    theSignal = pyqtSignal(NativePythonObject)
 
-        vbox = QVBoxLayout()
-        vbox.addWidget(lcd)
-        vbox.addWidget(sld)
+    def __init__(self, toBeSent, parent=None):
+        super(SignalEmitter, self).__init__(parent)
+        self.toBeSent = toBeSent
 
-        self.setLayout(vbox)
-        sld.valueChanged.connect(lcd.display)
-        
-        self.setGeometry(300, 300, 250, 150)
-        self.setWindowTitle('Signal & slot')
-        self.show()
-        
+    def emitSignal(self):
+        self.theSignal.emit(toBeSent)
 
-if __name__ == '__main__':
-    
-    app = QApplication(sys.argv)
-    ex = Example()
-    sys.exit(app.exec_())
+class ClassWithSlot(object):
+    def __init__(self, signalEmitter):
+        self.signalEmitter = signalEmitter
+        self.signalEmitter.theSignal.connect(self.theSlot)
+
+    def theSlot(self, ourNativePythonType):
+        ourNativePythonType.printMessage()
+
+if __name__ == "__main__":
+    toBeSent = NativePythonObject("Hello World")
+    signalEmitter = SignalEmitter(toBeSent)
+    classWithSlot = ClassWithSlot(signalEmitter)
+    signalEmitter.emitSignal()

@@ -19,10 +19,12 @@
 		        <div class="swiper-slide"><img src="../image/slider3.jpg" ></div>
 		    </div>
 		</div>
-		<div class="search">
-			<input type="text" placeholder="输入关键字搜索" />  
-			<button type="button" >搜索</button>
-		</div>
+		<form onsubmit="nihao.myfunc2('nihao')" >
+			<div class="search">
+				<input type="text" id="search" placeholder="输入关键字搜索" />  
+				<button type="submit"  >搜索</button>
+			</div>
+		</form>
 		<div class="item">
 			<div><a href="http:qing51.com"><img src="../image/item1.jpg" ></a><br>华语排行</div>
 			<div><a href="http:qing51.com"><img src="../image/item2.jpg" ></a><br>华语排行</div>
@@ -53,5 +55,8 @@
 var mySwiper = new Swiper ('.swiper-container', {
 	loop: true,
 	autoplay:3000,
-})       
+})     
+function xin(obj,str){
+	alert(obj.value+"=="+str);
+}
 </script>
