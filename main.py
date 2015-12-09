@@ -164,7 +164,7 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;bo
 			self.show()
 	def newwindow(self):
 		if not hasattr(self,'widget1'):
-			self.widget1 = mywindow()
+			self.widget1 = index()
 			self.widget1.show()
 			self.widget1.destroyed.connect(self.func)
 		else:
