@@ -6,27 +6,21 @@
 	<script src="js/jquery.js" ></script>
 </head>
 <body>
-	<!-- <div class="box" > -->
-		<!-- <div class='left'> -->
-		<div class="head">
-			搜索结果来源于百度音乐 - by - flokouter
-		</div>
-			<div class="pro">
-				<p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>
-				<p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>
-			</div>
-			<div class="list" >
-				<div class="item"><p>歌曲</p><p>歌手</p><p>下载</p><p>时长</p></div>
-				<div class="item"><p>断桥残雪</p><p>许嵩</p><p onclick="down(this,1)" >↓</p><p>03:45</p></div>
-				<div class="item"><p>断桥残雪</p><p>许嵩</p><p onclick="down(this,2)" >↓</p><p>03:45</p></div>
-				<div class="item"><p>断桥残雪</p><p>许嵩</p><p onclick="down(this,3)" >↓</p><p>03:45</p></div>
-			</div>
-			
-			
-
-			
-		<!-- </div> -->
-	<!-- </div> -->
+<div id="hehe" ></div>
+	<div class="head">
+		搜索结果来源于百度音乐 - by - flokouter
+	</div>
+	<div class="pro">
+		<p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>
+		<p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>
+	</div>
+	<div class="list" >
+		<div class="item"><p>歌曲</p><p>歌手</p><p>下载</p><p>时长</p></div>
+		<!-- <div class="item"><p>断桥残雪</p><p>许嵩</p><p onclick="down(this,1)" >↓</p><p>03:45</p></div> -->
+		<!-- <div class="item"><p>断桥残雪</p><p>许嵩</p><p onclick="down(this,2)" >↓</p><p>03:45</p></div> -->
+		<!-- <div class="item"><p>断桥残雪</p><p>许嵩</p><p onclick="down(this,3)" >↓</p><p>03:45</p></div> -->
+	</div>
+		
 </body>
 </html>
 
@@ -36,7 +30,7 @@
 	/*.box{ width:600px;height:600px;background:pink;margin:0 auto; }*/
 	.list{ position:absolute;top:50px;left:0px;width:100%;height:550px;background:none;font-size:12px; }
 	.item p{ border-bottom:1px solid grey; }
-	.item p{ float:left;text-align: center }
+	.item p{ float:left;text-align: center;overflow: hidden }
 	.item p:nth-child(1){ width:250px;height:30px;line-height:30px;border-right:1px solid grey; }
 	.item p:nth-child(2){ width:150px;border-right:1px solid grey;height:30px;line-height:30px; }
 	.item p:nth-child(3){ width:98px;border-right:1px solid grey;height:30px;line-height:30px; }
@@ -44,7 +38,7 @@
 	/*.item p:nth-child(5){ width:100px;height:30px;line-height:30px; }*/
 	.pro{ background:none;top:50px;width:100%;height:550px;position:absolute }
 	.pro p{ background:green;opacity:0.2;width:0%;height:30px;border-bottom:1px solid grey; }
-	.head{ background:grey;color:white;height:50px;width:100%;text-align:center;line-height:50px;font-size:14px; }
+	.head{ background:pink;color:white;height:50px;width:100%;text-align:center;line-height:50px;font-size:14px; }
 </style>
 
 <script>
@@ -64,5 +58,25 @@
 		}
 		$(".pro p:nth-child("+(num+1)+")").css('width',count+'px');
 
+	}
+
+	setTimeout("jsnotify()",10)
+
+	function insertlist(str)
+	{
+		// alert("ooo");
+		var arr = str.split("#&#");
+		for (var i = 0; i < arr.length; i++) {
+			// alert(arr[i]);
+			var dom = "<div class='item'><p>"+arr[i].split("&")[0]+"</p><p>"+arr[i].split("&")[2]+"</p><p onclick='down(this,1)' >↓</p><p>"+parseFloat(arr[i].split("&")[3]/60).toFixed(2)+"分</p></div>";
+		$(".list").append(dom);
+		};
+		
+		// alert(str);
+	}
+	function jsnotify()
+	{
+		Qtsearch.qtnotify();
+		// alert('oooo')
 	}
 </script>

@@ -19,9 +19,9 @@
 		        <div class="swiper-slide"><img src="../image/slider3.jpg" ></div>
 		    </div>
 		</div>
-		<form onsubmit="nihao.myfunc2('nihao')" >
+		<form onsubmit="mysearch()" >
 			<div class="search">
-				<input type="text" id="search" placeholder="输入关键字搜索" />  
+				<input type="text" id="search" placeholder="输入关键字搜索" value="" />  
 				<button type="submit"  >搜索</button>
 			</div>
 		</form>
@@ -58,5 +58,21 @@ var mySwiper = new Swiper ('.swiper-container', {
 })     
 function xin(obj,str){
 	alert(obj.value+"=="+str);
+}
+
+function mysearch()
+{
+	key = $("#search").val();
+	if(key != '')
+	{
+		Qtsearch.qsearch(key);
+	}
+	
+}
+
+function insertlist()
+{
+	alert("oooo");
+	// alert(typeof strs);
 }
 </script>

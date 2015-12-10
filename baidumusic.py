@@ -11,7 +11,7 @@
 		软件的逻辑是这样的： 用户搜索一个关键字，然后软件就会去调用当前用户设定的插件的main方法
 		main方法接收一个搜索关键字，返回一个歌曲列表，过程没有任何要求。
 		歌曲列表格式：
-		歌名 + "&" + 歌手 + "&" + 时长 + "&" + 下载地址
+		歌名 +"&"+ 歌词地址 + "&" + 歌手 + "&" + 时长 + "&" + 下载地址
 		例子： [倩女幽魂&张国荣&252&http://xx.com/xxxxxx,水手&郑智化&272&http://xx.com/xxxxxx]
 
 	* 请使用python3
@@ -92,7 +92,7 @@ class bdmusic(object):
         # print(songListJson)
          # json 转字典
         song_dict = JSONDecoder().decode(songListJson.decode('utf-8'))
-        print(song_dict)
+        # print(song_dict)
         song_data_dict = song_dict.get("data").get("songList")
         listdata = []
         for sond_data in song_data_dict:
@@ -118,11 +118,11 @@ class bdmusic(object):
         return listdata
 
     def main(self, keyworld):
-        return self.getSongsData(self.search("tinghai"))
+        return self.getSongsData(self.search(keyworld))
 
 if __name__ == '__main__':
     q = bdmusic()
 
-    data = q.getSongsData(q.search("流年"))
+    data = q.getSongsData(q.search("zhangliangying"))
     # print(len(data))
-    # print(data)
+    print(data)

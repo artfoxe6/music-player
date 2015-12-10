@@ -25,6 +25,7 @@ class Music(QWidget):
 		self.initUI()
 		self.show()
 
+
 	def initUI(self):
 		self.mianUI()
 		
@@ -100,8 +101,8 @@ class Music(QWidget):
 		#列表
 		songList = QListWidget(listWgt)
 		songList.setGeometry(2,0,258,370)   
-		songList.setStyleSheet("QListWidget{ background:white;font-size:14px;border:none;margin-left:10px;} \
-		QListWidget::item{ color:#789EFF ;height:40px;}  QListWidget::item:hover{background:#E8FFE3} QListWidget::item:selected{background:#E8FFE3;} QScrollBar:vertical{width:5px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}\
+		songList.setStyleSheet("QListWidget{ background:white;font-size:12px;border:none;margin-left:10px;} \
+		QListWidget::item{ color:grey ;height:40px;}  QListWidget::item:hover{background:#E8FFE3} QListWidget::item:selected{background:#E8FFE3;} QScrollBar:vertical{width:5px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}\
 QScrollBar::handle:vertical{width:5px;background:#A6D8F8; border-radius:2px;  }\
 QScrollBar::handle:vertical:hover{width:5px;background:grey;border-radius:2px;}\
 QScrollBar::add-line:vertical {height:9px;width:5px;background:white;subcontrol-position:bottom;}\
@@ -110,7 +111,7 @@ QScrollBar::add-line:vertical:hover {height:9px;width:5px;background:white;subco
 QScrollBar::sub-line:vertical:hover{ height:9px;width:5px; background:white;subcontrol-position:top; }\
 QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;border-radius:4px;} ")
 		for x in range(10):
-			item = QListWidgetItem(" %02d 越来越不懂爱 - 蔡健雅" % (x+1))
+			item = QListWidgetItem(" %02d  越来越不懂爱 - 蔡健雅" % (x+1))
 			songList.addItem(item)
 		#歌曲列表右边的功能列表
 		funcList = QListWidget(listWgt)
@@ -119,21 +120,18 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;bo
 		btn = QPushButton("首页",funcList)
 		btn.setGeometry(0,0,48,40)
 		btn.clicked.connect(self.newwindow)
-		btn = QPushButton("设置",funcList)
+		btn = QPushButton("电台",funcList)
 		btn.setGeometry(0,40,48,40)
 		btn = QPushButton("推荐",funcList)
 		btn.setGeometry(0,80,48,40)
-		btn = QPushButton("聊天",funcList)
+		btn = QPushButton("MV",funcList)
 		btn.setGeometry(0,120,48,40)
-		btn = QPushButton("其他",funcList)
+		btn = QPushButton("设置",funcList)
 		btn.setGeometry(0,160,48,40)
-		btn = QPushButton("站位",funcList)
-		
-		btn.setGeometry(0,200,48,40)
 		#底部状态栏
 		wg = QWidget(self)
 		wg.setGeometry(0, 580, 300,20)
-		wg.setStyleSheet("QWidget{ background:%s } QLabel{ color:white }" % conf['footer'])
+		wg.setStyleSheet("QWidget{ background:grey } ")
 		# ql = QLabel(" <a style='color:white;text-decoration:none;'  href ='https://github.com/codeAB/music-player' >:）加入我们&nbsp;</a>",wg)
 		# ql.resize(300,20)
 		# ql.setAlignment(Qt.AlignRight)
@@ -158,26 +156,26 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;bo
 		tray.show()
 		tray.activated.connect(self.dbclick_tray)
 
-		self.destroyed.connect(self.func)
+		# self.destroyed.connect(self.func)
 	def dbclick_tray(self,event):
 		if event==QSystemTrayIcon.DoubleClick:
 			self.show()
 	def newwindow(self):
 		if not hasattr(self,'widget1'):
 			self.widget1 = index()
+			self.widget1.setParent(self)
+			# 获取屏幕宽高
+			wh = QApplication.desktop().screenGeometry()
+			self.screen_w , self.screen_h = wh.width() ,wh.height()
+			self.move(int((self.screen_w-900)/2),int((self.screen_h-600)/2))
 			self.widget1.show()
-			self.widget1.destroyed.connect(self.func)
 		else:
 			self.widget1.show()
-		# 获取屏幕宽高
-		wh = QApplication.desktop().screenGeometry()
-		self.screen_w , self.screen_h = wh.width() ,wh.height()
-		self.move(int((self.screen_w-900)/2),int((self.screen_h-600)/2))
-		# print(dir(self))
-		self.widget1.move(int((self.screen_w-900)/2)+300,int((self.screen_h-600)/2))
+		self.resize(900,600)
+		
+		# # print(dir(self))
+		# self.widget1.move(int((self.screen_w-900)/2)+300,int((self.screen_h-600)/2))
 
-	def func():
-		print("close")
 	def openurl(self):
 		QDesktopServices.openUrl(QUrl("https://github.com/codeAB/music-player"))
 	def myclose(self):
