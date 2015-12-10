@@ -8,7 +8,10 @@
 <body>
 	<!-- <div class="box" > -->
 		<!-- <div class='left'> -->
-		<div class="pro">
+		<div class="head">
+			搜索结果来源于百度音乐 - by - flokouter
+		</div>
+			<div class="pro">
 				<p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>
 				<p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>
 			</div>
@@ -29,8 +32,9 @@
 
 <style>
 	body,img,div,p{ margin:0;padding:0;-webkit-user-select: none; }
+	body{ overflow: hidden }
 	/*.box{ width:600px;height:600px;background:pink;margin:0 auto; }*/
-	.list{ position:fixed;top:0px;left:0px;width:100%;height:550px;background:none;font-size:12px; }
+	.list{ position:absolute;top:50px;left:0px;width:100%;height:550px;background:none;font-size:12px; }
 	.item p{ border-bottom:1px solid grey; }
 	.item p{ float:left;text-align: center }
 	.item p:nth-child(1){ width:250px;height:30px;line-height:30px;border-right:1px solid grey; }
@@ -38,14 +42,14 @@
 	.item p:nth-child(3){ width:98px;border-right:1px solid grey;height:30px;line-height:30px; }
 	.item p:nth-child(4){ width:99px;height:30px;line-height:30px;cursor: pointer; }
 	/*.item p:nth-child(5){ width:100px;height:30px;line-height:30px; }*/
-	.pro{ background:none;width:100%;height:550px;position:absolute }
+	.pro{ background:none;top:50px;width:100%;height:550px;position:absolute }
 	.pro p{ background:green;opacity:0.2;width:0%;height:30px;border-bottom:1px solid grey; }
+	.head{ background:grey;color:white;height:50px;width:100%;text-align:center;line-height:50px;font-size:14px; }
 </style>
 
 <script>
 	function down(obj,num)
 	{
-		// $(".pro p:nth-child("+(num+1)+")").css('width','30%');
 		$(obj).text("...");
 		interval1 = setInterval('setpro(2,'+num+')',10)
 	}
@@ -55,11 +59,8 @@
 		if(count > 600)
 		{
 			window.clearInterval(interval1);
-			// alert($(".list div:nth-child("+(num+1)+")"))
 			$($(".list div:nth-child("+(num+1)+")").children("p")[2]).text("√");
-			// alert('ok')
 			return false;
-			// $($(".list div:nth-child("+(num+1)+")").children("p")[3]).text("完成");
 		}
 		$(".pro p:nth-child("+(num+1)+")").css('width',count+'px');
 

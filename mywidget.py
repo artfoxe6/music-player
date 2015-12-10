@@ -137,17 +137,17 @@ class search(QWidget):
 		"""
         self.setStyleSheet(style)
         self.resize(600, 600)
-        top = QWidget(self)
-        top.setGeometry(0,0,600,50)
-        top.setStyleSheet("QWidget{ background:none ;font-size:14px;color:green;line-height:50px;height:50px;}")
-        author = " 搜索结果来自于QQ音乐  作者-许嵩 "
-        ql = QLabel(author,top)
-        ql.setGeometry(0,20,600,25)
-        ql.setAlignment(Qt.AlignHCenter)
-        ql.setStyleSheet("QLabel{ background:none ;font-size:14px;color:white;height:30px;}")
+        # top = QWidget(self)
+        # top.setGeometry(0,0,600,50)
+        # top.setStyleSheet("QWidget{ background:none ;font-size:14px;color:green;line-height:50px;height:50px;}")
+        # author = " 搜索结果来自于QQ音乐  作者-许嵩 "
+        # ql = QLabel(author,top)
+        # ql.setGeometry(0,20,600,25)
+        # ql.setAlignment(Qt.AlignHCenter)
+        # ql.setStyleSheet("QLabel{ background:none ;font-size:14px;color:white;height:30px;}")
         # 内嵌web网页
         self.web = QWebView(self)
-        self.web.setGeometry(0, 50, 600, 550)
+        self.web.setGeometry(0, 00, 600, 580)
         self.web.load(QUrl.fromLocalFile(os.path.abspath("web/list.html")))
         # web.linkClicked.connect(self.close)
         self.web.page().mainFrame().javaScriptWindowObjectCleared.connect(
@@ -203,7 +203,7 @@ class search(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    music = search()
-    # music = index()
+    # music = search()
+    music = index()
     # app.exec_()
     sys.exit(app.exec_())
