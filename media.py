@@ -1,35 +1,38 @@
 #!/usr/bin/python3
 # -*- coding: utf8 -*-
 
-from PyQt5.QtMultimedia import ( QMediaPlayer, QMediaPlaylist,QMediaContent)
+from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent)
+from conf.conf import conf
+import os
 
-
-
-
+class box(QWidget):
+  def __init__(self):
+    super().__init__()
+    
 class Media(object):
-	def __init__(self):
-		self.player = QMediaPlayer()
+
+    def __init__(self):
+        self.player = QMediaPlayer()
         self.playlist = QMediaPlaylist()
         self.player.setPlaylist(self.playlist)
-    #播放
-	def play(self):
-		self.player.play()
-	def pause(self):
-		self.player.pause()
-	def main(self):
-		pass
-		# controls = PlayerControls()
-  #       controls.setState(self.player.state())
-  #       controls.setVolume(self.player.volume())
-  #       controls.setMuted(controls.isMuted())
+        self.mp3list()
 
-  #       controls.play.connect(self.player.play)
-  #       controls.pause.connect(self.player.pause)
-  #       controls.stop.connect(self.player.stop)
-  #       controls.next.connect(self.playlist.next)
-  #       controls.previous.connect(self.previousClicked)
-  #       controls.changeVolume.connect(self.player.setVolume)
-  #       controls.changeMuting.connect(self.player.setMuted)
-  #       controls.changeRate.connect(self.player.setPlaybackRate)
-  #       controls.stop.connect(self.videoWidget.update)
+    def play(self):
+        self.player.play()
 
+    def pause(self):
+        self.player.pause()
+
+    def main(self):
+        pass
+
+    def mp3list(self):
+        listfile = os.listdir(conf['mp3dir'])
+        for name in listfile:
+            print(name)
+
+if __name__ == "__main__":
+    # listfile = os.listdir(conf['mp3dir'])
+    # for name in listfile:
+    #   print(os.path.join(conf['mp3dir'],name))
+    m = Media()
