@@ -90,6 +90,8 @@ class index(QWidget):
 
     def myclose(self):
         # self.close()
+        # print(dir(self))
+        self.destroy()
         self.parentWidget().resize(300,600)
     def goback(self):
          # print(dir(self.web))

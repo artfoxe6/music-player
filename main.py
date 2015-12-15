@@ -34,7 +34,7 @@ class Music(QWidget):
 		self.setWindowFlags(Qt.FramelessWindowHint)
 		self.resize(300,600)
 		self.setObjectName("mainBox")
-		self.setStyleSheet("#mainBox{ background-color:white; } QWidget{ border:none }")
+		self.setStyleSheet(" QWidget{ border:none }")
 		#当前播放歌曲的歌手图片
 		songer_img = DragLabel(self)
 		songer_img.setParent(self)

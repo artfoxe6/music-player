@@ -33,7 +33,3 @@ class Media(object):
   #       controls.changeRate.connect(self.player.setPlaybackRate)
   #       controls.stop.connect(self.videoWidget.update)
 
-
-
-
-
