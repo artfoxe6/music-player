@@ -14,7 +14,7 @@ class Player():
   def __init__(self,music):
     self.music = music
     self.music.player = QMediaPlayer()
-    print(dir(self.music.player))
+    # print(dir(self.music.player))
     self.music.playlist = QMediaPlaylist()
     self.music.player.setPlaylist(self.music.playlist)
 

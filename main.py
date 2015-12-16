@@ -85,7 +85,6 @@ class Music(QWidget):
 		self.currentMusicName.setStyleSheet("QLabel{ color:white ;font-weight:100;font-size:16px;}")
 		#歌曲进度条
 		progressBar = QProgressBar(self)
-		print(dir(preo)) 
 		progressBar.setGeometry(0,200,300,10)
 		progressBar.setValue(30)
 		progressBar.setTextVisible(False)

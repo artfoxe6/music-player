@@ -28,8 +28,8 @@ QPushButton:hover{ background:white;color:black }
 # 进度
 qss_process = """
 
-QSlider{ background:pink;border:none } 
-QSlider::chunk { background-color: #B4FFA3;  }
+QProgressBar{ background:pink;border:none } 
+QProgressBar::chunk { background-color: #B4FFA3;  }
 
 """
 # 音量
