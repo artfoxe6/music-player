@@ -1,31 +1,43 @@
-class NativePythonObject(object):
-    def __init__(self, message):
-        self.message = message
+#!/usr/bin/python3
+# -*- coding: utf8 -*-
+# 歌曲列表
+qss_songlist = """
 
-    def printMessage(self):
-        print(self.message)
-        sys.exit()
+QListWidget{ background:white;font-size:12px;border:none;margin-left:10px;} 
+QListWidget::item{ color:grey ;height:40px;}  
+QListWidget::item:hover{background:#E8FFE3} 
+QListWidget::item:selected{background:#E8FFE3;} 
+QScrollBar:vertical{width:5px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}
+QScrollBar::handle:vertical{width:5px;background:#A6D8F8; border-radius:2px;  }
+QScrollBar::handle:vertical:hover{width:5px;background:grey;border-radius:2px;}
+QScrollBar::add-line:vertical {height:9px;width:5px;background:white;subcontrol-position:bottom;}
+QScrollBar::sub-line:vertical {height:9px;width:5px;background:white;subcontrol-position:top;}
+QScrollBar::add-line:vertical:hover {height:9px;width:5px;background:white;subcontrol-position:bottom;}
+QScrollBar::sub-line:vertical:hover{ height:9px;width:5px; background:white;subcontrol-position:top; }
+QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;border-radius:4px;} 
 
-class SignalEmitter(QObject):
-    theSignal = pyqtSignal(NativePythonObject)
+"""
+# 菜单
+qss_menu = """
 
-    def __init__(self, toBeSent, parent=None):
-        super(SignalEmitter, self).__init__(parent)
-        self.toBeSent = toBeSent
+QListWidget{ background:white;color:red ;border:none;border-right:2px solid #EAD9EA} 
+QPushButton{ background:white;border:none;color:grey } 
+QPushButton:hover{ background:white;color:black }
 
-    def emitSignal(self):
-        self.theSignal.emit(toBeSent)
+"""
+# 进度
+qss_process = """
 
-class ClassWithSlot(object):
-    def __init__(self, signalEmitter):
-        self.signalEmitter = signalEmitter
-        self.signalEmitter.theSignal.connect(self.theSlot)
+QSlider{ background:pink;border:none } 
+QSlider::chunk { background-color: #B4FFA3;  }
 
-    def theSlot(self, ourNativePythonType):
-        ourNativePythonType.printMessage()
+"""
+# 音量
+qss_process2 = """
 
-if __name__ == "__main__":
-    toBeSent = NativePythonObject("Hello World")
-    signalEmitter = SignalEmitter(toBeSent)
-    classWithSlot = ClassWithSlot(signalEmitter)
-    signalEmitter.emitSignal()
+QProgressBar{ background:transparent;border:none;border-radius:2px; } 
+QProgressBar::chunk { background:transparent; border-radius:2px } 
+QProgressBar:hover{background:#B4FFA3;} 
+QProgressBar::chunk:hover{ background:pink }
+
+"""

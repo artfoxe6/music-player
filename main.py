@@ -2,13 +2,15 @@
 # -*- coding: utf8 -*-
 
 
-import sys,ctypes
-from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLabel,QProgressBar,QListWidget,
-	QSystemTrayIcon,QMenu,QAction,QGraphicsDropShadowEffect,QGraphicsBlurEffect,QListWidgetItem)
+import sys,ctypes,os
+from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLabel,QProgressBar,QListWidget, QSystemTrayIcon,QMenu,QAction,QGraphicsDropShadowEffect,QGraphicsBlurEffect,QListWidgetItem,QSlider)
 from PyQt5.QtCore import Qt,QSize,QUrl,QThread
 from PyQt5.QtGui import QCursor,QIcon,QBrush,QColor,QDesktopServices 
+from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent)
 from conf.conf import conf
 from mywidget import *
+from qss import *
+from media import *
 
 
 # ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
@@ -23,13 +25,10 @@ class Music(QWidget):
 		shadow_effect.setBlurRadius(80)
 		self.setGraphicsEffect(shadow_effect)
 		self.initUI()
+		self.initplayer()
 		self.show()
-
-
-	def initUI(self):
-		self.mianUI()
 		
-	def mianUI(self):
+	def initUI(self):
 		#设置无边框
 		self.setWindowFlags(Qt.FramelessWindowHint)
 		self.resize(300,600)
@@ -61,35 +60,36 @@ class Music(QWidget):
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
 		btn.clicked.connect(self.myclose)
 		#设置播放按钮
-		btn = QPushButton("",songer_img)
-		btn.setGeometry(126,120,48,48)
-		btn.setStyleSheet("QPushButton{ border-image:url(image/play11.png);border:none }")
-		btn.clicked.connect(self.close)
-		btn = QPushButton("",songer_img)
-		btn.setGeometry(198,134,24,24)
-		btn.setStyleSheet("QPushButton{ border-image:url(image/next11.png);border:none }")
-		btn.clicked.connect(self.close)
-		btn = QPushButton("",songer_img)
-		btn.setGeometry(78,134,24,24)
-		btn.setStyleSheet("QPushButton{ border-image:url(image/pre11.png);border:none }")
-		btn.clicked.connect(self.close)
+		self.playBtn = QPushButton("",songer_img)
+		self.playBtn.setGeometry(126,120,48,48)
+		self.playBtn.setStyleSheet("QPushButton{ border-image:url(image/play11.png);border:none }")
+		
+		self.nextBtn = QPushButton("",songer_img)
+		self.nextBtn.setGeometry(198,134,24,24)
+		self.nextBtn.setStyleSheet("QPushButton{ border-image:url(image/next11.png);border:none }")
+		
+		self.prevBtn = QPushButton("",songer_img)
+		self.prevBtn.setGeometry(78,134,24,24)
+		self.prevBtn.setStyleSheet("QPushButton{ border-image:url(image/pre11.png);border:none }")
+
 		progressBar = QProgressBar(self)
 		progressBar.setGeometry(100,178,100,5)
 		progressBar.setValue(60)
 		progressBar.setTextVisible(False)
-		progressBar.setStyleSheet("QProgressBar{ background:transparent;border:none;border-radius:2px; } QProgressBar::chunk { background:transparent; border-radius:2px } QProgressBar:hover{background:#B4FFA3;} QProgressBar::chunk:hover{ background:pink }")
+		progressBar.setStyleSheet(qss_process2)
 		#当前歌曲名
-		label = QLabel("红色高跟鞋 - 蔡健雅",songer_img)
+		self.currentMusicName = QLabel("红色高跟鞋 - 蔡健雅",songer_img)
 		# print(dir(label))
-		label.setGeometry(0,50,300,40)
-		label.setAlignment(Qt.AlignHCenter)
-		label.setStyleSheet("QLabel{ color:white ;font-weight:100;font-size:16px;}")
+		self.currentMusicName.setGeometry(0,50,300,40)
+		self.currentMusicName.setAlignment(Qt.AlignHCenter)
+		self.currentMusicName.setStyleSheet("QLabel{ color:white ;font-weight:100;font-size:16px;}")
 		#歌曲进度条
-		progressBar = QProgressBar(self) 
+		progressBar = QProgressBar(self)
+		print(dir(preo)) 
 		progressBar.setGeometry(0,200,300,10)
 		progressBar.setValue(30)
 		progressBar.setTextVisible(False)
-		progressBar.setStyleSheet("QProgressBar{ background:pink;border:none } QProgressBar::chunk { background-color: #B4FFA3;  }")
+		progressBar.setStyleSheet(qss_process)
 		#歌曲列表
 		listWgt = QWidget(self)
 		listWgt.setGeometry(0, 210, 300,370)
@@ -99,24 +99,14 @@ class Music(QWidget):
 		blank.setGeometry(0, 210, 2,370)
 		blank.setStyleSheet("QWidget{ background:#ddd }")
 		#列表
-		songList = QListWidget(listWgt)
-		songList.setGeometry(2,0,258,370)   
-		songList.setStyleSheet("QListWidget{ background:white;font-size:12px;border:none;margin-left:10px;} \
-		QListWidget::item{ color:grey ;height:40px;}  QListWidget::item:hover{background:#E8FFE3} QListWidget::item:selected{background:#E8FFE3;} QScrollBar:vertical{width:5px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}\
-QScrollBar::handle:vertical{width:5px;background:#A6D8F8; border-radius:2px;  }\
-QScrollBar::handle:vertical:hover{width:5px;background:grey;border-radius:2px;}\
-QScrollBar::add-line:vertical {height:9px;width:5px;background:white;subcontrol-position:bottom;}\
-QScrollBar::sub-line:vertical {height:9px;width:5px;background:white;subcontrol-position:top;}\
-QScrollBar::add-line:vertical:hover {height:9px;width:5px;background:white;subcontrol-position:bottom;}\
-QScrollBar::sub-line:vertical:hover{ height:9px;width:5px; background:white;subcontrol-position:top; }\
-QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;border-radius:4px;} ")
-		for x in range(10):
-			item = QListWidgetItem(" %02d  越来越不懂爱 - 蔡健雅" % (x+1))
-			songList.addItem(item)
+		self.songList = QListWidget(listWgt)
+		self.songList.setGeometry(2,0,238,370)   
+		self.songList.setStyleSheet(qss_songlist)
+		# 
 		#歌曲列表右边的功能列表
 		funcList = QListWidget(listWgt)
 		funcList.setGeometry(250,0,50,370)   
-		funcList.setStyleSheet("QListWidget{ background:white;color:red ;border:none;border-right:2px solid #EAD9EA} QPushButton{ background:white;border:none;color:grey } QPushButton:hover{ background:white;color:black } ")
+		funcList.setStyleSheet(qss_menu)
 		btn = QPushButton("首页",funcList)
 		btn.setGeometry(0,0,48,40)
 		btn.clicked.connect(self.newwindow)
@@ -137,7 +127,6 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;bo
 		# ql.setAlignment(Qt.AlignRight)
 		# ql.linkActivated.connect(self.openurl)
 
-
 		#设置托盘图标
 		tray = QSystemTrayIcon(self)
 		tray.setIcon(QIcon('image/tray.png'))
@@ -155,11 +144,21 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;bo
 		tray.setContextMenu(trayIconMenu)
 		tray.show()
 		tray.activated.connect(self.dbclick_tray)
-
-		# self.destroyed.connect(self.func)
+	#加载播放核心
+	def initplayer(self):
+		s = Player(self)
+		self.songList.itemDoubleClicked.connect(self.playit)
+		self.playBtn.clicked.connect(self.play_or_pause)
+		self.nextBtn.clicked.connect(self.nextone)
+		self.prevBtn.clicked.connect(self.prevone)
+		# self.player.play()
+		# self.playit()
+		# s.init_list()
+	#双击托盘图标
 	def dbclick_tray(self,event):
 		if event==QSystemTrayIcon.DoubleClick:
 			self.show()
+	#打开音乐窗
 	def newwindow(self):
 		if not hasattr(self,'widget1'):
 			self.widget1 = index()
@@ -184,33 +183,29 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;bo
 		else:
 			self.close()
 		
-#定义一个公用类  提供公用的静态方法
-class Myclass():
-	def __init__(self):
-		pass
-	@staticmethod
-	def newWindow():
-		itm = QWidget()
-		return itm
-#自定义线程类
-class MyThread(QThread):
-	def __init__(self):
-		super(QThread,self).__init__()
-	def __del__(self):
-		self.wait()
-	def run(self):
-		print("do somethis")
-		app = QApplication(sys.argv)
-		sds = QWidget()
-		sds.show()
-		app.exec_()
-		# fun()
-
-
+# #定义一个公用类  提供公用的静态方法
+# class Myclass():
+# 	def __init__(self):
+# 		pass
+# 	@staticmethod
+# 	def newWindow():
+# 		itm = QWidget()
+# 		return itm
+# #自定义线程类
+# class MyThread(QThread):
+# 	def __init__(self):
+# 		super(QThread,self).__init__()
+# 	def __del__(self):
+# 		self.wait()
+# 	def run(self):
+# 		print("do somethis")
+# 		app = QApplication(sys.argv)
+# 		sds = QWidget()
+# 		sds.show()
+# 		app.exec_()
 
 
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
 	music = Music()
-	# app.exec_()
 	sys.exit(app.exec_())
