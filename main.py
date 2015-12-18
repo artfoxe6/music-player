@@ -84,11 +84,11 @@ class Music(QWidget):
 		self.currentMusicName.setAlignment(Qt.AlignHCenter)
 		self.currentMusicName.setStyleSheet("QLabel{ color:white ;font-weight:100;font-size:16px;}")
 		#歌曲进度条
-		progressBar = QProgressBar(self)
-		progressBar.setGeometry(0,200,300,10)
-		progressBar.setValue(30)
-		progressBar.setTextVisible(False)
-		progressBar.setStyleSheet(qss_process)
+		self.processSlider = QSlider(Qt.Horizontal,self)
+		self.processSlider.setGeometry(0,200,300,10)
+		self.processSlider.setRange(1,100)
+		self.processSlider.setValue(0)
+		self.processSlider.setStyleSheet(qss_process_slider)
 		#歌曲列表
 		listWgt = QWidget(self)
 		listWgt.setGeometry(0, 210, 300,370)

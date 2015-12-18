@@ -3,7 +3,7 @@
 
 from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent,QMediaMetaData)
 from conf.conf import conf
-from PyQt5.QtCore import QUrl,Qt
+from PyQt5.QtCore import QUrl,Qt,QTime
 from PyQt5.QtWidgets import QListWidgetItem
 from PyQt5.QtGui import QBrush
 import os
@@ -16,6 +16,8 @@ class Player():
     self.music.player = QMediaPlayer()
     # print(dir(self.music.player))
     self.music.playlist = QMediaPlaylist()
+    # print(dir(self.music.playlist))
+    self.music.playlist.setPlaybackMode(QMediaPlaylist.Loop)
     self.music.player.setPlaylist(self.music.playlist)
 
     self.init_list()
@@ -27,8 +29,18 @@ class Player():
 
     self.music.player.metaDataChanged.connect(self.metaDataChanged)
     self.music.player.stateChanged.connect(self.stateChanged)
-
-    # self.play_or_pause()
+    self.music.player.positionChanged.connect(self.pro)
+    # self.music.player.durationchanged.connect(self.hehe)
+    # self.music.processSlider.valueChanged.connect(self.song_pro)
+    # self.music.processSlider.valueChanged.connect(self.song_pro)
+  # def hehe(self,a):
+  #   print(a)
+  def pro(self,ii):
+    self.music.processSlider.setValue(ii*0.001)
+  def song_pro(self):
+    val = self.music.processSlider.value()
+    self.music.player.setPosition(val*1000)
+    # print("ooo")
   def init_list(self):
     #读取配置歌曲目录里面的音乐文件
     listfile = os.listdir(conf['mp3dir'])
@@ -48,6 +60,12 @@ class Player():
     r = p.findall(s)
     self.music.playlist.setCurrentIndex(int(r[0])-1)
     self.music.player.play()
+    # duration = self.music.player.duration()
+    # totalTime = QTime((duration/3600)%60, (duration/60)%60,
+    #                 duration%60, (duration*1000)%1000)
+    # # format = 'hh:mm:ss' if duration > 3600 else 'mm:ss'
+    # tStr = totalTime.toString()
+    # print(tStr)
 
   def play_or_pause(self):
       if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):

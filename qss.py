@@ -41,3 +41,26 @@ QProgressBar:hover{background:#B4FFA3;}
 QProgressBar::chunk:hover{ background:pink }
 
 """
+
+qss_process_slider = """
+
+QSlider::groove:horizontal {
+    background: pink;
+    position: absolute;
+}
+
+QSlider::handle:horizontal {
+    width: 5px;
+    background: white;
+    margin:0 -5px;
+}
+
+QSlider::add-page:horizontal {
+    background: white;
+}
+
+QSlider::sub-page:horizontal {
+    background: pink;
+}
+
+"""
