@@ -58,10 +58,14 @@ class Player():
   def nextone(self):
     self.music.playlist.next()
     self.music.player.play()
+  def prevone(self):
+    self.music.playlist.previous()
+    self.music.player.play()
 
   def metaDataChanged(self):
-    if self.music.player.isMetaDataAvailable():
+    if self.music.player.isMetaDataAvailable(): 
       self.music.currentMusicName.setText(self.music.player.metaData(QMediaMetaData.Title))
+      
 
   def stateChanged(self):
     if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):
@@ -72,9 +76,7 @@ class Player():
   def setPlayBtn(self,stat):
     self.music.playBtn.setStyleSheet("QPushButton{ border-image:url(image/%s.png);border:none }" % stat)
 
-  def prevone(self):
-    self.music.playlist.previous()
-    self.music.player.play()
+  
 
 if __name__ == "__main__":
     # listfile = os.listdir(conf['mp3dir'])
