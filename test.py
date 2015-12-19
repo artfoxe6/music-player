@@ -1,53 +1,18 @@
 #!/usr/bin/python
-#coding=utf-8
-import sys
-from PyQt5.QtCore import (pyqtSignal, pyqtSlot, Q_ARG, QAbstractItemModel,
-        QFileInfo, qFuzzyCompare, QMetaObject, QModelIndex, QObject, Qt,
-        QThread, QTime, QUrl)
-from PyQt5.QtGui import QColor, qGray, QImage, QPainter, QPalette
-from PyQt5.QtMultimedia import ( QMediaPlayer, QMediaPlaylist,QMediaContent)
-from PyQt5.QtMultimediaWidgets import QVideoWidget
-from PyQt5.QtWidgets import (QApplication, QComboBox, QDialog, QFileDialog,
-        QFormLayout, QHBoxLayout, QLabel, QListView, QMessageBox, QPushButton,
-        QSizePolicy, QSlider, QStyle, QToolButton, QVBoxLayout, QWidget)
-
-class Player(QWidget):
-    def __init__(self):
-        super().__init__()
-        btn = QPushButton("选择文件",self)
-        btn.clicked.connect(self.openfile)
-        self.player = QMediaPlayer()
-        self.playlist = QMediaPlaylist()
-        self.player.setPlaylist(self.playlist)
-    def openfile(self):
-        fileNames,_ = QFileDialog.getOpenFileNames(self, "Open Files")
-        # print(fileNames)
-        for name in fileNames:
-            fileInfo = QFileInfo(name)
-            if fileInfo.exists():
-                url = QUrl.fromLocalFile(fileInfo.absoluteFilePath())
-                if fileInfo.suffix().lower() == 'm3u':
-                    # print(fileInfo.suffix().lower())
-                    self.playlist.load(url)
-                else:
-                    self.playlist.addMedia(QMediaContent(url))
-                    # print("000")
-            else:
-                url = QUrl(name)
-                if url.isValid():
-                    self.playlist.addMedia(QMediaContent(url))
-            self.player.play()
-
-        
-
-
-if __name__ == '__main__':
-
-    import sys
-
-    app = QApplication(sys.argv)
-
-    player = Player()
-    player.show()
-
-    sys.exit(app.exec_())
+#encoding:utf-8
+import urllib.request
+import os
+def Schedule(a,b,c):
+    '''''
+    a:已经下载的数据块
+    b:数据块的大小
+    c:远程文件的大小
+   '''
+    per = 100.0 * a * b / c
+    if per > 100 :
+        per = 100
+    print('%.2f%%' % per)
+url = 'http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tar.bz2'
+#local = url.split('/')[-1]
+local = os.path.join('.','Python-2.7.5.tar.bz2')
+urllib.request.urlretrieve(url,local,Schedule)

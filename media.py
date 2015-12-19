@@ -12,8 +12,10 @@ import re
 class Player():
   # 参数music是mainnwindow对象 
   def __init__(self,music):
+    self.duration = 0
     self.music = music
     self.music.player = QMediaPlayer()
+    # print(dir(self.music.player))
     # print(dir(self.music.player))
     self.music.playlist = QMediaPlaylist()
     # print(dir(self.music.playlist))
@@ -29,18 +31,47 @@ class Player():
 
     self.music.player.metaDataChanged.connect(self.metaDataChanged)
     self.music.player.stateChanged.connect(self.stateChanged)
-    self.music.player.positionChanged.connect(self.pro)
-    # self.music.player.durationchanged.connect(self.hehe)
+    self.music.player.positionChanged.connect(self.positionChanged)
+    self.music.player.durationChanged.connect(self.durationChanged)
+    self.music.player.error.connect(self.displayErrorMessage)
+    self.music.processSlider.valueChanged.connect(self.song_pro)
     # self.music.processSlider.valueChanged.connect(self.song_pro)
-    # self.music.processSlider.valueChanged.connect(self.song_pro)
-  # def hehe(self,a):
-  #   print(a)
-  def pro(self,ii):
-    self.music.processSlider.setValue(ii*0.001)
-  def song_pro(self):
-    val = self.music.processSlider.value()
-    self.music.player.setPosition(val*1000)
-    # print("ooo")
+  # 快进后退
+  def song_pro(self,pro):
+    if hasattr(self,'songpro'):
+      if abs(pro - self.songpro) > 5:
+        self.music.player.setPosition(pro*1000)
+    else:
+      self.music.processSlider.setValue(0)
+    # print(pro,self.songpro)
+
+  def durationChanged(self,duration):
+    duration /= 1000
+    self.duration = duration
+    # totalTime = QTime((duration/3600)%60, (duration/60)%60, duration%60, (duration*1000)%1000);
+    # format = 'hh:mm:ss' if duration > 3600 else 'mm:ss'
+    # tStr = totalTime.toString()
+    self.music.processSlider.setMaximum(duration)
+  def positionChanged(self,progress):
+    progress /= 1000
+    self.songpro = progress
+    if not self.music.processSlider.isSliderDown():
+      self.music.processSlider.setValue(progress)
+    self.updateDurationInfo(progress)
+  def updateDurationInfo(self, currentInfo):
+    duration = self.duration
+    tStr = ""
+    if currentInfo or duration:
+      currentTime = QTime((currentInfo/3600)%60, (currentInfo/60)%60, currentInfo%60, (currentInfo*1000)%1000)
+      totalTime = QTime((duration/3600)%60, (duration/60)%60, duration%60, (duration*1000)%1000);
+      format = 'hh:mm:ss' if duration > 3600 else 'mm:ss'
+      tStr = currentTime.toString(format) + " / " + totalTime.toString(format)
+    else:
+      Str = ""
+    self.music.songTime.setText(tStr)
+
+  def displayErrorMessage(self):
+    print(self.music.player.errorString())
   def init_list(self):
     #读取配置歌曲目录里面的音乐文件
     listfile = os.listdir(conf['mp3dir'])
@@ -49,7 +80,7 @@ class Player():
       s = os.path.splitext(name)[1][1:]
       if(s.upper() == 'MP3'):
         x+=1
-        item = QListWidgetItem("%02d  %s" % (x,name))
+        item = QListWidgetItem("%02d  %s" % (x,name.split(".")[0]))
         self.music.songList.addItem(item)
         url = QUrl.fromLocalFile(os.path.join(conf['mp3dir'],name))
         self.music.playlist.addMedia(QMediaContent(url))
@@ -82,8 +113,7 @@ class Player():
 
   def metaDataChanged(self):
     if self.music.player.isMetaDataAvailable(): 
-      self.music.currentMusicName.setText(self.music.player.metaData(QMediaMetaData.Title))
-      
+      self.music.currentMusicName.setText(self.music.player.metaData(QMediaMetaData.Title) or "未找到文件描述")
 
   def stateChanged(self):
     if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):

@@ -45,22 +45,49 @@ QProgressBar::chunk:hover{ background:pink }
 qss_process_slider = """
 
 QSlider::groove:horizontal {
-    background: pink;
+    background: #EAD9EA;
     position: absolute;
+
 }
 
 QSlider::handle:horizontal {
-    width: 5px;
+    width: 15px;
     background: white;
-    margin:0 -5px;
+    margin:0 2px;
 }
 
 QSlider::add-page:horizontal {
-    background: white;
+    background: #EAD9EA;
 }
 
 QSlider::sub-page:horizontal {
     background: pink;
+    margin-left:2px;
 }
+
+"""
+
+qss_vol = """
+
+QSlider::groove:horizontal {
+    background: #5FF199;
+    position: absolute;
+}
+
+QSlider::handle:horizontal {
+    width: 10px;
+    background: white;
+    margin:0 2px;
+}
+
+QSlider::add-page:horizontal {
+    background: #5FF199;
+}
+
+QSlider::sub-page:horizontal {
+    background: #5FF199;
+    margin-left:2px;
+}
+
 
 """

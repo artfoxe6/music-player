@@ -3,6 +3,8 @@
 import time
 import sys
 import os
+import urllib.request
+from conf.conf import conf
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QPushButton, QLineEdit, QLabel)
 from PyQt5.QtWebKitWidgets import QWebPage, QWebView
@@ -68,7 +70,6 @@ class index(QWidget):
             "QPushButton{ border:none;color:white;background-color:black } ")
         self.backbtn.clicked.connect(self.goback)
         self.backbtn.show()
-        
 
         frame = self.web.page().currentFrame()
         # print(self.songlist)
@@ -78,11 +79,18 @@ class index(QWidget):
         frame.evaluateJavaScript("insertlist('"+s+"')")
 
 
-    @pyqtSlot(str)
-    def myfunc2(self, str):
-        frame = self.web.page().mainFrame()
-        search = frame.findFirstElement(('#search'))
-        search.evaluateJavaScript("xin(this,'qt')")
+    @pyqtSlot(str,str,str,str,str)
+    def qtdown(self, item,url,lrc,name,author):
+        print(item,url,lrc,name)
+        urllib.request.urlretrieve(url,conf['mp3dir']+name+"-"+author+".mp3",self.schedule)
+    def schedule(self,a,b,c):
+        per = 100.0 * a * b / c
+        if per > 100 :
+            per = 100
+        print('%.2f%%' % per)
+        # per = round(per, 2);
+        # frame = self.web.page().currentFrame()
+        # frame.evaluateJavaScript("setpro('"+s+"')")
 
     def populateJavaScriptWindowObject(self):
         self.web.page().mainFrame().addToJavaScriptWindowObject(

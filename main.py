@@ -71,13 +71,16 @@ class Music(QWidget):
 		self.prevBtn = QPushButton("",songer_img)
 		self.prevBtn.setGeometry(78,134,24,24)
 		self.prevBtn.setStyleSheet("QPushButton{ border-image:url(image/pre11.png);border:none }")
-
-		progressBar = QProgressBar(self)
-		progressBar.setGeometry(100,178,100,5)
-		progressBar.setValue(60)
-		progressBar.setTextVisible(False)
-		progressBar.setStyleSheet(qss_process2)
-		#当前歌曲名
+		self.songTime = QLabel("",self)
+		self.songTime.setGeometry(220,180,80,20)
+		self.songTime.setStyleSheet("QLabel{ color:white;}")
+		self.songTime.setAlignment(Qt.AlignHCenter)
+		#音量
+		# self.vol = QSlider(Qt.Horizontal,self)
+		# self.vol.setGeometry(10,144,50,5)
+		# self.vol.setValue(60)
+		# self.vol.setStyleSheet(qss_vol)
+		#当前歌曲名 
 		self.currentMusicName = QLabel("红色高跟鞋 - 蔡健雅",songer_img)
 		# print(dir(label))
 		self.currentMusicName.setGeometry(0,50,300,40)
@@ -86,8 +89,8 @@ class Music(QWidget):
 		#歌曲进度条
 		self.processSlider = QSlider(Qt.Horizontal,self)
 		self.processSlider.setGeometry(0,200,300,10)
-		self.processSlider.setRange(1,100)
-		self.processSlider.setValue(0)
+		# self.processSlider.setRange(1,100)
+		# self.processSlider.setValue(0)
 		self.processSlider.setStyleSheet(qss_process_slider)
 		#歌曲列表
 		listWgt = QWidget(self)
@@ -150,6 +153,7 @@ class Music(QWidget):
 		self.playBtn.clicked.connect(self.play_or_pause)
 		self.nextBtn.clicked.connect(self.nextone)
 		self.prevBtn.clicked.connect(self.prevone)
+		# self.vol.valueChanged.connect(self.)
 		# self.player.play()
 		# self.playit()
 		# s.init_list()

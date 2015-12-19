@@ -8,7 +8,7 @@
 <body>
 <div id="hehe" ></div>
 	<div class="head">
-		搜索结果来源于百度音乐 - by - flokouter
+		搜索结果来自百度 &nbsp;&nbsp;-&nbsp;&nbsp; 作者 绝浪
 	</div>
 	<div class="pro">
 		<p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>
@@ -17,8 +17,6 @@
 	<div class="list" >
 		<div class="item"><p>歌曲</p><p>歌手</p><p>下载</p><p>时长</p></div>
 		<!-- <div class="item"><p>断桥残雪</p><p>许嵩</p><p onclick="down(this,1)" >↓</p><p>03:45</p></div> -->
-		<!-- <div class="item"><p>断桥残雪</p><p>许嵩</p><p onclick="down(this,2)" >↓</p><p>03:45</p></div> -->
-		<!-- <div class="item"><p>断桥残雪</p><p>许嵩</p><p onclick="down(this,3)" >↓</p><p>03:45</p></div> -->
 	</div>
 		
 </body>
@@ -38,14 +36,20 @@
 	/*.item p:nth-child(5){ width:100px;height:30px;line-height:30px; }*/
 	.pro{ background:none;top:50px;width:100%;height:550px;position:absolute }
 	.pro p{ background:green;opacity:0.2;width:0%;height:30px;border-bottom:1px solid grey; }
-	.head{ background:pink;color:white;height:50px;width:100%;text-align:center;line-height:50px;font-size:14px; }
+	.head{ background:grey;color:white;height:50px;width:100%;text-align:center;line-height:50px;font-size:14px; }
 </style>
 
 <script>
-	function down(obj,num)
+	function down(t,num)
 	{
-		$(obj).text("...");
-		interval1 = setInterval('setpro(2,'+num+')',10)
+		// $(obj).text("...");
+		// interval1 = setInterval('setpro(2,'+num+')',10)
+		item = $(".item").index($(t).parent("div"));
+		name = $($(t).parent("div").children('p')[0]).text();
+		author = $($(t).parent("div").children('p')[1]).text();
+		url = $($(t).parent("div").children('span')[0]).text();
+		lrc = "http://music.baidu.com"+$($(t).parent("div").children('span')[1]).text();
+		Qtsearch.qtdown(item,url,lrc,name,author);
 	}
 	function setpro(count,num)
 	{
@@ -68,7 +72,7 @@
 		var arr = str.split("#&#");
 		for (var i = 0; i < arr.length; i++) {
 			// alert(arr[i]);
-			var dom = "<div class='item'><p>"+arr[i].split("&")[0]+"</p><p>"+arr[i].split("&")[2]+"</p><p onclick='down(this,1)' >↓</p><p>"+parseFloat(arr[i].split("&")[3]/60).toFixed(2)+"分</p></div>";
+			var dom = "<div class='item'><p>"+arr[i].split("&")[0]+"</p><p>"+arr[i].split("&")[2]+"</p><p onclick='down(this,1)' >↓</p><p>"+parseFloat(arr[i].split("&")[3]/60).toFixed(2)+"分</p><span style='display:none' >"+arr[i].split("&")[4]+"</span><span style='display:none' >"+arr[i].split("&")[1]+"</span></div>";
 		$(".list").append(dom);
 		};
 		
@@ -77,6 +81,5 @@
 	function jsnotify()
 	{
 		Qtsearch.qtnotify();
-		// alert('oooo')
 	}
 </script>
