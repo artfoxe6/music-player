@@ -40,6 +40,7 @@
 </style>
 
 <script>
+	window.interval = 200
 	function down(t,num)
 	{
 		// $(obj).text("...");
@@ -50,17 +51,27 @@
 		url = $($(t).parent("div").children('span')[0]).text();
 		lrc = "http://music.baidu.com"+$($(t).parent("div").children('span')[1]).text();
 		Qtsearch.qtdown(item,url,lrc,name,author);
-	}
-	function setpro(count,num)
-	{
-		count = parseInt($(".pro p:nth-child("+(num+1)+")").css('width'))+count;
-		if(count > 600)
+		if(typeof interval == 'number')
 		{
-			window.clearInterval(interval1);
-			$($(".list div:nth-child("+(num+1)+")").children("p")[2]).text("√");
-			return false;
+			// alert("number")
+			interval = setInterval(function(){
+				Qtsearch.qtjindu();
+				// alert('ooo');
+			},500)
 		}
-		$(".pro p:nth-child("+(num+1)+")").css('width',count+'px');
+		
+	}
+	function setpro(s)
+	{
+		alert(s);
+		// count = parseInt($(".pro p:nth-child("+(num+1)+")").css('width'))+count;
+		// if(count > 600)
+		// {
+		// 	window.clearInterval(interval1);
+		// 	$($(".list div:nth-child("+(num+1)+")").children("p")[2]).text("√");
+		// 	return false;
+		// }
+		// $(".pro p:nth-child("+(num+1)+")").css('width',count+'px');
 
 	}
 
@@ -72,14 +83,40 @@
 		var arr = str.split("#&#");
 		for (var i = 0; i < arr.length; i++) {
 			// alert(arr[i]);
-			var dom = "<div class='item'><p>"+arr[i].split("&")[0]+"</p><p>"+arr[i].split("&")[2]+"</p><p onclick='down(this,1)' >↓</p><p>"+parseFloat(arr[i].split("&")[3]/60).toFixed(2)+"分</p><span style='display:none' >"+arr[i].split("&")[4]+"</span><span style='display:none' >"+arr[i].split("&")[1]+"</span></div>";
+			var dom = "<div class='item'><p>"+arr[i].split("&")[0]+"</p><p>"+arr[i].split("&")[2]+"</p><p style='cursor:pointer' onclick='down(this,1)' >下载</p><p>"+parseFloat(arr[i].split("&")[3]/60).toFixed(2)+"分</p><span style='display:none' >"+arr[i].split("&")[4]+"</span><span style='display:none' >"+arr[i].split("&")[1]+"</span></div>";
 		$(".list").append(dom);
 		};
 		
-		// alert(str);
 	}
 	function jsnotify()
 	{
 		Qtsearch.qtnotify();
 	}
+	//获取指定进度
+	function getjindu(str){
+		// alert(str)
+		o = eval("("+str+")"); 
+		flag = true;
+		for(k in o)
+		{
+			if(o[k] != '100')
+			{
+				flag = false;
+				// alert("hehe")
+			}else{
+				// alert("[ppppp")
+				$(".pro p:nth-child("+(parseInt(k)+1)+")").css('width',(parseInt(o[k])*600)+'px');
+			}
+		}
+		if(flag)
+		{
+			clearInterval(interval)
+			window.interval = 200;
+		}
+		// arr = str.split("&");
+		// if(arr[1]){
+		// 	alert(arr[1])
+		// }
+	}
+	
 </script>

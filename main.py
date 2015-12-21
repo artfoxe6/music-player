@@ -80,8 +80,8 @@ class Music(QWidget):
 		# self.vol.setGeometry(10,144,50,5)
 		# self.vol.setValue(60)
 		# self.vol.setStyleSheet(qss_vol)
-		#当前歌曲名 
-		self.currentMusicName = QLabel("红色高跟鞋 - 蔡健雅",songer_img)
+		#当前歌曲名   
+		self.currentMusicName = QLabel("梦音乐 ^_^ ",songer_img)
 		# print(dir(label))
 		self.currentMusicName.setGeometry(0,50,300,40)
 		self.currentMusicName.setAlignment(Qt.AlignHCenter)

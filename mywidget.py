@@ -11,14 +11,15 @@ from PyQt5.QtWebKitWidgets import QWebPage, QWebView
 from PyQt5.QtCore import Qt, QUrl, pyqtSlot
 from PyQt5.QtGui import QCursor, QIcon
 from baidumusic import bdmusic
-
+import threading
 
 #音乐窗首页
 class index(QWidget):
 
     def __init__(self):
         super().__init__()
-        # print(dir(QWebView))
+        self.download_id = threading.local()
+        self.download_pro = {}
         self.initUI()
         self.show()
 
@@ -78,19 +79,43 @@ class index(QWidget):
         s = s.replace("'","\\'")
         frame.evaluateJavaScript("insertlist('"+s+"')")
 
-
+    def download_music(self, item,url,lrc,name,author):
+        self.download_id.item = item
+        # print("ssss")
+        # frame = self.web.page().currentFrame()
+        # frame.evaluateJavaScript("setpro('ssss')")
+        urllib.request.urlretrieve(url,conf['mp3dir']+name+"-"+author+".mp3",self.schedule)
+        # print(item,url,lrc,name)
+        
+        # print(threading.current_thread())
+        # print(self.download_id.item)
+        
     @pyqtSlot(str,str,str,str,str)
     def qtdown(self, item,url,lrc,name,author):
-        print(item,url,lrc,name)
-        urllib.request.urlretrieve(url,conf['mp3dir']+name+"-"+author+".mp3",self.schedule)
+        # print(item,url,lrc,name)
+        t = threading.Thread(target=self.download_music,args=(item,url,lrc,name,author))
+        # p = Process(target=self.download_music, args=(item,url,lrc,name,author))
+        t.start()
+        
     def schedule(self,a,b,c):
         per = 100.0 * a * b / c
         if per > 100 :
             per = 100
-        print('%.2f%%' % per)
-        # per = round(per, 2);
+        # print('%.2f%%' % per)
+        per = round(per, 2);
+        self.download_pro[self.download_id.item] = per
         # frame = self.web.page().currentFrame()
+        # s = str(per)+"&"+self.download_id.item
         # frame.evaluateJavaScript("setpro('"+s+"')")
+        # print(s)
+    @pyqtSlot()
+    def qtjindu(self):
+        s = str(self.download_pro)
+        # print(s)
+        frame = self.web.page().currentFrame()
+        # s = str(item)+"&"+str(jindu);
+        s = s.replace("'","\\'")
+        frame.evaluateJavaScript("getjindu('"+s+"')")
 
     def populateJavaScriptWindowObject(self):
         self.web.page().mainFrame().addToJavaScriptWindowObject(
@@ -105,6 +130,7 @@ class index(QWidget):
          # print(dir(self.web))
          self.backbtn.close()
          self.web.back()
+         self.download_pro = {}
          # print("oooo")
 
 # 自定义label，用于鼠标拖动主窗口
