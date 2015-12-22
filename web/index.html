@@ -18,6 +18,9 @@
 		        <div class="swiper-slide"><img src="../image/slider2.jpg" ></div>
 		        <div class="swiper-slide"><img src="../image/slider3.jpg" ></div>
 		    </div>
+		    <!-- 如果需要导航按钮 -->
+		    <div class="swiper-button-prev swiper-button-white"></div>
+		    <div class="swiper-button-next swiper-button-white"></div>
 		</div>
 		<form onsubmit="mysearch()" >
 			<div class="search">
@@ -26,14 +29,14 @@
 			</div>
 		</form>
 		<div class="item">
-			<div><a href="http:qing51.com"><img src="../image/item1.jpg" ></a><br>经典</div>
-			<div><a href="http:qing51.com"><img src="../image/item2.jpg" ></a><br>排行</div>
-			<div><a href="http:qing51.com"><img src="../image/item3.jpg" ></a><br>新歌</div>
-			<div><a href="http:qing51.com"><img src="../image/item4.jpg" ></a><br>语言</div>
-			<div><a href="http:qing51.com"><img src="../image/item5.jpg" ></a><br>心情</div>
-			<div><a href="http:qing51.com"><img src="../image/item6.jpg" ></a><br>流派</div>
-			<div><a href="http:qing51.com"><img src="../image/item7.jpg" ></a><br>场景</div>
-			<div><a href="http:qing51.com"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item1.jpg" ></a><br>经典</div>
+			<div><a href="javascript:void(0)"><img src="../image/item2.jpg" ></a><br>排行</div>
+			<div><a href="javascript:void(0)"><img src="../image/item3.jpg" ></a><br>新歌</div>
+			<div><a href="javascript:void(0)"><img src="../image/item4.jpg" ></a><br>语言</div>
+			<div><a href="javascript:void(0)"><img src="../image/item5.jpg" ></a><br>心情</div>
+			<div><a href="javascript:void(0)"><img src="../image/item6.jpg" ></a><br>流派</div>
+			<div><a href="javascript:void(0)"><img src="../image/item7.jpg" ></a><br>场景</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
 		</div>
 	<!-- </div> -->
 	
@@ -42,6 +45,7 @@
 
 <style>
 	body,img,div{ margin:0;padding:0;-webkit-user-select: none; }
+	a{ outline: none }
 	.search{ background:#EAD9EA;height:60px;line-height:60px;text-align:center; }
 	.search input{ height:30px;width:300px;border:none;border-radius:2px;text-indent:2em;outline: none;font-size: 12px;background:white; }
 	.search button{ height:32px;width:60px;border:none;border-radius:5px;background:#770077;color:white;outline: none;font-size: 12px;cursor:pointer;  }
@@ -55,6 +59,9 @@
 var mySwiper = new Swiper ('.swiper-container', {
 	loop: true,
 	autoplay:3000,
+	// 如果需要前进后退按钮
+    nextButton: '.swiper-button-next',
+    prevButton: '.swiper-button-prev',
 })     
 function xin(obj,str){
 	alert(obj.value+"=="+str);
@@ -75,4 +82,9 @@ function insertlist()
 	alert("oooo");
 	// alert(typeof strs);
 }
+
+function stop(){
+   return false;
+  }
+// document.oncontextmenu=stop;
 </script>
