@@ -84,6 +84,7 @@ class Player():
         if len(songname) > 12:
           songname = songname[0:12]+"..."
         item = QListWidgetItem("%02d  %s" % (x,songname))
+        
         self.music.songList.addItem(item)
         url = QUrl.fromLocalFile(os.path.join(conf['mp3dir'],name))
         self.music.playlist.addMedia(QMediaContent(url))

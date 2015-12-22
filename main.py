@@ -4,8 +4,8 @@
 
 import sys,ctypes,os
 from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLabel,QProgressBar,QListWidget, QSystemTrayIcon,QMenu,QAction,QGraphicsDropShadowEffect,QGraphicsBlurEffect,QListWidgetItem,QSlider)
-from PyQt5.QtCore import Qt,QSize,QUrl,QThread
-from PyQt5.QtGui import QCursor,QIcon,QBrush,QColor,QDesktopServices 
+from PyQt5.QtCore import Qt,QSize,QUrl,QThread,QPoint,pyqtSignal
+from PyQt5.QtGui import QCursor,QIcon,QBrush,QColor,QDesktopServices
 from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent)
 from conf.conf import conf
 from mywidget import *
@@ -47,7 +47,7 @@ class Music(QWidget):
 		picture.resize(300,200)
 		picture.setGraphicsEffect(QGraphicsBlurEffect())
 		# picture.setObjectName("songer_img")
-		picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url(image/caijianya.jpg)}")
+		picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url(image/123.jpg)}")
 		#顶部工具栏（最小化，缩小到托盘，设置）
 		top_tools = QWidget(songer_img)
 		top_tools.setGeometry(0,0,300,20)
@@ -104,6 +104,8 @@ class Music(QWidget):
 		self.songList = QListWidget(listWgt)
 		self.songList.setGeometry(2,0,238,370)   
 		self.songList.setStyleSheet(qss_songlist)
+		self.songList.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.songList.customContextMenuRequested.connect(self.rightMenuShow)
 		# 
 		#歌曲列表右边的功能列表
 		funcList = QListWidget(listWgt)
@@ -175,8 +177,36 @@ class Music(QWidget):
 			self.widget1.show()
 		self.resize(900,600)
 		
-		# # print(dir(self))
-		# self.widget1.move(int((self.screen_w-900)/2)+300,int((self.screen_h-600)/2))
+	#创建右键菜单
+	def rightMenuShow(self,point):
+		self.current_context_item = self.songList.itemAt(point)
+		if self.current_context_item is None:
+			return False
+		rightMenu = QMenu(self.songList)
+		removeAction = QAction(u"删除", self, triggered=self.deleteSongItem)
+		addAction = QAction(u"重命名", self, triggered=self.deleteSongItem)    
+		rightMenu.addAction(removeAction)
+		rightMenu.addAction(addAction)
+		rightMenu.exec_(QCursor.pos())
+	def deleteSongItem(self):
+		# 获取当前鼠标右键点击的歌曲名
+		songname = self.current_context_item.text()
+		p = re.compile(r'\d+')
+		r = p.findall(songname)
+		item = int(r[0]) - 1;
+		mp3path = conf['mp3dir']
+		i = 0
+		for filename in os.listdir(mp3path):
+			if i == item:
+				# 删除列表item
+				self.songList.takeItem(self.songList.row(self.current_context_item))
+				# 删除播放队列item
+				self.playlist.removeMedia(item)
+				# 删除文件
+				os.remove(os.path.join(mp3path, filename))
+				break
+			i = i+1
+			# print(os.path.join(mp3path, filename))
 
 	def openurl(self):
 		QDesktopServices.openUrl(QUrl("https://github.com/codeAB/music-player"))
