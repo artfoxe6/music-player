@@ -5,7 +5,8 @@ a cross-platform music player
 <img src="https://github.com/codeAB/music-player/blob/master/image/s2.png" />
 <img src="https://github.com/codeAB/music-player/blob/master/image/s1.png" />
 
-＃已知的BUG
+<h2 >已知的BUG</h2>
+
 
 部分intel集成显卡的电脑无法渲染滚动条样式
 
