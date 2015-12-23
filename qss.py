@@ -5,7 +5,7 @@ qss_songlist = """
 
 QListWidget{ background:white;font-size:12px;border:none;margin-left:10px;} 
 QListWidget::item{ color:grey ;height:40px;}  
-QListWidget::item:hover{background:#E8FFE3} 
+QListWidget::item:hover{background:pink} 
 QListWidget::item:selected{background:#E8FFE3;} 
 QScrollBar:vertical{width:5px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}
 QScrollBar::handle:vertical{width:5px;background:#A6D8F8; border-radius:2px;  }

@@ -3,7 +3,7 @@
 
 
 import sys,ctypes,os
-from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLabel,QProgressBar,QListWidget, QSystemTrayIcon,QMenu,QAction,QGraphicsDropShadowEffect,QGraphicsBlurEffect,QListWidgetItem,QSlider)
+from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLabel,QProgressBar,QListWidget, QSystemTrayIcon,QMenu,QAction,QGraphicsDropShadowEffect,QGraphicsBlurEffect,QListWidgetItem,QSlider,QDialog)
 from PyQt5.QtCore import Qt,QSize,QUrl,QThread,QPoint,pyqtSignal
 from PyQt5.QtGui import QCursor,QIcon,QBrush,QColor,QDesktopServices
 from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent)
@@ -33,7 +33,7 @@ class Music(QWidget):
 		self.setWindowFlags(Qt.FramelessWindowHint)
 		self.resize(300,600)
 		self.setObjectName("mainBox")
-		self.setStyleSheet(" QWidget{ border:none }")
+		self.setStyleSheet("QWidget{ border:none }")
 		#当前播放歌曲的歌手图片
 		songer_img = DragLabel(self)
 		songer_img.setParent(self)
@@ -42,12 +42,12 @@ class Music(QWidget):
 		songer_img.setObjectName("songer_img")
 		# songer_img.setStyleSheet("#songer_img{ background:none;}")
 		#歌曲专辑图片
-		picture = QLabel(songer_img)
+		self.picture = QLabel(songer_img)
 		# picture.setParent(self)
-		picture.resize(300,200)
-		picture.setGraphicsEffect(QGraphicsBlurEffect())
+		self.picture.resize(300,200)
+		self.picture.setGraphicsEffect(QGraphicsBlurEffect())
 		# picture.setObjectName("songer_img")
-		picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url(image/123.jpg)}")
+		self.picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url(image/123.jpg)}")
 		#顶部工具栏（最小化，缩小到托盘，设置）
 		top_tools = QWidget(songer_img)
 		top_tools.setGeometry(0,0,300,20)
@@ -59,6 +59,12 @@ class Music(QWidget):
 		btn.setCursor(QCursor(Qt.PointingHandCursor))
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
 		btn.clicked.connect(self.myclose)
+		#关闭程序按钮
+		btn = QPushButton("背景",top_tools)
+		btn.setGeometry(200,0,40,20)
+		btn.setCursor(QCursor(Qt.PointingHandCursor))
+		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
+		btn.clicked.connect(self.setHeaderImg)
 		#设置播放按钮
 		self.playBtn = QPushButton("",songer_img)
 		self.playBtn.setGeometry(126,120,48,48)
@@ -82,8 +88,7 @@ class Music(QWidget):
 		# self.vol.setStyleSheet(qss_vol)
 		#当前歌曲名   
 		self.currentMusicName = QLabel("梦音乐 ^_^ ",songer_img)
-		# print(dir(label))
-		self.currentMusicName.setGeometry(0,50,300,40)
+		self.currentMusicName.setGeometry(0,50,300,80)
 		self.currentMusicName.setAlignment(Qt.AlignHCenter)
 		self.currentMusicName.setStyleSheet("QLabel{ color:white ;font-weight:100;font-size:16px;}")
 		#歌曲进度条
@@ -150,6 +155,8 @@ class Music(QWidget):
 		tray.activated.connect(self.dbclick_tray)
 	#加载播放核心
 	def initplayer(self):
+		#play_song_list用来方便的维护列表,主要用来记录当前播放列表
+		self.play_song_list = {}
 		s = Player(self)
 		self.songList.itemDoubleClicked.connect(self.playit)
 		self.playBtn.clicked.connect(self.play_or_pause)
@@ -215,6 +222,10 @@ class Music(QWidget):
 			self.widget1.close() and self.close()
 		else:
 			self.close()
+	def setHeaderImg(self):
+		s = QDialog(self)
+		s.resize(600,400)
+		s.show()
 		
 # #定义一个公用类  提供公用的静态方法
 # class Myclass():

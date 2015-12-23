@@ -8,6 +8,8 @@ from PyQt5.QtWidgets import QListWidgetItem
 from PyQt5.QtGui import QBrush
 import os
 import re
+from mutagen.mp3 import MP3
+
 
 class Player():
   # 参数music是mainnwindow对象 
@@ -15,11 +17,13 @@ class Player():
     self.duration = 0
     self.music = music
     self.music.player = QMediaPlayer()
-    # print(dir(self.music.player))
+    
     # print(dir(self.music.player))
     self.music.playlist = QMediaPlaylist()
     # print(dir(self.music.playlist))
-    self.music.playlist.setPlaybackMode(QMediaPlaylist.Loop)
+    # print(dir(self.music.playlist))
+    #单曲循环
+    self.music.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
     self.music.player.setPlaylist(self.music.playlist)
 
     self.init_list()
@@ -117,7 +121,18 @@ class Player():
 
   def metaDataChanged(self):
     if self.music.player.isMetaDataAvailable(): 
-      self.music.currentMusicName.setText(self.music.player.metaData(QMediaMetaData.Title) or "未找到文件描述")
+      current_song_path = self.music.playlist.currentMedia().canonicalUrl().toString()
+      #当前播放的是item index
+      ci = self.music.playlist.currentIndex()
+      playitem = self.music.songList.item(ci)
+      playitem.setSelected(True)
+      #把qt的路径格式转换为绝对路径
+      audio = MP3(current_song_path[7:])
+      # print(audio.get('TIT2'))  #歌名
+      # print(audio.get('TPE1'))  #歌手
+      # print(audio.get('TALB'))  #专辑
+      s = str(audio.get('TIT2'))+"-"+str(audio.get('TPE1'))
+      self.music.currentMusicName.setText(s)
 
   def stateChanged(self):
     if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):
