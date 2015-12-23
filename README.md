@@ -21,8 +21,8 @@ Linux下一直找不到一个满意的播放器（主要是界面老套）
 <h2 >已知的BUG</h2>
 
 
-部分intel集成显卡的电脑无法渲染滚动条样式
-待解决
+部分intel集成显卡的电脑无法渲染滚动条样式<br>
+不影响使用,滚动条稍微有点难看,待解决,
 
 *部分机器缺少无法播放,提示缺少 media server <br>
 解决办法：以ubuntu为例。 sudo apt-get install libqt5multimedia5-plugins
