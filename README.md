@@ -23,6 +23,8 @@ Linux下一直找不到一个满意的播放器（主要是界面老套）
 
 部分intel集成显卡的电脑无法渲染滚动条样式
 
+
 部分机器缺少自身音频解码支持导致无法使用播放
+*解决办法：以ubuntu为例。 sudo apt-get install libqt5multimedia5-plugins
 
 欢迎提交更多bug

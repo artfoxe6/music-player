@@ -1,45 +1,57 @@
-#!/usr/bin/python
-#encoding:utf-8
-
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from PyQt4 import QtCore, QtGui, uic
-from PyQt4.QtCore import pyqtSignature
-
-class Ui_formDialog(QtGui.QDialog):
-
-    def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self)
-        uic.loadUi("form.ui", self)        #form.ui  为QT界面文件 QListWidget对象名为 listView1
-        self.listDataBind()                  #添加QListWidgetItme
-        self.listView1.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)   #定义右键菜单
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget,QListWidget,QListWidgetItem
+from PyQt5.QtGui import *
+class Example(QWidget):
+    
+    def __init__(self):
+        super().__init__()
         
-    def listDataBind(self):
+        self.initUI()
+        
+        
+    def initUI(self):
+        self.setGeometry(300, 300, 300, 220)  
+        self.setWindowTitle('Simple') 
+        style = """
+        QScrollBar:horizontal {
+    border: 2px solid grey;
+    background: #32CC99;
+    height: 15px;
+    margin: 0px 20px 0 20px;
+}
+QScrollBar::handle:horizontal {
+    background: white;
+    min-width: 20px;
+}
+QScrollBar::add-line:horizontal {
+    border: 2px solid grey;
+    background: #32CC99;
+    width: 20px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:horizontal {
+    border: 2px solid grey;
+    background: #32CC99;
+    width: 20px;
+    subcontrol-position: left;
+    subcontrol-origin: margin;
+}
+        """
+        l = QListWidget(self)
         item = ['OaK','Banana','Apple','Orange','Grapes','Jayesh']
-        for lst in item:
-            self.listView1.addItem(QtGui.QListWidgetItem(lst))
-   
-
-    #激活菜单事件
-   @pyqtSignature("QPoint")
-    def on_listView1_customContextMenuRequested(self, point):
-        item = self.listView1.itemAt(point)
-        #空白区域不显示菜单
-        if item != None:
-
-           self.rightMenuShow()
-
-
-    #创建右键菜单
-    def rightMenuShow(self):
-        rightMenu = QtGui.QMenu(self.listView1)
-        removeAction = QtGui.QAction(u"删除", self, triggered=self.close)       # triggered 为右键菜单点击后的激活事件。这里slef.close调用的是系统自带的关闭事件。
-        rightMenu.addAction(removeAction)
-       
-        addAction = QtGui.QAction(u"添加", self, triggered=self.addItem)       # 也可以指定自定义对象事件
-        rightMenu.addAction(addAction)
-        rightMenu.exec_(QtGui.QCursor.pos())
-       
-
-    def addItem(self):
-        pass
+        for lst in range(100):
+            # print(lst)
+            l.addItem(QListWidgetItem(str(lst)))
+        self.setStyleSheet(style)
+        self.show()
+        
+        
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = Example()
+    sys.exit(app.exec_())
