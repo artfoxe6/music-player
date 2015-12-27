@@ -11,7 +11,7 @@ from conf.conf import conf
 from mywidget import *
 from qss import *
 from media import *
-
+from singer import *
 
 # ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
 class Music(QWidget):
@@ -60,11 +60,11 @@ class Music(QWidget):
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
 		btn.clicked.connect(self.myclose)
 		#关闭程序按钮
-		# btn = QPushButton("背景",top_tools)
-		# btn.setGeometry(200,0,40,20)
-		# btn.setCursor(QCursor(Qt.PointingHandCursor))
-		# btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
-		# btn.clicked.connect(self.setHeaderImg)
+		btn = QPushButton("背景",top_tools)
+		btn.setGeometry(200,0,40,20)
+		btn.setCursor(QCursor(Qt.PointingHandCursor))
+		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
+		btn.clicked.connect(self.setHeaderImg)
 		#设置播放按钮
 		self.playBtn = QPushButton("",songer_img)
 		self.playBtn.setGeometry(126,120,48,48)
@@ -223,9 +223,14 @@ class Music(QWidget):
 		else:
 			self.close()
 	def setHeaderImg(self):
-		s = QDialog(self)
-		s.resize(600,400)
-		s.show()
+		cs = self.currentMusicName.text()
+		cs = cs.split("-")
+		# print(len(cs))
+		if len(cs) > 1:
+			# print("ooo")
+			self.s = Singer(cs[1],self)
+			# self.s.setParent(self)
+			self.show()
 		
 # #定义一个公用类  提供公用的静态方法
 # class Myclass():

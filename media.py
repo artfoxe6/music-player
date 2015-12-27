@@ -128,11 +128,17 @@ class Player():
       playitem.setSelected(True)
       #把qt的路径格式转换为绝对路径
       audio = MP3(current_song_path[7:])
+      # print(audio)
       # print(audio.get('TIT2'))  #歌名
       # print(audio.get('TPE1'))  #歌手
       # print(audio.get('TALB'))  #专辑
       s = str(audio.get('TIT2'))+"-"+str(audio.get('TPE1'))
+      # print(s)
       self.music.currentMusicName.setText(s)
+      local = os.path.join('./cache/', str(audio.get('TPE1'))+'.jpg')
+      if not os.path.isfile(local):
+        local = os.path.join('.', 'image/caijianya.jpg')
+      self.music.picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url("+local+")}")
 
   def stateChanged(self):
     if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):

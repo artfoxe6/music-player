@@ -1,59 +1,77 @@
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-try:
-    _fromUtf8 = QString.fromUtf8
-except AttributeError:
-    def _fromUtf8(s):
-        return s
 
-class scrollTextLabel(QLabel):
-    def __init__(self, parent=None):
-        super(scrollTextLabel, self).__init__(parent)
-        self.txt = QString()
-        self.newX = 10      
-        self.t = QTimer()
-        self.font = QFont(_fromUtf8('微软雅黑, verdana'), 8)
-        self.connect(self.t, SIGNAL("timeout()"), self.changeTxtPosition)
+import sys
+import os
+import urllib.parse
+import urllib.request
+import re
+from PyQt5.QtWidgets import (
+    QApplication, QWidget, QPushButton, QLineEdit, QLabel)
+from PyQt5.QtWebKitWidgets import QWebPage, QWebView
+from PyQt5.QtCore import Qt, QUrl, pyqtSlot,QTimer
 
-    def changeTxtPosition(self):
-        if not self.parent().isVisible():
-            # 如果parent不可见，则停止滚动，复位
-            self.t.stop()
-            self.newX = 10
-            return
-        if self.textRect.width() + self.newX > 0:
-        #每次向前滚动5像素
-            self.newX -= 5
-        else:
-            self.newX = self.width()            
-        self.update()
 
-    #用drawText来绘制文字，不再需要setText，重写
-    def setText(self, s):
-        self.txt = s
+class Example(QWidget):
+    
+    def __init__(self):
+        super().__init__()
+        
+        self.initUI()
+        
+        
+    def initUI(self):      
 
-        #滚动起始位置设置为10,留下视觉缓冲
-        #以免出现 “没注意到第一个字是什么” 的情况
-        self.newX = 10
-        self.update()
+        self.w= QWidget(self)
+        self.setGeometry(300,100,1000,600)
+        self.web = QWebView(self)
+        self.web.loadFinished.connect(self.test)
+        
+        self.web.page().setLinkDelegationPolicy(QWebPage.DelegateAllLinks)
+        self.web.page().linkClicked.connect(self.linkClicked)
 
-    def paintEvent(self, event):
-        painter = QPainter(self)
-        painter.setFont(self.font)
-        #设置透明颜色
-        painter.setPen(QColor('transparent'));
+        self.web.setGeometry(0, 0, 1000, 500)
+        self.btn = QPushButton("测试",self);
+        self.btn.clicked.connect(self.test)
+        self.btn.move(300,550)
+        self.web.load(QUrl("http://image.baidu.com/"))
+        self.show()
+    def test(self):
+        print("jiazaijieshu")
+        frame = self.web.page().currentFrame()
+        searchinput = frame.findFirstElement('#kw')
+        searchinput.setAttribute("value","张杰")
+        searchinput.setAttribute("readonly","readonly")
+    def linkClicked(self,url):
+        # print(url.toString())
+        url = url.toString()
+        pattern = re.compile(r'&word=(.*?)&')
+        s = pattern.findall(url)
+        k = {'word': s[0]}
+        kv = urllib.parse.urlencode(k)
+        url = url.replace("word="+s[0], kv)
 
-        #以透明色绘制文字，来取得绘制后的文字宽度
-        self.textRect = painter.drawText(QRect(0, -7, self.width(), 25), Qt.AlignHCenter | Qt.AlignVCenter, self.txt)
+        res = urllib.request.urlopen(url).read().decode("utf8")
+        pattern = re.compile(r'currentImg(.*)<div>',re.S)
+        s = pattern.findall(res)
+        src="http://img3.imgtn.bdimg.com/it/u=673176467,634723054&amp;fm=21&amp;gp=0.jpg"
+        pattern = re.compile(r'src="(.*?)"')
+        s = pattern.findall(s[0])
+        img_url = s[0].replace("&amp;","&")
 
-        if self.textRect.width() > self.width():
-            #如果绘制文本宽度大于控件显示宽度，准备滚动：
-            painter.setPen(QColor(255, 255, 255, 255))
-            painter.drawText(QRect(self.newX, -7, self.textRect.width(), 25), Qt.AlignLeft | Qt.AlignVCenter, self.txt)
-            #每150ms毫秒滚动一次
-            self.t.start(150)
-        else:
-            #如果绘制文本宽度小于控件宽度，不需要滚动，文本居中对齐
-            painter.setPen(QColor(255, 255, 255, 255));
-            self.textRect = painter.drawText(QRect(0, -7, self.width(), 25), Qt.AlignHCenter | Qt.AlignVCenter, self.txt)
-            self.t.stop()
+        local = os.path.join('./cache/', '张杰.jpg')
+        user_agent = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:42.0) Gecko/20100101 Firefox/42.0'
+        req = urllib.request.Request(img_url)
+        req.add_header('Referer', 'http://music.baidu.com/?from=new_mp3')
+        req.add_header('User-Agent', user_agent)
+        f = urllib.request.urlopen(req)
+        data = f.read() 
+        with open(local, "wb") as code:     
+            code.write(data)
+
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    # music = search()
+    music = Example()
+    # app.exec_()
+    sys.exit(app.exec_())

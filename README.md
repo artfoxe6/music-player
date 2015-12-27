@@ -18,6 +18,7 @@ Linux下一直没找到我满意的音乐播放器（主要是界面老套）
 <img src="https://github.com/codeAB/music-player/blob/master/image/s2.png" />
 <img src="https://github.com/codeAB/music-player/blob/master/image/s1.png" />
 <img src="https://github.com/codeAB/music-player/blob/master/image/s3.png" />
+<img src="https://github.com/codeAB/music-player/blob/master/image/s4.png" />
 
 <h2 >已知的BUG</h2>
 
