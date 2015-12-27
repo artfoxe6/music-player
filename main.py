@@ -47,7 +47,7 @@ class Music(QWidget):
 		self.picture.resize(300,200)
 		self.picture.setGraphicsEffect(QGraphicsBlurEffect())
 		# picture.setObjectName("songer_img")
-		self.picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url(image/123.jpg)}")
+		self.picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url(image/zhangjie.jpg)}")
 		#顶部工具栏（最小化，缩小到托盘，设置）
 		top_tools = QWidget(songer_img)
 		top_tools.setGeometry(0,0,300,20)
@@ -60,11 +60,11 @@ class Music(QWidget):
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
 		btn.clicked.connect(self.myclose)
 		#关闭程序按钮
-		btn = QPushButton("背景",top_tools)
-		btn.setGeometry(200,0,40,20)
-		btn.setCursor(QCursor(Qt.PointingHandCursor))
-		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
-		btn.clicked.connect(self.setHeaderImg)
+		# btn = QPushButton("背景",top_tools)
+		# btn.setGeometry(200,0,40,20)
+		# btn.setCursor(QCursor(Qt.PointingHandCursor))
+		# btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
+		# btn.clicked.connect(self.setHeaderImg)
 		#设置播放按钮
 		self.playBtn = QPushButton("",songer_img)
 		self.playBtn.setGeometry(126,120,48,48)

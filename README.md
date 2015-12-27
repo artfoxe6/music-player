@@ -17,6 +17,7 @@ Linux下一直没找到我满意的音乐播放器（主要是界面老套）
 <br>
 <img src="https://github.com/codeAB/music-player/blob/master/image/s2.png" />
 <img src="https://github.com/codeAB/music-player/blob/master/image/s1.png" />
+<img src="https://github.com/codeAB/music-player/blob/master/image/s3.png" />
 
 <h2 >已知的BUG</h2>
 
@@ -24,6 +25,6 @@ Linux下一直没找到我满意的音乐播放器（主要是界面老套）
 部分intel集成显卡的电脑无法渲染滚动条样式<br>
 不影响使用,滚动条稍微有点难看,待解决,
 
-*部分机器缺少无法播放,提示缺少 media server <br>
+*部分机器缺少插件无法播放,提示 not found media server  <br>
 解决办法：以ubuntu为例。 sudo apt-get install libqt5multimedia5-plugins
 

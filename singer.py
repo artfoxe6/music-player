@@ -25,9 +25,9 @@ class bdmusic(object):
         the_page = response.read()
         # 关键字搜索结果
         res = the_page.decode("utf8")
-        pattern = re.compile(r'<dd>(.*)<\/dd>')
+        pattern = re.compile(r'lazy_src="(.*)" onerror')
         s = pattern.findall(res)
-        print(s)
+        print(s[:20])
 
 
 if __name__ == '__main__':
