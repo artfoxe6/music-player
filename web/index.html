@@ -19,8 +19,8 @@
 		        <div class="swiper-slide"><img src="../image/slider3.jpg" ></div>
 		    </div>
 		    <!-- 如果需要导航按钮 -->
-		    <div class="swiper-button-prev swiper-button-white"></div>
-		    <div class="swiper-button-next swiper-button-white"></div>
+		    <!-- <div class="swiper-button-prev swiper-button-white"></div> -->
+		    <!-- <div class="swiper-button-next swiper-button-white"></div> -->
 		</div>
 		<form onsubmit="mysearch()" >
 			<div class="search">
@@ -60,9 +60,11 @@ var mySwiper = new Swiper ('.swiper-container', {
 	loop: true,
 	autoplay:3000,
 	// 如果需要前进后退按钮
-    nextButton: '.swiper-button-next',
-    prevButton: '.swiper-button-prev',
-})     
+    // nextButton: '.swiper-button-next',
+    // prevButton: '.swiper-button-prev',
+}) 
+
+   
 function xin(obj,str){
 	alert(obj.value+"=="+str);
 }
