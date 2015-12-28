@@ -14,12 +14,17 @@ from PyQt5.QtWidgets import (
     QApplication, QWidget, QPushButton, QLineEdit, QLabel)
 from PyQt5.QtWebKitWidgets import QWebPage, QWebView
 from PyQt5.QtCore import Qt, QUrl, pyqtSlot,QTimer
+from PyQt5.QtGui import ( QCursor)
 
 
 class Singer(QWidget):
     
     def __init__(self,singer,music):
         super().__init__()
+        # 窗口居于所有窗口的顶端 
+        self.setWindowFlags(Qt.WindowOverridesSystemGestures)
+        #针对X11
+        self.setWindowFlags(Qt.X11BypassWindowManagerHint)
         self.singer = singer
         self.music = music
         self.initUI()
@@ -29,13 +34,15 @@ class Singer(QWidget):
 
         self.w= QWidget(self)
         self.setGeometry(300,100,1000,600)
+        l = QLabel("实用说明,搜索需要的图片，在搜索结果页面点击选择的图片即可设置。。双击此处退出",self)
+        l.move(0,0)
         self.web = QWebView(self)
         self.web.loadFinished.connect(self.test)
         
         self.web.page().setLinkDelegationPolicy(QWebPage.DelegateAllLinks)
         self.web.page().linkClicked.connect(self.linkClicked)
 
-        self.web.setGeometry(0, 0, 1000, 600)
+        self.web.setGeometry(0, 30, 1000, 570)
         # self.btn = QPushButton("测试",self);
         # self.btn.clicked.connect(self.test)
         # self.btn.move(300,550)
@@ -77,7 +84,33 @@ class Singer(QWidget):
             code.write(data)
             self.music.picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url("+local+")}")
 
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.drag_flag = True
+            # if hasattr(self.window, 'widget1'):
+            #     self.begin_position2 = event.globalPos() - \
+            #         self.window.widget1.pos()
+            self.begin_position = event.globalPos() - self.pos()
+            event.accept()
+            self.setCursor(QCursor(Qt.OpenHandCursor))
 
+    def mouseMoveEvent(self, QMouseEvent):
+        if Qt.LeftButton and self.drag_flag:
+            # if hasattr(self.window, 'widget1'):
+            #     self.window.widget1.move(
+            #         QMouseEvent.globalPos() - self.begin_position2)
+            #     self.window.move(QMouseEvent.globalPos() - self.begin_position)
+            # else:
+            self.move(QMouseEvent.globalPos() - self.begin_position)
+            QMouseEvent.accept()
+
+    def mouseReleaseEvent(self, QMouseEvent):
+        self.drag_flag = False
+        self.setCursor(QCursor(Qt.ArrowCursor))
+    # def leaveEvent(self,QMouseEvent):
+    #     self.close()
+    def mouseDoubleClickEvent(self,e):
+        self.close()
 
 
 if __name__ == '__main__':
