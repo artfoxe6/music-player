@@ -13,12 +13,12 @@ Linux下一直没找到我满意的音乐播放器（主要是界面老套）
 
 
 
-<h2 style="color:red" >软件截图</h2>
-<br>
+<h2 >软件截图</h2>
 <img src="https://github.com/codeAB/music-player/blob/master/image/s2.png" />
 <img src="https://github.com/codeAB/music-player/blob/master/image/s1.png" />
 <img src="https://github.com/codeAB/music-player/blob/master/image/s3.png" />
 <img src="https://github.com/codeAB/music-player/blob/master/image/s4.png" />
+<img src="https://github.com/codeAB/music-player/blob/master/image/s5.png" />
 
 <h2 >已知的BUG</h2>
 
@@ -28,4 +28,13 @@ Linux下一直没找到我满意的音乐播放器（主要是界面老套）
 
 *部分机器缺少插件无法播放,提示 not found media server  <br>
 解决办法：以ubuntu为例。 sudo apt-get install libqt5multimedia5-plugins
+
+
+<h2>特色功能：</h2>
+
+歌手封面定义 <br	>
+拖动播放器到顶部自动隐藏，鼠标再次移上去显示，类似window下的酷狗 <br	>
+桌面歌词 <br	>
+
+
 

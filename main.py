@@ -5,7 +5,7 @@
 import sys,ctypes,os
 from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLabel,QProgressBar,QListWidget, QSystemTrayIcon,QMenu,QAction,QGraphicsDropShadowEffect,QGraphicsBlurEffect,QListWidgetItem,QSlider,QDialog)
 from PyQt5.QtCore import Qt,QSize,QUrl,QThread,QPoint,pyqtSignal
-from PyQt5.QtGui import QCursor,QIcon,QBrush,QColor,QDesktopServices
+from PyQt5.QtGui import ( QCursor,QIcon,QBrush,QDesktopServices,QLinearGradient,QLinearGradient,QFont,QPainter,QColor)
 from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent)
 from conf.conf import conf
 from mywidget import *
@@ -34,11 +34,11 @@ class Music(QWidget):
 		self.show()
 		
 	def initUI(self):
-		#设置无边框
+		#设置无边框 
 		# self.setWindowFlags(Qt.FramelessWindowHint)
 		wh = QApplication.desktop().screenGeometry()
 		self.screen_w , self.screen_h = wh.width() ,wh.height()
-		self.setGeometry(int((self.screen_w-900)/2),int((self.screen_h-600)/2),300,600)
+		self.setGeometry(int((self.screen_w-300)/2),int((self.screen_h-600)/2),300,600)
 		# print(dir(self))
 		self.setObjectName("mainBox")
 		self.setStyleSheet("QWidget{ border:none }")
@@ -73,6 +73,12 @@ class Music(QWidget):
 		btn.setCursor(QCursor(Qt.PointingHandCursor))
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
 		btn.clicked.connect(self.setHeaderImg)
+		#关闭程序按钮
+		btn = QPushButton("歌词",top_tools)
+		btn.setGeometry(100,0,40,20)
+		btn.setCursor(QCursor(Qt.PointingHandCursor))
+		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
+		btn.clicked.connect(self.lrc)
 		#设置播放按钮
 		self.playBtn = QPushButton("",songer_img)
 		self.playBtn.setGeometry(126,120,48,48)
@@ -246,27 +252,11 @@ class Music(QWidget):
 			self.s = Singer(cs[1],self)
 			# self.s.setParent(self)
 			self.show()
+	def lrc(self):
+		self.q = DLabel(self)
 		
-# #定义一个公用类  提供公用的静态方法
-# class Myclass():
-# 	def __init__(self):
-# 		pass
-# 	@staticmethod
-# 	def newWindow():
-# 		itm = QWidget()
-# 		return itm
-# #自定义线程类
-# class MyThread(QThread):
-# 	def __init__(self):
-# 		super(QThread,self).__init__()
-# 	def __del__(self):
-# 		self.wait()
-# 	def run(self):
-# 		print("do somethis")
-# 		app = QApplication(sys.argv)
-# 		sds = QWidget()
-# 		sds.show()
-# 		app.exec_()
+
+		self.q.show()
 
 
 if __name__ == '__main__':

@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import (
     QApplication, QWidget, QPushButton, QLineEdit, QLabel)
 from PyQt5.QtWebKitWidgets import QWebPage, QWebView
 from PyQt5.QtCore import Qt, QUrl, pyqtSlot,QPropertyAnimation,QRect
-from PyQt5.QtGui import QCursor, QIcon
+from PyQt5.QtGui import ( QCursor, QIcon,QLinearGradient,QLinearGradient,QFont,QPainter,QColor,QPen )
 from baidumusic import bdmusic
 import threading
 
@@ -139,7 +139,7 @@ class index(QWidget):
 
 class DragLabel(QLabel):
 
-    def __init__(self, window):
+    def __init__(self,window):
         super().__init__()
         self.window = window
 
@@ -168,10 +168,101 @@ class DragLabel(QLabel):
         self.setCursor(QCursor(Qt.ArrowCursor))
 
 
+class DLabel(QLabel):
+
+    def __init__(self,window = None):
+        super().__init__()
+        # 窗口居于所有窗口的顶端 
+        self.setWindowFlags(Qt.WindowOverridesSystemGestures)
+        #针对X11
+        self.setWindowFlags(Qt.X11BypassWindowManagerHint)
+        # self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint);
+        self.setAttribute(Qt.WA_TranslucentBackground);
+        wh = QApplication.desktop().screenGeometry()
+        self.screen_w , self.screen_h = wh.width() ,wh.height()
+        self.setGeometry(int((self.screen_w-900)/2),int((self.screen_h-120)),900,60)
+        # self.resize(800,60)
+        self.setStyleSheet("QLabel{ border:2px solid red }")
+        # btn = QPushButton("close",self.q)
+        # btn.clicked.connect(self.q.close)
+        
+        
+        # self.setText("简易音乐播放器")
+
+        
+    def paintEvent(self,e):
+
+        linear_gradient = QLinearGradient()
+        linear_gradient.setStart(0, 10) #填充的起点坐标
+        linear_gradient.setFinalStop(0, 40) #填充的终点坐标
+        #第一个参数终点坐标，相对于我们上面的区域而言，按照比例进行计算
+        linear_gradient.setColorAt(0.1, QColor(14, 179, 255))
+        linear_gradient.setColorAt(0.5, QColor(114, 232, 255))
+        linear_gradient.setColorAt(0.9, QColor(14, 179, 255))
+
+        mask_linear_gradient = QLinearGradient()
+        #遮罩的线性渐变填充
+        mask_linear_gradient.setStart(0, 10)
+        mask_linear_gradient.setFinalStop(0, 40)
+        mask_linear_gradient.setColorAt(0.1, QColor(222, 54, 4))
+        mask_linear_gradient.setColorAt(0.5, QColor(255, 72, 16))
+        mask_linear_gradient.setColorAt(0.9, QColor(222, 54, 4))
+
+        # print(e)
+        self.setText("简易音乐播放器")
+        # 设置字体
+        font = QFont()
+        font.setFamily("文泉驿等宽微米黑")
+        font.setBold(True)
+        font.setPointSize(30)
+        # self.q.setFont(font)
+        p = QPainter(self)
+        p.setFont(font);
+
+        # p.setPen(QColor(0, 0, 0, 200));
+        # p.drawText(1, 1, 700, 60, Qt.AlignHCenter, "梦音乐梦音乐梦音乐"); #//左对齐
+
+        # // 再在上面绘制渐变文字
+        # p.setPen(QPen(linear_gradient, 0));
+        # p.drawText(0, 0, 800, 60, Qt.AlignHCenter, "梦音乐梦音乐梦音乐");
+
+        # // 设置歌词遮罩
+        p.setPen(QPen(mask_linear_gradient, 0));
+        p.drawText(0, 0, 900, 60, Qt.AlignHCenter, "梦音乐,给你简单纯粹～");
+
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.drag_flag = True
+            # if hasattr(self.window, 'widget1'):
+            #     self.begin_position2 = event.globalPos() - \
+            #         self.window.widget1.pos()
+            self.begin_position = event.globalPos() - self.pos()
+            event.accept()
+            self.setCursor(QCursor(Qt.OpenHandCursor))
+
+    def mouseMoveEvent(self, QMouseEvent):
+        if Qt.LeftButton and self.drag_flag:
+            # if hasattr(self.window, 'widget1'):
+            #     self.window.widget1.move(
+            #         QMouseEvent.globalPos() - self.begin_position2)
+            #     self.window.move(QMouseEvent.globalPos() - self.begin_position)
+            # else:
+            self.move(QMouseEvent.globalPos() - self.begin_position)
+            QMouseEvent.accept()
+
+    def mouseReleaseEvent(self, QMouseEvent):
+        self.drag_flag = False
+        self.setCursor(QCursor(Qt.ArrowCursor))
+    # def leaveEvent(self,QMouseEvent):
+    #     self.close()
+    def mouseDoubleClickEvent(self,e):
+        self.close()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     # music = search()
-    music = index()
+    music = DLabel()
+    music.show()
     # app.exec_()
     sys.exit(app.exec_())
