@@ -166,6 +166,8 @@ class DragLabel(QLabel):
     def mouseReleaseEvent(self, QMouseEvent):
         self.drag_flag = False
         self.setCursor(QCursor(Qt.ArrowCursor))
+        if self.window.pos().y() == 0:
+            print("ppp")
 
 
 

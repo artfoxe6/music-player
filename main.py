@@ -104,7 +104,7 @@ class Music(QWidget):
 		#播放列表前面补空
 		blank = QWidget(self)
 		blank.setGeometry(0, 210, 2,370)
-		blank.setStyleSheet("QWidget{ background:#ddd }")
+		blank.setStyleSheet("QWidget{ background:white }")
 		#列表
 		self.songList = QListWidget(listWgt)
 		self.songList.setGeometry(2,0,238,370)   

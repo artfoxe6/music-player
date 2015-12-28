@@ -133,6 +133,8 @@ class Player():
       # print(audio.get('TPE1'))  #歌手
       # print(audio.get('TALB'))  #专辑
       s = str(audio.get('TIT2'))+"-"+str(audio.get('TPE1'))
+      if len(s) > 12:
+          s = s[0:12]+"..."
       # print(s)
       self.music.currentMusicName.setText(s)
       local = os.path.join('./cache/', str(audio.get('TPE1'))+'.jpg')
