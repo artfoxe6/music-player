@@ -8,7 +8,7 @@ from conf.conf import conf
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QPushButton, QLineEdit, QLabel)
 from PyQt5.QtWebKitWidgets import QWebPage, QWebView
-from PyQt5.QtCore import Qt, QUrl, pyqtSlot
+from PyQt5.QtCore import Qt, QUrl, pyqtSlot,QPropertyAnimation,QRect
 from PyQt5.QtGui import QCursor, QIcon
 from baidumusic import bdmusic
 import threading
@@ -166,8 +166,6 @@ class DragLabel(QLabel):
     def mouseReleaseEvent(self, QMouseEvent):
         self.drag_flag = False
         self.setCursor(QCursor(Qt.ArrowCursor))
-        if self.window.pos().y() == 0:
-            print("ppp")
 
 
 

@@ -19,6 +19,11 @@ class Music(QWidget):
 		super().__init__()
 		self.setWindowIcon(QIcon("image/tray.png"))
 		self.setWindowTitle("梦音乐")
+		# 窗口居于所有窗口的顶端 
+		self.setWindowFlags(Qt.WindowOverridesSystemGestures)
+		#针对X11
+		self.setWindowFlags(Qt.X11BypassWindowManagerHint)
+		self.hide()
 		shadow_effect = QGraphicsDropShadowEffect()
 		shadow_effect.setOffset(-50, -50)
 		# shadow_effect.setColor(Qt.green)
@@ -30,8 +35,11 @@ class Music(QWidget):
 		
 	def initUI(self):
 		#设置无边框
-		self.setWindowFlags(Qt.FramelessWindowHint)
-		self.resize(300,600)
+		# self.setWindowFlags(Qt.FramelessWindowHint)
+		wh = QApplication.desktop().screenGeometry()
+		self.screen_w , self.screen_h = wh.width() ,wh.height()
+		self.setGeometry(int((self.screen_w-900)/2),int((self.screen_h-600)/2),300,600)
+		# print(dir(self))
 		self.setObjectName("mainBox")
 		self.setStyleSheet("QWidget{ border:none }")
 		#当前播放歌曲的歌手图片
@@ -60,7 +68,7 @@ class Music(QWidget):
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
 		btn.clicked.connect(self.myclose)
 		#关闭程序按钮
-		btn = QPushButton("背景",top_tools)
+		btn = QPushButton("歌手",top_tools)
 		btn.setGeometry(200,0,40,20)
 		btn.setCursor(QCursor(Qt.PointingHandCursor))
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background-color:black } ")
@@ -153,6 +161,13 @@ class Music(QWidget):
 		tray.setContextMenu(trayIconMenu)
 		tray.show()
 		tray.activated.connect(self.dbclick_tray)
+	# 重写两个方法实现拖动播放器到屏幕顶端隐藏，鼠标移动上去显示，类似酷狗音乐
+	def enterEvent(self,QMouseEvent):
+		if self.y() < 1:
+			self.setGeometry(self.x(),0,300,600) 
+	def leaveEvent(self,QMouseEvent):
+		if self.y() < 1:
+			self.setGeometry(self.x(),0,300,1)
 	#加载播放核心
 	def initplayer(self):
 		#play_song_list用来方便的维护列表,主要用来记录当前播放列表
