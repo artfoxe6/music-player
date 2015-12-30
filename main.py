@@ -114,7 +114,7 @@ class Music(QWidget):
 		#歌曲列表
 		listWgt = QWidget(self)
 		listWgt.setGeometry(0, 210, 300,370)
-		listWgt.setStyleSheet("QWidget{ background:white }")
+		listWgt.setStyleSheet(qss_scrollbar)
 		#播放列表前面补空
 		blank = QWidget(self)
 		blank.setGeometry(0, 210, 2,370)
