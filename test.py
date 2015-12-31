@@ -1,67 +1,52 @@
+# coding=utf-8
 
-import sys
-import os
-import urllib.parse
-import urllib.request
-import re
-from PyQt5.QtWidgets import (
-    QApplication, QWidget, QPushButton, QLineEdit, QLabel,QListWidget,QListWidgetItem)
-from PyQt5.QtWebKitWidgets import QWebPage, QWebView
-from PyQt5.QtCore import Qt, QUrl, pyqtSlot,QTimer
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 
+global sec
+sec = 0
 
-class Example(QWidget):
-    
-    def __init__(self):
-        super().__init__()
-        
-        self.initUI()
-        
-        
-    def initUI(self):     
-        s = """
-        QScrollBar:vertical {
-    border: 2px solid grey;
-    background: #32CC99;
+class WorkThread(QThread):
+    trigger = pyqtSignal()
 
+    def __int__(self):
+        super(WorkThread, self).__init__()
 
-}
-QScrollBar::handle:vertical {
-    background: white;
-    min-width: 20px;
-}
-QScrollBar::add-line:vertical {
-    border: 2px solid grey;
-    background: #32CC99;
-    width: 20px;
-    subcontrol-position: right;
-    subcontrol-origin: margin;
-}
+    def run(self):
+        for i in range(203300030):
+            pass
+        self.trigger.emit()  # 循环完毕后发出信号
 
-QScrollBar::sub-line:vertical {
-    border: 2px solid grey;
-    background: #32CC99;
-    width: 20px;
-    subcontrol-position: left;
-    subcontrol-origin: margin;
-}
-        """ 
-        self.setStyleSheet(s)
-        #列表
-        songList = QListWidget(self)
-        songList.setGeometry(2,0,238,370)  
-        for x in range(100):
-            item = QListWidgetItem("hucida cdsa%d" % (x))
-            songList.addItem(item)
-        # songList.setStyleSheet(qss_songlist)
-        self.show()
-        
+def countTime():
+    global sec
+    sec += 1
+    lcdNumber.display(sec)  # LED显示数字+1
 
+def work():
+    timer.start(1000)  # 计时器每秒计数
+    workThread.start()  # 计时开始
+    workThread.trigger.connect(timeStop)  # 当获得循环完毕的信号时，停止计数
 
+def timeStop():
+    timer.stop()
+    print("运行结束用时", lcdNumber.value())
+    global sec
+    sec = 0
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    # music = search()
-    music = Example()
-    # app.exec_()
-    sys.exit(app.exec_())
+app = QApplication([])
+top = QWidget()
+layout = QVBoxLayout(top)  # 垂直布局类QVBoxLayout；
+lcdNumber = QLCDNumber()  # 加个显示屏
+layout.addWidget(lcdNumber)
+button = QPushButton("测试")
+layout.addWidget(button)
+
+timer = QTimer()
+workThread = WorkThread()
+
+button.clicked.connect(work)
+timer.timeout.connect(countTime)  # 每次计时结束，触发setTime
+
+top.show()
+app.exec()

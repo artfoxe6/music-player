@@ -4,7 +4,7 @@
 
 qss_scrollbar = """
 
-QWidget{ background:white }
+QWidget{ background:#F5FFF9 }
 QScrollBar:vertical{width:5px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}
 QScrollBar::handle:vertical{width:5px;background:#A6D8F8; border-radius:2px;  }
 QScrollBar::handle:vertical:hover{width:5px;background:grey;border-radius:2px;}
@@ -17,7 +17,7 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;bo
 """
 qss_songlist = """
 
-QListWidget{ background:white;font-size:12px;border:none;margin-left:10px;} 
+QListWidget{ background:#F5FFF9;font-size:12px;border:none;text-indent:20em;} 
 QListWidget::item{ color:grey ;height:40px;}  
 QListWidget::item:hover{background:pink} 
 QListWidget::item:selected{background:#E8FFE3;} 
@@ -27,9 +27,9 @@ QListWidget::item:selected{background:#E8FFE3;}
 # 菜单
 qss_menu = """
 
-QListWidget{ background:white;color:red ;border:none;border-right:2px solid #EAD9EA} 
+QListWidget{ background:white;color:red ;border:none;} 
 QPushButton{ background:white;border:none;color:grey } 
-QPushButton:hover{ background:white;color:black }
+QPushButton:hover{ background:pink;color:black }
 
 """
 # 进度
@@ -60,7 +60,7 @@ QSlider::groove:horizontal {
 QSlider::handle:horizontal {
     width: 15px;
     background: white;
-    margin:0 2px;
+    margin:0 0px;
 }
 
 QSlider::add-page:horizontal {

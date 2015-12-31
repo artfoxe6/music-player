@@ -4,8 +4,8 @@
 from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent,QMediaMetaData)
 from conf.conf import conf
 from PyQt5.QtCore import QUrl,Qt,QTime
-from PyQt5.QtWidgets import QListWidgetItem
-from PyQt5.QtGui import QBrush
+from PyQt5.QtWidgets import QListWidgetItem,QMenu,QAction
+from PyQt5.QtGui import QBrush,QIcon
 import os
 import re
 from mutagen.mp3 import MP3
@@ -14,7 +14,7 @@ from mutagen.mp3 import MP3
 class Player():
   # 参数music是mainnwindow对象 
   def __init__(self,music):
-    self.duration = 0
+    self.duration = 0  #当前歌曲时长
     self.music = music
     self.music.player = QMediaPlayer()
     
@@ -23,7 +23,7 @@ class Player():
     # print(dir(self.music.playlist))
     # print(dir(self.music.playlist))
     #单曲循环
-    self.music.playlist.setPlaybackMode(QMediaPlaylist.Loop)
+    self.music.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
     self.music.player.setPlaylist(self.music.playlist)
 
     self.init_list()
@@ -39,6 +39,16 @@ class Player():
     self.music.player.durationChanged.connect(self.durationChanged)
     self.music.player.error.connect(self.displayErrorMessage)
     self.music.processSlider.valueChanged.connect(self.song_pro)
+
+    preAction = QAction(u"上一曲 ", self.music,triggered=self.prevone)
+    pauseAction = QAction(u"暂停|播放 ", self.music,triggered=self.play_or_pause)
+    nextAction = QAction(u"下一曲 ", self.music,triggered=self.nextone)
+    quitAction = QAction(u"退出 ", self.music,triggered=self.music.close)
+    self.music.trayIconMenu.addAction(preAction)
+    self.music.trayIconMenu.addAction(pauseAction)
+    self.music.trayIconMenu.addAction(nextAction)
+    self.music.trayIconMenu.addAction(quitAction)
+
     # self.music.processSlider.valueChanged.connect(self.song_pro)
   # 快进后退
   def song_pro(self,pro):

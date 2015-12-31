@@ -4,6 +4,23 @@
 	<meta charset="UTF-8">
 	<title>歌曲列表</title>
 	<script src="js/jquery.js" ></script>
+	<style>
+		body,img,div,p{ margin:0;padding:0;-webkit-user-select: none; }
+		body{ overflow: hidden }
+		/*.box{ width:600px;height:600px;background:pink;margin:0 auto; }*/
+		.list{ position:absolute;top:50px;left:0px;width:100%;height:550px;background:none;font-size:12px; }
+		.item p{ border-bottom:1px solid grey; }
+		.item p{ float:left;text-align: center;overflow: hidden }
+		.item p:nth-child(1){ width:250px;height:30px;line-height:30px;border-right:1px solid grey; }
+		.item p:nth-child(2){ width:150px;border-right:1px solid grey;height:30px;line-height:30px; }
+		.item p:nth-child(3){ width:98px;border-right:1px solid grey;height:30px;line-height:30px; }
+		.item p:nth-child(4){ width:99px;height:30px;line-height:30px;cursor: pointer; }
+		/*.item p:nth-child(5){ width:100px;height:30px;line-height:30px; }*/
+		.pro{ background:none;top:50px;width:100%;height:550px;position:absolute }
+		.pro p{ background:green;opacity:0.2;width:0%;height:30px;border-bottom:1px solid grey; }
+		.head{ background:grey;color:white;height:50px;width:100%;text-align:center;line-height:50px;font-size:14px; }
+	</style>
+
 </head>
 <body>
 <div id="hehe" ></div>
@@ -16,63 +33,37 @@
 	</div>
 	<div class="list" >
 		<div class="item"><p>歌曲</p><p>歌手</p><p>下载</p><p>时长</p></div>
-		<!-- <div class="item"><p>断桥残雪</p><p>许嵩</p><p onclick="down(this,1)" >↓</p><p>03:45</p></div> -->
+		<!-- <div class="item"><p>断桥残雪</p><p>许嵩</p><p onclick="down(this)" >↓</p><p>03:45</p></div> -->
 	</div>
 		
 </body>
 </html>
 
-<style>
-	body,img,div,p{ margin:0;padding:0;-webkit-user-select: none; }
-	body{ overflow: hidden }
-	/*.box{ width:600px;height:600px;background:pink;margin:0 auto; }*/
-	.list{ position:absolute;top:50px;left:0px;width:100%;height:550px;background:none;font-size:12px; }
-	.item p{ border-bottom:1px solid grey; }
-	.item p{ float:left;text-align: center;overflow: hidden }
-	.item p:nth-child(1){ width:250px;height:30px;line-height:30px;border-right:1px solid grey; }
-	.item p:nth-child(2){ width:150px;border-right:1px solid grey;height:30px;line-height:30px; }
-	.item p:nth-child(3){ width:98px;border-right:1px solid grey;height:30px;line-height:30px; }
-	.item p:nth-child(4){ width:99px;height:30px;line-height:30px;cursor: pointer; }
-	/*.item p:nth-child(5){ width:100px;height:30px;line-height:30px; }*/
-	.pro{ background:none;top:50px;width:100%;height:550px;position:absolute }
-	.pro p{ background:green;opacity:0.2;width:0%;height:30px;border-bottom:1px solid grey; }
-	.head{ background:grey;color:white;height:50px;width:100%;text-align:center;line-height:50px;font-size:14px; }
-</style>
-
 <script>
-	window.interval = 200
-	function down(t,num)
+	// window.interval = 200
+	function down(t)
 	{
-		// $(obj).text("...");
-		// interval1 = setInterval('setpro(2,'+num+')',10)
-		item = $(".item").index($(t).parent("div"));
+		// 第几行
+		row = $(".item").index($(t).parent("div"));
+		// 歌名
 		name = $($(t).parent("div").children('p')[0]).text();
+		// 歌手
 		author = $($(t).parent("div").children('p')[1]).text();
+		// 下载地址
 		url = $($(t).parent("div").children('span')[0]).text();
+		// 歌词地址
 		lrc = "http://music.baidu.com"+$($(t).parent("div").children('span')[1]).text();
-		Qtsearch.qtdown(item,url,lrc,name,author);
-		if(typeof interval == 'number')
-		{
-			// alert("number")
-			interval = setInterval(function(){
-				Qtsearch.qtjindu();
-				// alert('ooo');
-			},500)
-		}
-		
-	}
-	function setpro(s)
-	{
-		alert(s);
-		// count = parseInt($(".pro p:nth-child("+(num+1)+")").css('width'))+count;
-		// if(count > 600)
+		// 调用下载
+		Qtindex.qtdown(row,url,lrc,name,author);
+		// if(typeof interval == 'number')
 		// {
-		// 	window.clearInterval(interval1);
-		// 	$($(".list div:nth-child("+(num+1)+")").children("p")[2]).text("√");
-		// 	return false;
+		// 	// alert("number")
+		// 	interval = setInterval(function(){
+		// 		Qtindex.qtjindu();
+		// 		// alert('ooo');
+		// 	},500)
 		// }
-		// $(".pro p:nth-child("+(num+1)+")").css('width',count+'px');
-
+		
 	}
 
 	setTimeout("jsnotify()",10)
@@ -82,41 +73,38 @@
 		// alert("ooo");
 		var arr = str.split("#&#");
 		for (var i = 0; i < arr.length; i++) {
-			// alert(arr[i]);
-			var dom = "<div class='item'><p>"+arr[i].split("&")[0]+"</p><p>"+arr[i].split("&")[2]+"</p><p style='cursor:pointer' onclick='down(this,1)' >下载</p><p>"+parseFloat(arr[i].split("&")[3]/60).toFixed(2)+"分</p><span style='display:none' >"+arr[i].split("&")[4]+"</span><span style='display:none' >"+arr[i].split("&")[1]+"</span></div>";
+// <div><p>歌名</p><p>歌手</p><p>下载</p><p>时长</p><span>下载</span><span>歌词</span></div>
+			var dom = "<div class='item'><p>"+arr[i].split("&")[0]+"</p><p>"+arr[i].split("&")[2]+"</p><p style='cursor:pointer' onclick='down(this)' >下载</p><p>"+parseFloat(arr[i].split("&")[3]/60).toFixed(2)+"分</p><span style='display:none' >"+arr[i].split("&")[4]+"</span><span style='display:none' >"+arr[i].split("&")[1]+"</span></div>";
 		$(".list").append(dom);
 		};
 		
 	}
 	function jsnotify()
 	{
-		Qtsearch.qtnotify();
+		Qtindex.qtnotify();
 	}
 	//获取指定进度
-	function getjindu(str){
-		// alert(str)
-		o = eval("("+str+")"); 
-		flag = true;
-		for(k in o)
-		{
-			if(o[k] != '100')
-			{
-				flag = false;
-				// alert("hehe")
-			}else{
-				// alert("[ppppp")
-				$(".pro p:nth-child("+(parseInt(k)+1)+")").css('width',(parseInt(o[k])*600)+'px');
-			}
-		}
-		if(flag)
-		{
-			clearInterval(interval)
-			window.interval = 200;
-		}
-		// arr = str.split("&");
-		// if(arr[1]){
-		// 	alert(arr[1])
-		// }
-	}
+	// function getjindu(str){
+	// 	// alert(str)
+	// 	o = eval("("+str+")"); 
+	// 	flag = true;
+	// 	for(k in o)
+	// 	{
+	// 		if(o[k] != '100')
+	// 		{
+	// 			flag = false;
+	// 			// alert("hehe")
+	// 		}else{
+	// 			// alert("[ppppp")
+	// 			$(".pro p:nth-child("+(parseInt(k)+1)+")").css('width',(parseInt(o[k])*600)+'px');
+	// 		}
+	// 	}
+	// 	if(flag)
+	// 	{
+	// 		clearInterval(interval)
+	// 		window.interval = 200;
+	// 	}
+	// }
+
 	
 </script>

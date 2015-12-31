@@ -8,24 +8,18 @@
 	<script src="js/swiper.js" ></script>
 </head>
 <body>
-	<!-- <div class="box" > -->
-		<!-- <div class="slide">
-			<img style="width:100%;;" src="../image/slider1.jpg" >
-		</div> -->
+
 		<div class="swiper-container">
 		    <div class="swiper-wrapper">
 		        <div class="swiper-slide"><img src="../image/slider1.jpg" ></div>
 		        <div class="swiper-slide"><img src="../image/slider2.jpg" ></div>
 		        <div class="swiper-slide"><img src="../image/slider3.jpg" ></div>
 		    </div>
-		    <!-- 如果需要导航按钮 -->
-		    <!-- <div class="swiper-button-prev swiper-button-white"></div> -->
-		    <!-- <div class="swiper-button-next swiper-button-white"></div> -->
 		</div>
 		<form onsubmit="mysearch()" >
 			<div class="search">
 				<input type="text" id="search" placeholder="输入关键字搜索" value="张杰" />  
-				<button type="submit"  >搜索</button>
+				<button type="submit"   >Search</button>
 			</div>
 		</form>
 		<div class="item">
@@ -38,7 +32,6 @@
 			<div><a href="javascript:void(0)"><img src="../image/item7.jpg" ></a><br>场景</div>
 			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
 		</div>
-	<!-- </div> -->
 	
 </body>
 </html>
@@ -48,7 +41,7 @@
 	a{ outline: none }
 	.search{ background:#EAD9EA;height:60px;line-height:60px;text-align:center; }
 	.search input{ height:30px;width:300px;border:none;border-radius:2px;text-indent:2em;outline: none;font-size: 12px;background:white; }
-	.search button{ height:32px;width:60px;border:none;border-radius:5px;background:#770077;color:white;outline: none;font-size: 12px;cursor:pointer;  }
+	.search button{ height:32px;width:60px;border:none;border-radius:5px;background:#770077;color:white;outline: none;font-size: 12px;cursor:pointer;font-weight: bold;  }
 	.item div{ width:25%;height:130px;display:block;float:left;background:none;text-align:center;color:#999;font-size: 14px; }
 	.item div img{ width:80px;height:80px;border-radius:40px;margin-top:15px;cursor:pointer;; }
 	.swiper-wrapper{ height:200px; }
@@ -59,9 +52,6 @@
 var mySwiper = new Swiper ('.swiper-container', {
 	loop: true,
 	autoplay:3000,
-	// 如果需要前进后退按钮
-    // nextButton: '.swiper-button-next',
-    // prevButton: '.swiper-button-prev',
 }) 
 
    
@@ -72,9 +62,9 @@ function xin(obj,str){
 function mysearch()
 {
 	key = $("#search").val();
-	if(key != '')
+	if($.trim(key) != '')
 	{
-		Qtsearch.qsearch(key);
+		Qtindex.qsearch(key);
 	}
 	
 }

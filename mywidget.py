@@ -8,7 +8,7 @@ from conf.conf import conf
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QPushButton, QLineEdit, QLabel)
 from PyQt5.QtWebKitWidgets import QWebPage, QWebView
-from PyQt5.QtCore import Qt, QUrl, pyqtSlot,QPropertyAnimation,QRect
+from PyQt5.QtCore import (Qt, QUrl, pyqtSlot,QPropertyAnimation,QRect,pyqtSignal,QThread)
 from PyQt5.QtGui import ( QCursor, QIcon,QLinearGradient,QLinearGradient,QFont,QPainter,QColor,QPen )
 from baidumusic import bdmusic
 import threading
@@ -24,29 +24,24 @@ class index(QWidget):
         self.show()
 
     def initUI(self):
-        # self.setWindowIcon(QIcon("image/tray.png"))
-        # self.setWindowTitle("梦音乐")
+        self.setWindowIcon(QIcon("image/tray.png"))
+        self.setWindowTitle("梦音乐")
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setObjectName("window")
         self.setGeometry(300,0,600, 600)
-  #       style = """
-		# 		#window{ background:red }
-		# """
-  #       self.setStyleSheet(style)
-        
-        # 内嵌web网页
+        # 底部
         ql = QLabel(self)
         ql.setGeometry(0,580,600,20)
         ql.setStyleSheet("QLabel{ background:grey }")
+
+        # 内嵌web网页
         self.web = QWebView(self)
         self.web.setGeometry(0, 0, 600, 580)
         self.web.load(QUrl.fromLocalFile(os.path.abspath("web/index.html")))
         
-        # web.linkClicked.connect(self.close)
         self.web.page().mainFrame().javaScriptWindowObjectCleared.connect(
             self.populateJavaScriptWindowObject)
-        # self.web.loadFinished.connect(self.pp)
-        #
+        # 关闭按钮
         btn = QPushButton("关闭", self)
         btn.setGeometry(540, 5, 60, 30)
         btn.setCursor(QCursor(Qt.PointingHandCursor))
@@ -57,13 +52,14 @@ class index(QWidget):
 
     @pyqtSlot(str)
     def qsearch(self, strs):
-        
-        b = bdmusic()
-        self.songlist = b.main(strs) 
+        self.keyworld = strs
         self.web.setUrl(QUrl.fromLocalFile(os.path.abspath("web/list.html")))
-
     @pyqtSlot()
     def qtnotify(self):
+
+        b = bdmusic()
+        self.songlist = b.main(self.keyworld) 
+
         self.backbtn = QPushButton("back", self)
         self.backbtn.setGeometry(540, 5, 60, 30)
         self.backbtn.setCursor(QCursor(Qt.PointingHandCursor))
@@ -81,22 +77,23 @@ class index(QWidget):
 
     def download_music(self, item,url,lrc,name,author):
         self.download_id.item = item
-        # print("ssss")
-        # frame = self.web.page().currentFrame()
-        # frame.evaluateJavaScript("setpro('ssss')")
+
         urllib.request.urlretrieve(url,conf['mp3dir']+name+"-"+author+".mp3",self.schedule)
-        # print(item,url,lrc,name)
-        
-        # print(threading.current_thread())
-        # print(self.download_id.item)
-        
+
     @pyqtSlot(str,str,str,str,str)
-    def qtdown(self, item,url,lrc,name,author):
+    def qtdown(self,item,url,lrc,name,author):
         # print(item,url,lrc,name)
-        t = threading.Thread(target=self.download_music,args=(item,url,lrc,name,author))
+        # t = threading.Thread(target=self.download_music,args=(item,url,lrc,name,author))
         # p = Process(target=self.download_music, args=(item,url,lrc,name,author))
-        t.start()
-        
+        # t.start()
+        d = DownThread()
+        # d.run(item,url,lrc,name,author)
+        d.start()
+        d.begindown.connect(self.setprocess)
+    # 更新下载进度
+    def setprocess(self):
+        # print(per)
+        print("oooookkkkkkkk")
     def schedule(self,a,b,c):
         per = 100.0 * a * b / c
         if per > 100 :
@@ -119,19 +116,19 @@ class index(QWidget):
 
     def populateJavaScriptWindowObject(self):
         self.web.page().mainFrame().addToJavaScriptWindowObject(
-            'Qtsearch', self)
+            'Qtindex', self)
 
     def myclose(self):
-        # self.close()
-        # print(dir(self))
-        self.destroy()
-        self.parentWidget().resize(300,600)
+        try:
+            self.parentWidget().resize(300,600)
+        except Exception:
+            print("no parent")
+        self.close()
+        
     def goback(self):
-         # print(dir(self.web))
          self.backbtn.close()
          self.web.back()
          self.download_pro = {}
-         # print("oooo")
 
 # 自定义label，用于鼠标拖动主窗口
 # 第二个参数就是要拖动的对象
@@ -186,7 +183,7 @@ class DLabel(QLabel):
         # btn = QPushButton("close",self.q)
         # btn.clicked.connect(self.q.close)
         
-        
+        self.show()
         # self.setText("简易音乐播放器")
 
         
@@ -259,10 +256,42 @@ class DLabel(QLabel):
     def mouseDoubleClickEvent(self,e):
         self.close()
 
+# 线程包装
+class DownThread(QThread):
+    # 多线程之间使用信号相互通信
+    begindown = pyqtSignal()
+    # self.trigger.emit()  # 循环完毕后发出信号
+    def __int__(self):
+        super(DownThread, self).__init__()
+        
+
+    def run(self):
+        # self,item,url,lrc,name,author
+        print("run")
+        # self.begindown.emit()
+        # urllib.request.urlretrieve(url,conf['mp3dir']+name+"-"+author+".mp3",self.schedule)
+        
+    def schedule(self,a,b,c):
+        per = 100.0 * a * b / c
+        if per > 100 :
+            per = 100
+            print("done !")
+        # print('%.2f%%' % per)
+
+        # per = round(per, 2);
+        # print(per)
+        # if per > 50:
+            # self.trigger.emit(str(per))
+        # self.download_pro[self.download_id.item] = per
+        # frame = self.web.page().currentFrame()
+        # s = str(per)+"&"+self.download_id.item
+        # frame.evaluateJavaScript("setpro('"+s+"')")
+        # print(s)
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     # music = search()
-    music = DLabel()
+    music = index()
     music.show()
     # app.exec_()
     sys.exit(app.exec_())
