@@ -225,7 +225,7 @@ class DLabel(QLabel):
 
         # // 设置歌词遮罩
         p.setPen(QPen(mask_linear_gradient, 0));
-        p.drawText(0, 0, 900, 60, Qt.AlignHCenter, "梦音乐,给你简单纯粹～");
+        p.drawText(0, 0, 900, 60, Qt.AlignHCenter, "SYL - 让我们用声音聆听彼此～");
 
 
     def mousePressEvent(self, event):

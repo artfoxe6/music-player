@@ -4,7 +4,7 @@
 
 qss_scrollbar = """
 
-QWidget{ background:#F5FFF9 }
+QWidget{ background:#fff }
 QScrollBar:vertical{width:5px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}
 QScrollBar::handle:vertical{width:5px;background:#A6D8F8; border-radius:2px;  }
 QScrollBar::handle:vertical:hover{width:5px;background:grey;border-radius:2px;}
@@ -17,7 +17,7 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;bo
 """
 qss_songlist = """
 
-QListWidget{ background:#F5FFF9;font-size:12px;border:none;text-indent:20em;} 
+QListWidget{ background:#fff;font-size:12px;border:none;margin-left:10px;} 
 QListWidget::item{ color:grey ;height:40px;}  
 QListWidget::item:hover{background:pink} 
 QListWidget::item:selected{background:#E8FFE3;} 
@@ -58,18 +58,18 @@ QSlider::groove:horizontal {
 }
 
 QSlider::handle:horizontal {
-    width: 15px;
-    background: white;
+    width: 1px;
+    background:transparent;
     margin:0 0px;
 }
 
 QSlider::add-page:horizontal {
-    background: #EAD9EA;
+    background: #141414;
 }
 
 QSlider::sub-page:horizontal {
-    background: pink;
-    margin-left:2px;
+    background: #A70A0A;
+    margin-left:0px;
 }
 
 """
