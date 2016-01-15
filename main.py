@@ -56,7 +56,7 @@ class Music(QWidget):
 
 		# 顶部工具栏
 		# 隐藏
-		btn = QPushButton("x",self)
+		btn = QPushButton("X",self)
 		btn.setGeometry(260,0,40,20)
 		# btn.setCursor(QCursor(Qt.PointingHandCursor))
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background:transparent } ")
@@ -93,10 +93,10 @@ class Music(QWidget):
 		self.songTime.setStyleSheet("QLabel{ color:white;}")
 		self.songTime.setAlignment(Qt.AlignHCenter)
 		# 音量
-		self.vol = QSlider(Qt.Horizontal,self)
-		self.vol.setGeometry(10,144,50,5)
-		self.vol.setValue(60)
-		self.vol.setStyleSheet(qss_vol)
+		# self.vol = QSlider(Qt.Horizontal,self)
+		# self.vol.setGeometry(10,144,50,5)
+		# self.vol.setValue(60)
+		# self.vol.setStyleSheet(qss_vol)
 		# 当前歌曲名   
 		self.currentMusicName = QLabel("",songer_img)
 		self.currentMusicName.setGeometry(0,50,300,80)
@@ -117,7 +117,7 @@ class Music(QWidget):
 		#列表
 		self.songList = QListWidget(listWgt)
 		self.songList.setGeometry(0,0,240,370)   
-		self.songList.setStyleSheet(qss_songlist)
+		self.songList.setStyleSheet(qss_songlist)	
 		# 列表添加右键菜单
 		self.songList.setContextMenuPolicy(Qt.CustomContextMenu)
 		self.songList.customContextMenuRequested.connect(self.rightMenuShow)
@@ -178,7 +178,7 @@ class Music(QWidget):
 		#play_song_list用来方便的维护列表,主要用来记录当前播放列表
 		# self.play_song_list = {}
 		s = Player(self)
-		self.songList.itemDoubleClicked.connect(self.playit)
+		# self.songList.itemDoubleClicked.connect(self.playit)
 		self.playBtn.clicked.connect(self.play_or_pause)
 		self.nextBtn.clicked.connect(self.nextone)
 		self.prevBtn.clicked.connect(self.prevone)
@@ -237,7 +237,7 @@ class Music(QWidget):
 			# print(os.path.join(mp3path, filename))
 
 	def openurl(self):
-		QDesktopServices.openUrl(QUrl("https://github.com/codeAB/music-player"))
+		QDesktopServices.openUrl(QUrl("http://sylsong.com"))
 	def myclose(self):
 		if hasattr(self,'widget1'):
 			self.widget1.close() and self.close()

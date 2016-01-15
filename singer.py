@@ -55,7 +55,7 @@ class Singer(QWidget):
         d = frame.findFirstElement('.img_area_container_box')
         d.removeAllChildren()
         searchinput.setAttribute("value",self.singer)
-        searchinput.setAttribute("readonly","readonly")
+        # searchinput.setAttribute("readonly","readonly")
     def linkClicked(self,url):
         # print(url.toString())
         url = url.toString()

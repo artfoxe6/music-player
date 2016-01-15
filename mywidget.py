@@ -32,7 +32,7 @@ class index(QWidget):
         # 底部
         ql = QLabel(self)
         ql.setGeometry(0,580,600,20)
-        ql.setStyleSheet("QLabel{ background:grey }")
+        ql.setStyleSheet("QLabel{ background:#2D2D2D }")
 
         # 内嵌web网页
         self.web = QWebView(self)
@@ -201,9 +201,9 @@ class DLabel(QLabel):
         #遮罩的线性渐变填充
         mask_linear_gradient.setStart(0, 10)
         mask_linear_gradient.setFinalStop(0, 40)
-        mask_linear_gradient.setColorAt(0.1, QColor(222, 54, 4))
-        mask_linear_gradient.setColorAt(0.5, QColor(255, 72, 16))
-        mask_linear_gradient.setColorAt(0.9, QColor(222, 54, 4))
+        mask_linear_gradient.setColorAt(0.1, QColor(49, 177, 217))
+        mask_linear_gradient.setColorAt(0.5, QColor(177, 223, 232))
+        mask_linear_gradient.setColorAt(0.9, QColor(49, 177, 217))
 
         # print(e)
         self.setText("简易音乐播放器")
@@ -287,6 +287,17 @@ class DownThread(QThread):
         # s = str(per)+"&"+self.download_id.item
         # frame.evaluateJavaScript("setpro('"+s+"')")
         # print(s)
+
+
+class musiclistwgt(QWidget):
+    def __init__(self):
+        super().__init__()
+    def mouseDoubleClickEvent(self, QMouseEvent):
+        print("ok")
+    # def enterEvent(self,QMouseEvent):
+    #     print("hover")
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

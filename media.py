@@ -4,11 +4,12 @@
 from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent,QMediaMetaData)
 from conf.conf import conf
 from PyQt5.QtCore import QUrl,Qt,QTime
-from PyQt5.QtWidgets import QListWidgetItem,QMenu,QAction
-from PyQt5.QtGui import QBrush,QIcon
+from PyQt5.QtWidgets import QListWidgetItem,QMenu,QAction,QWidget,QPushButton,QLabel
+from PyQt5.QtGui import QBrush,QIcon,QCursor
 import os
 import re
 from mutagen.mp3 import MP3
+from mywidget import musiclistwgt
 
 
 class Player():
@@ -95,20 +96,42 @@ class Player():
       if(s.upper() == 'MP3'):
         x+=1
         songname = name.split(".")[0]
-        if len(songname) > 12:
-          songname = songname[0:12]+"..."
-        item = QListWidgetItem("%02d  %s" % (x,songname))
-        
+        # if len(songname) > 12:
+          # songname = songname[0:12]+"..."
+        # item = QListWidgetItem("%02d  %s" % (x,songname))
+        # item.setIcon(QIcon('image/tray.png'))
+        # setItemWidget(listItem1, custom1);
+        item = QListWidgetItem()
         self.music.songList.addItem(item)
+        lwg = QWidget()
+        lwg.setCursor(QCursor(Qt.PointingHandCursor))
+        lwg.resize(240,30)
+        lwg.setObjectName("hehe")
+        # lwg.clicked.connect(self.playit)
+        lwg.setStyleSheet("QWidget#hehe:hover{ background:#2B2B2B; }\
+          ")
+        btn = QPushButton(str(x),lwg)
+        btn.setGeometry(10,8,24,24)
+        btn.setStyleSheet("QPushButton{ border-radius:12px;background:#d22323;color:#DDD;font-size:10px;opacity:0.5;font-weight:bold;marginTop:8px; }")
+
+        ql = QLabel(songname,lwg)
+        ql.setGeometry(50,0,150,40)
+        ql.setStyleSheet("QLabel{ font-weight:bold;color:#666;background:transparent } \
+         QLabel:hover{ color:#fff }")
+        self.music.songList.setItemWidget(item, lwg)
+
         url = QUrl.fromLocalFile(os.path.join(conf['mp3dir'],name))
         self.music.playlist.addMedia(QMediaContent(url))
         
   def playit(self,eve):
-    s = eve.text()
-    p = re.compile(r'\d+')
-    r = p.findall(s)
-    self.music.playlist.setCurrentIndex(int(r[0])-1)
-    self.music.player.play()
+    print("00000")
+    # s = eve.text()
+    # p = re.compile(r'\d+')
+    # r = p.findall(s)
+    # self.music.playlist.setCurrentIndex(int(r[0])-1)
+    # self.music.player.play()
+    # 
+    # 
     # duration = self.music.player.duration()
     # totalTime = QTime((duration/3600)%60, (duration/60)%60,
     #                 duration%60, (duration*1000)%1000)
@@ -142,7 +165,8 @@ class Player():
       # print(audio.get('TIT2'))  #歌名
       # print(audio.get('TPE1'))  #歌手
       # print(audio.get('TALB'))  #专辑
-      s = str(audio.get('TIT2'))+"-"+str(audio.get('TPE1'))
+      # s = str(audio.get('TIT2'))+"-"+str(audio.get('TPE1'))
+      s = str(audio.get('TIT2'))
       if len(s) > 12:
           s = s[0:12]+"..."
       # print(s)
