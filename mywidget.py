@@ -289,20 +289,20 @@ class DownThread(QThread):
         # print(s)
 
 
-class musiclistwgt(QWidget):
+class listlabel(QLabel):
     def __init__(self):
         super().__init__()
     def mouseDoubleClickEvent(self, QMouseEvent):
-        print("ok")
+        print(self.parent().parent())
     # def enterEvent(self,QMouseEvent):
     #     print("hover")
 
 
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    # music = search()
-    music = index()
-    music.show()
-    # app.exec_()
-    sys.exit(app.exec_())
+# if __name__ == '__main__':
+    # app = QApplication(sys.argv)
+    # # music = search()
+    # music = index()
+    # music.show()
+    # # app.exec_()
+    # sys.exit(app.exec_())

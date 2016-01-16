@@ -113,10 +113,18 @@ class Music(QWidget):
 		listWgt = QWidget(self)
 		listWgt.setGeometry(0, 210, 300,370)
 		listWgt.setStyleSheet(qss_scrollbar)
+		# 补白
+		bu = QWidget(listWgt)
+		bu.setGeometry(0,0,5,370)
+		bu.setStyleSheet("QWidget{ border-image:url(image/borderleft.png) }")
+
+		bu2 = QWidget(listWgt)
+		bu2.setGeometry(295,0,5,370)
+		bu2.setStyleSheet("QWidget{ border-image:url(image/borderright.png) }")
 
 		#列表
 		self.songList = QListWidget(listWgt)
-		self.songList.setGeometry(0,0,240,370)   
+		self.songList.setGeometry(5,0,235,370)   
 		self.songList.setStyleSheet(qss_songlist)	
 		# 列表添加右键菜单
 		self.songList.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -124,15 +132,15 @@ class Music(QWidget):
 
 		#歌曲列表右边的功能列表
 		funcList = QListWidget(listWgt)
-		funcList.setGeometry(240,0,60,370)   
+		funcList.setGeometry(240,0,55,370)   
 		funcList.setStyleSheet(qss_menu)
 		btn = QPushButton("首页",funcList)
-		btn.setGeometry(0,0,60,40)
+		btn.setGeometry(0,0,55,40)
 		btn.clicked.connect(self.newwindow)
-		btn = QPushButton("推荐",funcList).setGeometry(0,40,60,40)
-		btn = QPushButton("收藏",funcList).setGeometry(0,80,60,40)
-		btn = QPushButton("日志",funcList).setGeometry(0,120,60,40)
-		btn = QPushButton("M V",funcList).setGeometry(0,160,60,40)
+		btn = QPushButton("推荐",funcList).setGeometry(0,40,55,40)
+		btn = QPushButton("收藏",funcList).setGeometry(0,80,55,40)
+		btn = QPushButton("日志",funcList).setGeometry(0,120,55,40)
+		btn = QPushButton("M V",funcList).setGeometry(0,160,55,40)
 		# btn = QPushButton("关于",funcList).setGeometry(0,200,60,40)
 		#底部状态栏
 		wg = QWidget(self)

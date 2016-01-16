@@ -9,7 +9,7 @@ from PyQt5.QtGui import QBrush,QIcon,QCursor
 import os
 import re
 from mutagen.mp3 import MP3
-from mywidget import musiclistwgt
+from mywidget import listlabel
 
 
 class Player():
@@ -102,29 +102,35 @@ class Player():
         # item.setIcon(QIcon('image/tray.png'))
         # setItemWidget(listItem1, custom1);
         item = QListWidgetItem()
+        print(item)
         self.music.songList.addItem(item)
+
         lwg = QWidget()
         lwg.setCursor(QCursor(Qt.PointingHandCursor))
-        lwg.resize(240,30)
+        lwg.setGeometry(20,0,240,30)
         lwg.setObjectName("hehe")
         # lwg.clicked.connect(self.playit)
         lwg.setStyleSheet("QWidget#hehe:hover{ background:#2B2B2B; }\
           ")
         btn = QPushButton(str(x),lwg)
-        btn.setGeometry(10,8,24,24)
-        btn.setStyleSheet("QPushButton{ border-radius:12px;background:#d22323;color:#DDD;font-size:10px;opacity:0.5;font-weight:bold;marginTop:8px; }")
+        btn.setGeometry(5,8,24,24)
+        btn.setStyleSheet("QPushButton{ border-radius:12px;background:#d22323;color:#DDD;font-size:10px;opacity:0.5;font-weight:bold; }")
 
-        ql = QLabel(songname,lwg)
-        ql.setGeometry(50,0,150,40)
+        ql = listlabel()
+        ql.setText(songname)
+        ql.setParent(lwg)
+        ql.setGeometry(40,0,190,40)  #transparent
         ql.setStyleSheet("QLabel{ font-weight:bold;color:#666;background:transparent } \
          QLabel:hover{ color:#fff }")
+        # ql.clicked.connect(self.playit)
         self.music.songList.setItemWidget(item, lwg)
 
         url = QUrl.fromLocalFile(os.path.join(conf['mp3dir'],name))
         self.music.playlist.addMedia(QMediaContent(url))
         
   def playit(self,eve):
-    print("00000")
+    print(eve)
+
     # s = eve.text()
     # p = re.compile(r'\d+')
     # r = p.findall(s)
