@@ -19,14 +19,15 @@ from PyQt5.QtGui import ( QCursor)
 
 class Singer(QWidget):
     
-    def __init__(self,singer,music):
+    # def __init__(self,singer,music):
+    def __init__(self,singer):
         super().__init__()
         # 窗口居于所有窗口的顶端 
         self.setWindowFlags(Qt.WindowOverridesSystemGestures)
         #针对X11
         self.setWindowFlags(Qt.X11BypassWindowManagerHint)
         self.singer = singer
-        self.music = music
+        # self.music = music
         self.initUI()
         self.show()
         
@@ -68,6 +69,7 @@ class Singer(QWidget):
         res = urllib.request.urlopen(url).read().decode("utf8")
         pattern = re.compile(r'currentImg(.*)<div>',re.S)
         s = pattern.findall(res)
+        print(s)
         src="http://img3.imgtn.bdimg.com/it/u=673176467,634723054&amp;fm=21&amp;gp=0.jpg"
         pattern = re.compile(r'src="(.*?)"')
         s = pattern.findall(s[0])
@@ -82,7 +84,7 @@ class Singer(QWidget):
         data = f.read() 
         with open(local, "wb") as code:     
             code.write(data)
-            self.music.picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url("+local+")}")
+            # self.music.picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url("+local+")}")
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:

@@ -3,7 +3,7 @@
 
 from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent,QMediaMetaData)
 from conf.conf import conf
-from PyQt5.QtCore import QUrl,Qt,QTime
+from PyQt5.QtCore import QUrl,Qt,QTime,QSize
 from PyQt5.QtWidgets import QListWidgetItem,QMenu,QAction,QWidget,QPushButton,QLabel
 from PyQt5.QtGui import QBrush,QIcon,QCursor
 import os
@@ -24,7 +24,7 @@ class Player():
     # print(dir(self.music.playlist))
     # print(dir(self.music.playlist))
     #单曲循环
-    self.music.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
+    self.music.playlist.setPlaybackMode(QMediaPlaylist.Loop)
     self.music.player.setPlaylist(self.music.playlist)
 
     self.init_list()
@@ -96,16 +96,11 @@ class Player():
       if(s.upper() == 'MP3'):
         x+=1
         songname = name.split(".")[0]
-        # if len(songname) > 12:
-          # songname = songname[0:12]+"..."
-        # item = QListWidgetItem("%02d  %s" % (x,songname))
-        # item.setIcon(QIcon('image/tray.png'))
-        # setItemWidget(listItem1, custom1);
         item = QListWidgetItem()
-        print(item)
-        self.music.songList.addItem(item)
-
+        item.setSizeHint(QSize(210,40))
         lwg = QWidget()
+        # lwg.setParent(item)
+        lwg.setObjectName("songlist")
         lwg.setCursor(QCursor(Qt.PointingHandCursor))
         lwg.setGeometry(20,0,240,30)
         lwg.setObjectName("hehe")
@@ -114,22 +109,26 @@ class Player():
           ")
         btn = QPushButton(str(x),lwg)
         btn.setGeometry(5,8,24,24)
-        btn.setStyleSheet("QPushButton{ border-radius:12px;background:#d22323;color:#DDD;font-size:10px;opacity:0.5;font-weight:bold; }")
-
+        btn.setStyleSheet("QPushButton{ border-radius:12px;background:#5E0000;color:#DDD;font-size:10px;opacity:0.5;font-weight:bold; }")
         ql = listlabel()
         ql.setText(songname)
         ql.setParent(lwg)
         ql.setGeometry(40,0,190,40)  #transparent
         ql.setStyleSheet("QLabel{ font-weight:bold;color:#666;background:transparent } \
          QLabel:hover{ color:#fff }")
-        # ql.clicked.connect(self.playit)
+        ql.doubleclicked.connect(self.playit)
+        self.music.songList.addItem(item)
         self.music.songList.setItemWidget(item, lwg)
 
         url = QUrl.fromLocalFile(os.path.join(conf['mp3dir'],name))
         self.music.playlist.addMedia(QMediaContent(url))
         
-  def playit(self,eve):
-    print(eve)
+  def playit(self,index):
+    # print(eve)
+    # print(index)
+    # 播放序号从0开始
+    self.music.playlist.setCurrentIndex(index-1)
+    self.music.player.play()
 
     # s = eve.text()
     # p = re.compile(r'\d+')
@@ -177,6 +176,7 @@ class Player():
           s = s[0:12]+"..."
       # print(s)
       self.music.currentMusicName.setText(s)
+      self.music.currentSonger = str(audio.get('TPE1'))
       local = os.path.join('./cache/', str(audio.get('TPE1'))+'.jpg')
       if not os.path.isfile(local):
         local = os.path.join('.', 'image/caijianya.jpg')

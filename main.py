@@ -17,7 +17,7 @@ from singer import *
 class Music(QWidget):
 	def __init__(self):
 		super().__init__()
-
+		self.currentSonger = ''
 		self.setWindowIcon(QIcon("image/tray.png"))
 		self.setWindowTitle("SYL")
 		# 窗口无边框
@@ -127,8 +127,8 @@ class Music(QWidget):
 		self.songList.setGeometry(5,0,235,370)   
 		self.songList.setStyleSheet(qss_songlist)	
 		# 列表添加右键菜单
-		self.songList.setContextMenuPolicy(Qt.CustomContextMenu)
-		self.songList.customContextMenuRequested.connect(self.rightMenuShow)
+		# self.songList.setContextMenuPolicy(Qt.CustomContextMenu)
+		# self.songList.customContextMenuRequested.connect(self.rightMenuShow)
 
 		#歌曲列表右边的功能列表
 		funcList = QListWidget(listWgt)
@@ -214,36 +214,50 @@ class Music(QWidget):
 		self.resize(900,600)
 		
 	#创建右键菜单
-	def rightMenuShow(self,point):
-		self.current_context_item = self.songList.itemAt(point)
-		if self.current_context_item is None:
-			return False
-		rightMenu = QMenu(self.songList)
-		removeAction = QAction(u"删除", self, triggered=self.deleteSongItem)
-		addAction = QAction(u"重命名", self, triggered=self.deleteSongItem)    
-		rightMenu.addAction(removeAction)
-		rightMenu.addAction(addAction)
-		rightMenu.exec_(QCursor.pos())
-	def deleteSongItem(self):
+	# def rightMenuShow(self,point):
+	# 	self.current_context_item = self.songList.itemAt(point)
+	# 	if self.current_context_item is None:
+	# 		return False
+	# 	rightMenu = QMenu(self.songList)
+	# 	removeAction = QAction(u"播放", self, triggered=self.deleteSongItem)
+	# 	addAction = QAction(u"删除", self, triggered=self.deleteSongItem)    
+	# 	addAction = QAction(u"重命名", self, triggered=self.deleteSongItem)    
+	# 	rightMenu.addAction(removeAction)
+	# 	rightMenu.addAction(addAction)
+	# 	rightMenu.exec_(QCursor.pos())
+	# def deleteSongItem(self):
+	# 	item = self.current_context_item
+	# 	# index = item.text()
+	# 	x = self.songList.row(self.current_context_item)
+	# 	self.newSort(int(x))
 		# 获取当前鼠标右键点击的歌曲名
-		songname = self.current_context_item.text()
-		p = re.compile(r'\d+')
-		r = p.findall(songname)
-		item = int(r[0]) - 1;
-		mp3path = conf['mp3dir']
-		i = 0
-		for filename in os.listdir(mp3path):
-			if i == item:
-				# 删除列表item
-				self.songList.takeItem(self.songList.row(self.current_context_item))
-				# 删除播放队列item
-				self.playlist.removeMedia(item)
-				# 删除文件
-				os.remove(os.path.join(mp3path, filename))
-				break
-			i = i+1
-			# print(os.path.join(mp3path, filename))
-
+		# songname = self.current_context_item.text()
+		# p = re.compile(r'\d+')
+		# r = p.findall(songname)
+		# item = int(r[0]) - 1;
+		# mp3path = conf['mp3dir']
+		# i = 0
+		# for filename in os.listdir(mp3path):
+		# 	if i == item:
+		# 		# 删除列表item
+		# 		self.songList.takeItem(self.songList.row(self.current_context_item))
+		# 		# 删除播放队列item
+		# 		self.playlist.removeMedia(item)
+		# 		# 删除文件
+		# 		os.remove(os.path.join(mp3path, filename))
+		# 		break
+		# 	i = i+1
+	# 当删除或者新增歌曲时更新列表
+	# def newSort(self,index,flag = 'del'):
+	# 	# 删除歌曲
+	# 	if flag == 'del':
+	# 		v = self.songList.findChildren(QPushButton,'',Qt.FindChildrenRecursively)
+	# 		self.songList.removeItemWidget(self.current_context_item)
+	# 		# print(len(v))
+	# 		# v[index].parent().remove()
+	# 		# print(v[index].parent().hide())
+	# 		self.songList.update()
+	# 		print(self.songList.count())
 	def openurl(self):
 		QDesktopServices.openUrl(QUrl("http://sylsong.com"))
 	def myclose(self):
@@ -252,12 +266,13 @@ class Music(QWidget):
 		else:
 			self.close()
 	def setHeaderImg(self):
-		cs = self.currentMusicName.text()
-		cs = cs.split("-")
+		cs = self.currentSonger
+		# print(cs)
+		# cs = cs.split("-")
 		# print(len(cs))
 		if len(cs) > 1:
 			# print("ooo")
-			self.s = Singer(cs[1],self)
+			self.s = Singer(cs,self)
 			# self.s.setParent(self)
 			self.show()
 	def lrc(self):

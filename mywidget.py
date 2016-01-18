@@ -290,10 +290,12 @@ class DownThread(QThread):
 
 
 class listlabel(QLabel):
+    doubleclicked = pyqtSignal(int)
     def __init__(self):
         super().__init__()
     def mouseDoubleClickEvent(self, QMouseEvent):
-        print(self.parent().parent())
+        index = self.parent().findChild(QPushButton,'',Qt.FindDirectChildrenOnly).text()
+        self.doubleclicked.emit(int(index))
     # def enterEvent(self,QMouseEvent):
     #     print("hover")
 
