@@ -5,13 +5,13 @@
 qss_scrollbar = """
 
 QWidget{ background:#F9F9F9 }
-QScrollBar:vertical{width:8px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}
-QScrollBar::handle:vertical{width:8px;background:#003944; border-radius:4px;  }
-QScrollBar::handle:vertical:hover{width:8px;background:grey;border-radius:4px;}
-QScrollBar::add-line:vertical {height:9px;width:8px;background:white;subcontrol-position:bottom;}
-QScrollBar::sub-line:vertical {height:9px;width:8px;background:white;subcontrol-position:top;}
-QScrollBar::add-line:vertical:hover {height:9px;width:8px;background:white;subcontrol-position:bottom;}
-QScrollBar::sub-line:vertical:hover{ height:9px;width:8px; background:white;subcontrol-position:top; }
+QScrollBar:vertical{width:4px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}
+QScrollBar::handle:vertical{width:4px;background:#009BB7; border-radius:2px;  }
+QScrollBar::handle:vertical:hover{width:4px;background:grey;border-radius:2px;}
+QScrollBar::add-line:vertical {height:9px;width:4px;background:white;subcontrol-position:bottom;}
+QScrollBar::sub-line:vertical {height:9px;width:4px;background:white;subcontrol-position:top;}
+QScrollBar::add-line:vertical:hover {height:9px;width:4px;background:white;subcontrol-position:bottom;}
+QScrollBar::sub-line:vertical:hover{ height:9px;width:4px; background:white;subcontrol-position:top; }
 QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;border-radius:4px;} 
 
 """

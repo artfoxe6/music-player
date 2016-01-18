@@ -3,7 +3,7 @@
 
 from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent,QMediaMetaData)
 from conf.conf import conf
-from PyQt5.QtCore import QUrl,Qt,QTime,QSize
+from PyQt5.QtCore import QUrl,Qt,QTime,QSize,QTimer
 from PyQt5.QtWidgets import QListWidgetItem,QMenu,QAction,QWidget,QPushButton,QLabel
 from PyQt5.QtGui import QBrush,QIcon,QCursor
 import os
@@ -17,6 +17,7 @@ class Player():
   def __init__(self,music):
     self.duration = 0  #当前歌曲时长
     self.music = music
+    self.lrcmap = {}
     self.music.player = QMediaPlayer()
     
     # print(dir(self.music.player))
@@ -73,6 +74,7 @@ class Player():
     if not self.music.processSlider.isSliderDown():
       self.music.processSlider.setValue(progress)
     self.updateDurationInfo(progress)
+    # print(progress)
   def updateDurationInfo(self, currentInfo):
     duration = self.duration
     tStr = ""
@@ -102,10 +104,11 @@ class Player():
         # lwg.setParent(item)
         lwg.setObjectName("songlist")
         lwg.setCursor(QCursor(Qt.PointingHandCursor))
-        lwg.setGeometry(20,0,240,30)
+        lwg.setGeometry(20,0,140,30)
         lwg.setObjectName("hehe")
         # lwg.clicked.connect(self.playit)
-        lwg.setStyleSheet("QWidget#hehe:hover{ background:#2B2B2B; }\
+        lwg.setStyleSheet("QWidget#hehe:hover{ background:#999; }\
+          QWidget#hehe{border-radius:2px;} \
           ")
         btn = QPushButton(str(x),lwg)
         btn.setGeometry(5,8,24,24)
@@ -181,15 +184,57 @@ class Player():
       if not os.path.isfile(local):
         local = os.path.join('.', 'image/caijianya.jpg')
       self.music.picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url("+local+")}")
+      # 加载歌词
+      filename = conf['mp3dir']+"123.lrc"
+      # print(filename)
+      f = open(filename, "r")  
+      while True:  
+        line = f.readline()  
+        if line:  
+          # [02:56.00]如果真的有一天
+          # time = line.split("]")[0]
+          res = re.findall(r'[0-9]',line)
+          if len(res) >= 6 :
+            # print(res[0])
+            t = int(res[0]+res[1])*60+int(res[2]+res[3])-1
+            # print(t)
+            self.lrcmap[t] = line.split("]")[1].strip('\n')
+        else:  
+          break  
+      f.close()
 
   def stateChanged(self):
     if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):
       self.setPlayBtn('play11')
+      if hasattr(self,'timer'):
+        self.timer.stop()
+      # print(self.lrcmap)
     elif self.music.player.state() == QMediaPlayer.PlayingState:
       self.setPlayBtn('pause11')
+      if hasattr(self.music,'lrctext'):
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.refreshlrc)
+        self.timer.start(100)
 
   def setPlayBtn(self,stat):
     self.music.playBtn.setStyleSheet("QPushButton{ border-image:url(image/%s.png);border:none }" % stat)
+  def refreshlrc(self):
+    # print("333")
+    # current = self.songpro
+    k = int(self.songpro)
+    if k in list(self.lrcmap.keys()):
+      if self.lrcmap[k] != '':
+        self.music.lrctext.setText(self.lrcmap[k])
+    else:
+      while(k not in list(self.lrcmap.keys())):
+        k = k - 1 
+      self.music.lrctext.setText(self.lrcmap[k])
+      # print(self.lrcmap[k])
+    # else:
+      # print(k)
+      # x = self.lrcmap.keys()
+      # print(list(x))
+    # print(self.songpro+"=="+self.lrcmap[self.songpro])
 
   
 

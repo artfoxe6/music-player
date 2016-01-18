@@ -20,6 +20,8 @@ class Music(QWidget):
 		self.currentSonger = ''
 		self.setWindowIcon(QIcon("image/tray.png"))
 		self.setWindowTitle("SYL")
+		self.setObjectName("box")
+		self.setStyleSheet("QWidget#box{ border-radius:100px; }")
 		# 窗口无边框
 		self.setWindowFlags(Qt.FramelessWindowHint)
 		# 窗口居于所有窗口的顶端 
@@ -276,7 +278,9 @@ class Music(QWidget):
 			# self.s.setParent(self)
 			self.show()
 	def lrc(self):
-		self.q = DLabel(self)
+		self.lrctext = DLabel(self)
+		# self.q.setText("csdcdsssssss")
+		# self.q.setText("ooooooooooooooooo")
 
 
 if __name__ == '__main__':

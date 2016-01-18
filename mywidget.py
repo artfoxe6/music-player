@@ -182,12 +182,13 @@ class DLabel(QLabel):
         self.setStyleSheet("QLabel{ border:2px solid red }")
         # btn = QPushButton("close",self.q)
         # btn.clicked.connect(self.q.close)
-        
+        self.setText("S Y L")
         self.show()
         # self.setText("简易音乐播放器")
 
         
     def paintEvent(self,e):
+        # print(e)
 
         linear_gradient = QLinearGradient()
         linear_gradient.setStart(0, 10) #填充的起点坐标
@@ -201,12 +202,14 @@ class DLabel(QLabel):
         #遮罩的线性渐变填充
         mask_linear_gradient.setStart(0, 10)
         mask_linear_gradient.setFinalStop(0, 40)
-        mask_linear_gradient.setColorAt(0.1, QColor(49, 177, 217))
-        mask_linear_gradient.setColorAt(0.5, QColor(177, 223, 232))
-        mask_linear_gradient.setColorAt(0.9, QColor(49, 177, 217))
+        mask_linear_gradient.setColorAt(0.1, QColor(255, 190, 190))
+        # mask_linear_gradient.setColorAt(0.3, QColor(1, 1, 1))
+        mask_linear_gradient.setColorAt(0.3, QColor(253, 147, 255))
+        # mask_linear_gradient.setColorAt(0.7, QColor(1, 1, 1))
+        mask_linear_gradient.setColorAt(0.9, QColor(231, 88, 210))
 
         # print(e)
-        self.setText("简易音乐播放器")
+        
         # 设置字体
         font = QFont()
         font.setFamily("文泉驿等宽微米黑")
@@ -222,10 +225,12 @@ class DLabel(QLabel):
         # // 再在上面绘制渐变文字
         # p.setPen(QPen(linear_gradient, 0));
         # p.drawText(0, 0, 800, 60, Qt.AlignHCenter, "梦音乐梦音乐梦音乐");
-
+        # SYL - 让我们用声音聆听彼此～
+        # if not self.s:
+            # self.s = str("SYL - 让我们用声音聆听彼此～")
         # // 设置歌词遮罩
         p.setPen(QPen(mask_linear_gradient, 0));
-        p.drawText(0, 0, 900, 60, Qt.AlignHCenter, "SYL - 让我们用声音聆听彼此～");
+        p.drawText(0, 0, 900, 60, Qt.AlignHCenter, self.text());
 
 
     def mousePressEvent(self, event):
@@ -255,6 +260,8 @@ class DLabel(QLabel):
     #     self.close()
     def mouseDoubleClickEvent(self,e):
         self.close()
+        # self.setText("SYL - 让我们用声音聆听彼此～")
+        # self.update()
 
 # 线程包装
 class DownThread(QThread):
