@@ -182,7 +182,7 @@ class DLabel(QLabel):
         self.setStyleSheet("QLabel{ border:2px solid red }")
         # btn = QPushButton("close",self.q)
         # btn.clicked.connect(self.q.close)
-        self.setText("S Y L")
+        self.setText("")
         self.show()
         # self.setText("简易音乐播放器")
 
@@ -256,12 +256,10 @@ class DLabel(QLabel):
     def mouseReleaseEvent(self, QMouseEvent):
         self.drag_flag = False
         self.setCursor(QCursor(Qt.ArrowCursor))
-    # def leaveEvent(self,QMouseEvent):
-    #     self.close()
-    def mouseDoubleClickEvent(self,e):
-        self.close()
-        # self.setText("SYL - 让我们用声音聆听彼此～")
-        # self.update()
+
+    # def mouseDoubleClickEvent(self,e):
+        # self.setVisible(False)
+
 
 # 线程包装
 class DownThread(QThread):

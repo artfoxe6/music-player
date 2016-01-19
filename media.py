@@ -198,7 +198,7 @@ class Player():
             # print(res[0])
             t = int(res[0]+res[1])*60+int(res[2]+res[3])-1
             # print(t)
-            self.lrcmap[t] = line.split("]")[1].strip('\n')
+            self.lrcmap[t] = line.split("]")[1].strip('\n').strip()
         else:  
           break  
       f.close()
@@ -215,7 +215,14 @@ class Player():
         self.timer = QTimer()
         self.timer.timeout.connect(self.refreshlrc)
         self.timer.start(100)
-
+  def showgeci(self,flag = None):
+    if flag == 1:
+      self.timer.stop()
+    else:
+      self.timer = QTimer()
+      self.timer.timeout.connect(self.refreshlrc)
+      self.timer.start(100)
+        
   def setPlayBtn(self,stat):
     self.music.playBtn.setStyleSheet("QPushButton{ border-image:url(image/%s.png);border:none }" % stat)
   def refreshlrc(self):

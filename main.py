@@ -187,7 +187,7 @@ class Music(QWidget):
 	def initplayer(self):
 		#play_song_list用来方便的维护列表,主要用来记录当前播放列表
 		# self.play_song_list = {}
-		s = Player(self)
+		self.p = Player(self)
 		# self.songList.itemDoubleClicked.connect(self.playit)
 		self.playBtn.clicked.connect(self.play_or_pause)
 		self.nextBtn.clicked.connect(self.nextone)
@@ -278,7 +278,16 @@ class Music(QWidget):
 			# self.s.setParent(self)
 			self.show()
 	def lrc(self):
-		self.lrctext = DLabel(self)
+		if hasattr(self,'lrctext'):
+			if self.lrctext.isVisible():
+				self.lrctext.setVisible(False)
+				self.p.showgeci(1)
+			else:
+				self.lrctext.setVisible(True)
+				self.p.showgeci()
+		else:
+			self.lrctext = DLabel(self)
+			self.p.showgeci()
 		# self.q.setText("csdcdsssssss")
 		# self.q.setText("ooooooooooooooooo")
 
