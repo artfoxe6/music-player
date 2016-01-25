@@ -202,11 +202,13 @@ class DLabel(QLabel):
         #遮罩的线性渐变填充
         mask_linear_gradient.setStart(0, 10)
         mask_linear_gradient.setFinalStop(0, 40)
-        mask_linear_gradient.setColorAt(0.1, QColor(255, 190, 190))
+        mask_linear_gradient.setColorAt(0.1, QColor(255, 113, 237))
+        # mask_linear_gradient.setColorAt(0.1, QColor(255, 113, 237))
         # mask_linear_gradient.setColorAt(0.3, QColor(1, 1, 1))
-        mask_linear_gradient.setColorAt(0.3, QColor(253, 147, 255))
+        # mask_linear_gradient.setColorAt(0.5, QColor(253, 147, 255))
         # mask_linear_gradient.setColorAt(0.7, QColor(1, 1, 1))
-        mask_linear_gradient.setColorAt(0.9, QColor(231, 88, 210))
+        mask_linear_gradient.setColorAt(1, QColor(12, 175, 236))
+        # mask_linear_gradient.setColorAt(1, QColor(0, 0, 0))
 
         # print(e)
         

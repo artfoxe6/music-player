@@ -25,7 +25,7 @@ class Player():
     # print(dir(self.music.playlist))
     # print(dir(self.music.playlist))
     #单曲循环
-    self.music.playlist.setPlaybackMode(QMediaPlaylist.Loop)
+    self.music.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
     self.music.player.setPlaylist(self.music.playlist)
 
     self.init_list()
