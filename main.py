@@ -75,6 +75,12 @@ class Music(QWidget):
 		btn.setCursor(QCursor(Qt.PointingHandCursor))
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background:transparent } ")
 		btn.clicked.connect(self.lrc)
+		# 播放模式  单曲循环  整体循环  随机播放
+		self.btnmoshi = QPushButton("单曲循环",self)
+		self.btnmoshi.setGeometry(90,0,70,20)
+		self.btnmoshi.setCursor(QCursor(Qt.PointingHandCursor))
+		self.btnmoshi.setStyleSheet("QPushButton{ border:none;color:white;background:transparent } ")
+		self.btnmoshi.clicked.connect(self.moshi)
 
 		# 播放组件  ( 播放  前进 后退 播放时间 进度条 歌曲名 音量 )
 		# 播放/暂停
@@ -148,7 +154,7 @@ class Music(QWidget):
 		wg = QWidget(self)
 		wg.setGeometry(0, 580, 300,20)
 		wg.setStyleSheet("QWidget{ background:#2D2D2D; } ")
-		ql = QLabel(" <a style='color:white;text-decoration:none;'  href ='https://github.com/codeAB/music-player' >每首歌都有一个故事，等你来听 </a>",wg)
+		ql = QLabel(" <a style='color:grey;text-decoration:underline;'  href ='https://github.com/codeAB/music-player' >Ｓ Y L 一首歌一段故事</a>",wg)
 		ql.resize(300,20)
 		ql.setAlignment(Qt.AlignRight)
 		ql.linkActivated.connect(self.openurl)
@@ -290,7 +296,20 @@ class Music(QWidget):
 			self.p.showgeci()
 		# self.q.setText("csdcdsssssss")
 		# self.q.setText("ooooooooooooooooo")
-
+	def moshi(self):
+		ct = self.btnmoshi;
+		if ct.text() == '整体循环':
+			ct.setText(str("随机播放"))
+			self.playlist.setPlaybackMode(QMediaPlaylist.Random)
+			return False
+		if ct.text() == '随机播放':
+			ct.setText(str("单曲循环"))
+			self.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
+			return False
+		if ct.text() == '单曲循环':
+			ct.setText(str("整体循环"))
+			self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
+			return False
 
 if __name__ == '__main__':
 	app = QApplication(sys.argv)

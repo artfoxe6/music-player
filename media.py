@@ -182,7 +182,7 @@ class Player():
       self.music.currentSonger = str(audio.get('TPE1'))
       local = os.path.join('./cache/', str(audio.get('TPE1'))+'.jpg')
       if not os.path.isfile(local):
-        local = os.path.join('.', 'image/caijianya.jpg')
+        local = os.path.join('.', 'image/zhangjie.jpg')
       self.music.picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url("+local+")}")
       # 加载歌词
       filename = conf['mp3dir']+"123.lrc"
@@ -226,8 +226,8 @@ class Player():
   def setPlayBtn(self,stat):
     self.music.playBtn.setStyleSheet("QPushButton{ border-image:url(image/%s.png);border:none }" % stat)
   def refreshlrc(self):
-    # print("333")
-    # current = self.songpro
+    if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):
+      return False
     k = int(self.songpro)
     if k in list(self.lrcmap.keys()):
       if self.lrcmap[k] != '':
@@ -236,12 +236,7 @@ class Player():
       while(k not in list(self.lrcmap.keys())):
         k = k - 1 
       self.music.lrctext.setText(self.lrcmap[k])
-      # print(self.lrcmap[k])
-    # else:
-      # print(k)
-      # x = self.lrcmap.keys()
-      # print(list(x))
-    # print(self.songpro+"=="+self.lrcmap[self.songpro])
+
 
   
 
