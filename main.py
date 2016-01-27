@@ -107,9 +107,10 @@ class Music(QWidget):
 		# self.vol.setStyleSheet(qss_vol)
 		# 当前歌曲名   
 		self.currentMusicName = QLabel("",songer_img)
-		self.currentMusicName.setGeometry(0,50,300,80)
-		self.currentMusicName.setAlignment(Qt.AlignHCenter)
-		self.currentMusicName.setStyleSheet("QLabel{ color:white ;font-weight:100;font-size:16px;}")
+		# self.currentMusicName.setGeometry(0,50,300,80)
+		self.currentMusicName.setGeometry(0,180,200,20)
+		# self.currentMusicName.setAlignment(Qt.AlignHCenter)
+		self.currentMusicName.setStyleSheet("QLabel{ color:white ;font-weight:100;font-size:12px;margin-left:5px;}")
 		# 歌曲进度条
 		self.processSlider = QSlider(Qt.Horizontal,self)
 		self.processSlider.setGeometry(0,200,300,10)
@@ -154,7 +155,7 @@ class Music(QWidget):
 		wg = QWidget(self)
 		wg.setGeometry(0, 580, 300,20)
 		wg.setStyleSheet("QWidget{ background:#2D2D2D; } ")
-		ql = QLabel(" <a style='color:grey;text-decoration:underline;'  href ='https://github.com/codeAB/music-player' >Ｓ Y L 一首歌一段故事</a>",wg)
+		ql = QLabel(" <a style='color:grey;text-decoration:none;'  href ='https://github.com/codeAB/music-player' >sylsong.com 一首歌一段故事 </a>",wg)
 		ql.resize(300,20)
 		ql.setAlignment(Qt.AlignRight)
 		ql.linkActivated.connect(self.openurl)
@@ -198,6 +199,7 @@ class Music(QWidget):
 		self.playBtn.clicked.connect(self.play_or_pause)
 		self.nextBtn.clicked.connect(self.nextone)
 		self.prevBtn.clicked.connect(self.prevone)
+		# self.lrc()
 		# self.vol.valueChanged.connect(self.)
 	#双击托盘图标
 	def dbclick_tray(self,event):
@@ -294,8 +296,6 @@ class Music(QWidget):
 		else:
 			self.lrctext = DLabel(self)
 			self.p.showgeci()
-		# self.q.setText("csdcdsssssss")
-		# self.q.setText("ooooooooooooooooo")
 	def moshi(self):
 		ct = self.btnmoshi;
 		if ct.text() == '整体循环':

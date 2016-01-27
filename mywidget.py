@@ -42,7 +42,7 @@ class index(QWidget):
         self.web.page().mainFrame().javaScriptWindowObjectCleared.connect(
             self.populateJavaScriptWindowObject)
         # 关闭按钮
-        btn = QPushButton("关闭", self)
+        btn = QPushButton("收起", self)
         btn.setGeometry(540, 5, 60, 30)
         btn.setCursor(QCursor(Qt.PointingHandCursor))
         btn.setStyleSheet(  
@@ -182,7 +182,7 @@ class DLabel(QLabel):
         self.setStyleSheet("QLabel{ border:2px solid red }")
         # btn = QPushButton("close",self.q)
         # btn.clicked.connect(self.q.close)
-        self.setText("")
+        self.setText(" S Y L - 让我们用心聆听彼此 ")
         self.show()
         # self.setText("简易音乐播放器")
 
@@ -202,12 +202,14 @@ class DLabel(QLabel):
         #遮罩的线性渐变填充
         mask_linear_gradient.setStart(0, 10)
         mask_linear_gradient.setFinalStop(0, 40)
-        mask_linear_gradient.setColorAt(0.1, QColor(255, 113, 237))
-        # mask_linear_gradient.setColorAt(0.1, QColor(255, 113, 237))
-        # mask_linear_gradient.setColorAt(0.3, QColor(1, 1, 1))
+        # mask_linear_gradient.setColorAt(0.1, QColor(254, 113, 122))
+        # mask_linear_gradient.setColorAt(0.3, QColor(224, 246, 242))
+        mask_linear_gradient.setColorAt(0.1, QColor(14, 179, 255))
+        mask_linear_gradient.setColorAt(0.5, QColor(114, 232, 255))
         # mask_linear_gradient.setColorAt(0.5, QColor(253, 147, 255))
         # mask_linear_gradient.setColorAt(0.7, QColor(1, 1, 1))
-        mask_linear_gradient.setColorAt(1, QColor(12, 175, 236))
+        # mask_linear_gradient.setColorAt(0.7, QColor(64, 2, 2))
+        mask_linear_gradient.setColorAt(0.9, QColor(14, 179, 255))
         # mask_linear_gradient.setColorAt(1, QColor(0, 0, 0))
 
         # print(e)

@@ -10,7 +10,7 @@ import os
 import re
 from mutagen.mp3 import MP3
 from mywidget import listlabel
-
+import random
 
 class Player():
   # 参数music是mainnwindow对象 
@@ -18,6 +18,7 @@ class Player():
     self.duration = 0  #当前歌曲时长
     self.music = music
     self.lrcmap = {}
+    self.filename = ""
     self.music.player = QMediaPlayer()
     
     # print(dir(self.music.player))
@@ -62,8 +63,56 @@ class Player():
     # print(pro,self.songpro)
 
   def durationChanged(self,duration):
+    self.lrcmap = {}
     duration /= 1000
     self.duration = duration
+    # print(duration)
+    # 加载歌词
+    filename = conf['mp3dir']+self.filename+".lrc"
+    # print(filename)
+    # self.lrcmap.clear()
+    # 清空之前的歌词内容
+    
+    # 如果歌词文件不存在
+    if not os.path.exists(filename):
+      # 桌面歌词清空内容
+      if hasattr(self.music,'lrctext'):
+        self.music.lrctext.setText("")
+      # 停止刷新歌词
+      if hasattr(self,'timer'):
+        self.timer.stop()
+      return False
+    else:
+      # 开始刷新歌词
+      if hasattr(self,'timer'):
+        self.timer.start(100)
+    # 读取歌词文件
+    f = open(filename, "r")  
+    while True:  
+      # 读取每一行
+      line = f.readline()
+      if line:
+          pattern = re.compile(r'\[.*\]')
+          # 匹配一行中所有的时间点
+          d = pattern.findall(line)
+          p = line.split("]");
+          # 当前行的歌词
+          c = p[len(p)-1].strip("\n")
+          if c == '':
+            continue
+          # 拆分时间点
+          pattern2 = re.compile(r'[0-9]{2}:[0-9]{2}\.[0-9]{2}')
+          if len(d) != 0 :
+            s = pattern2.findall(d[0])
+            # print(s)
+            for k in s:
+                t = int(k[0]+""+k[1])*60+int(k[3]+""+k[4])-1
+                # print(t)
+                self.lrcmap[t] = c
+      else:
+        break 
+    f.close()
+
     # totalTime = QTime((duration/3600)%60, (duration/60)%60, duration%60, (duration*1000)%1000);
     # format = 'hh:mm:ss' if duration > 3600 else 'mm:ss'
     # tStr = totalTime.toString()
@@ -71,6 +120,7 @@ class Player():
   def positionChanged(self,progress):
     progress /= 1000
     self.songpro = progress
+    # print(progress)
     if not self.music.processSlider.isSliderDown():
       self.music.processSlider.setValue(progress)
     self.updateDurationInfo(progress)
@@ -127,25 +177,8 @@ class Player():
         self.music.playlist.addMedia(QMediaContent(url))
         
   def playit(self,index):
-    # print(eve)
-    # print(index)
-    # 播放序号从0开始
     self.music.playlist.setCurrentIndex(index-1)
     self.music.player.play()
-
-    # s = eve.text()
-    # p = re.compile(r'\d+')
-    # r = p.findall(s)
-    # self.music.playlist.setCurrentIndex(int(r[0])-1)
-    # self.music.player.play()
-    # 
-    # 
-    # duration = self.music.player.duration()
-    # totalTime = QTime((duration/3600)%60, (duration/60)%60,
-    #                 duration%60, (duration*1000)%1000)
-    # # format = 'hh:mm:ss' if duration > 3600 else 'mm:ss'
-    # tStr = totalTime.toString()
-    # print(tStr)
 
   def play_or_pause(self):
       if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):
@@ -159,8 +192,9 @@ class Player():
   def prevone(self):
     self.music.playlist.previous()
     self.music.player.play()
-
+  # 当前播放文件改变
   def metaDataChanged(self):
+
     if self.music.player.isMetaDataAvailable(): 
       current_song_path = self.music.playlist.currentMedia().canonicalUrl().toString()
       #当前播放的是item index
@@ -179,30 +213,15 @@ class Player():
           s = s[0:12]+"..."
       # print(s)
       self.music.currentMusicName.setText(s)
+      self.filename = s
       self.music.currentSonger = str(audio.get('TPE1'))
+      # print(self.music.currentSonger)
       local = os.path.join('./cache/', str(audio.get('TPE1'))+'.jpg')
       if not os.path.isfile(local):
         local = os.path.join('.', 'image/zhangjie.jpg')
       self.music.picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url("+local+")}")
-      # 加载歌词
-      filename = conf['mp3dir']+"123.lrc"
-      # print(filename)
-      f = open(filename, "r")  
-      while True:  
-        line = f.readline()  
-        if line:  
-          # [02:56.00]如果真的有一天
-          # time = line.split("]")[0]
-          res = re.findall(r'[0-9]',line)
-          if len(res) >= 6 :
-            # print(res[0])
-            t = int(res[0]+res[1])*60+int(res[2]+res[3])-1
-            # print(t)
-            self.lrcmap[t] = line.split("]")[1].strip('\n').strip()
-        else:  
-          break  
-      f.close()
-
+      
+  # 播放状态改变
   def stateChanged(self):
     if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):
       self.setPlayBtn('play11')
@@ -212,30 +231,44 @@ class Player():
     elif self.music.player.state() == QMediaPlayer.PlayingState:
       self.setPlayBtn('pause11')
       if hasattr(self.music,'lrctext'):
+        if self.music.lrctext.isVisible():
+          if not hasattr(self,'timer'):
+            self.timer = QTimer()
+            self.timer.timeout.connect(self.refreshlrc)
+        self.timer.start(100)
+  # 歌词显示控制
+  def showgeci(self,flag = None):
+    # 检查播放状态
+    if self.music.lrctext.isVisible():
+      if not hasattr(self,'timer'):
         self.timer = QTimer()
         self.timer.timeout.connect(self.refreshlrc)
-        self.timer.start(100)
-  def showgeci(self,flag = None):
-    if flag == 1:
-      self.timer.stop()
-    else:
-      self.timer = QTimer()
-      self.timer.timeout.connect(self.refreshlrc)
       self.timer.start(100)
-        
+    else:
+      if hasattr(self,'timer'):
+        self.timer.stop()
+
   def setPlayBtn(self,stat):
     self.music.playBtn.setStyleSheet("QPushButton{ border-image:url(image/%s.png);border:none }" % stat)
   def refreshlrc(self):
+    # print(random.randint(0,99))
     if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):
       return False
+    # 当前播放的时间点
     k = int(self.songpro)
     if k in list(self.lrcmap.keys()):
       if self.lrcmap[k] != '':
         self.music.lrctext.setText(self.lrcmap[k])
     else:
-      while(k not in list(self.lrcmap.keys())):
+      # pass
+      i = 10
+      while(i):
+        i = i-1
         k = k - 1 
-      self.music.lrctext.setText(self.lrcmap[k])
+        if k in list(self.lrcmap.keys()):
+          if self.lrcmap[k] != '':
+            self.music.lrctext.setText(self.lrcmap[k])
+            break
 
 
   
