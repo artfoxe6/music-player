@@ -77,7 +77,7 @@ class Music(QWidget):
 		btn.clicked.connect(self.lrc)
 		# 播放模式  单曲循环  整体循环  随机播放
 		self.btnmoshi = QPushButton("全部",self)
-		self.btnmoshi.setGeometry(150,0,40,20)
+		self.btnmoshi.setGeometry(170,0,40,20)
 		self.btnmoshi.setCursor(QCursor(Qt.PointingHandCursor))
 		self.btnmoshi.setStyleSheet("QPushButton{ border:none;color:white;background:transparent } ")
 		self.btnmoshi.clicked.connect(self.moshi)
