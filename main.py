@@ -58,7 +58,7 @@ class Music(QWidget):
 
 		# 顶部工具栏
 		# 隐藏
-		btn = QPushButton("X",self)
+		btn = QPushButton("x",self)
 		btn.setGeometry(260,0,40,20)
 		# btn.setCursor(QCursor(Qt.PointingHandCursor))
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background:transparent } ")
@@ -85,16 +85,16 @@ class Music(QWidget):
 		# 播放组件  ( 播放  前进 后退 播放时间 进度条 歌曲名 音量 )
 		# 播放/暂停
 		self.playBtn = QPushButton("",songer_img)
-		self.playBtn.setGeometry(126,120,48,48)
-		self.playBtn.setStyleSheet("QPushButton{ border-image:url(image/play11.png);border:none }")
+		self.playBtn.setGeometry(116,110,68,68)
+		self.playBtn.setStyleSheet("QPushButton{ border-image:url(image/playnew.png);border:none } QPushButton:hover{ border-image:url(image/playnewhover.png)} ")
 		# 下一首
 		self.nextBtn = QPushButton("",songer_img)
-		self.nextBtn.setGeometry(198,134,24,24)
-		self.nextBtn.setStyleSheet("QPushButton{ border-image:url(image/next11.png);border:none }")
+		self.nextBtn.setGeometry(176,129,34,34)
+		self.nextBtn.setStyleSheet("QPushButton{ border-image:url(image/nextnew.png);border:none } QPushButton:hover{ border-image:url(image/nextnewhover.png)}")
 		# 上一首
 		self.prevBtn = QPushButton("",songer_img)
-		self.prevBtn.setGeometry(78,134,24,24)
-		self.prevBtn.setStyleSheet("QPushButton{ border-image:url(image/pre11.png);border:none }")
+		self.prevBtn.setGeometry(83,129,34,34)
+		self.prevBtn.setStyleSheet("QPushButton{ border-image:url(image/prenew.png);border:none } QPushButton:hover{ border-image:url(image/prenewhover.png)}")
 		# 当前播放时间
 		self.songTime = QLabel("",self)
 		self.songTime.setGeometry(220,180,80,20)
@@ -143,13 +143,36 @@ class Music(QWidget):
 		funcList = QListWidget(listWgt)
 		funcList.setGeometry(240,0,55,370)   
 		funcList.setStyleSheet(qss_menu)
-		btn = QPushButton("首页",funcList)
-		btn.setGeometry(0,0,55,40)
+		btn = QPushButton("",funcList)
 		btn.clicked.connect(self.newwindow)
-		btn = QPushButton("推荐",funcList).setGeometry(0,40,55,40)
-		btn = QPushButton("收藏",funcList).setGeometry(0,80,55,40)
-		btn = QPushButton("日志",funcList).setGeometry(0,120,55,40)
-		btn = QPushButton("M V",funcList).setGeometry(0,160,55,40)
+		btn.setGeometry(15,10,30,30)
+		btn.setStyleSheet("QPushButton{ border-image:url(image/home.png)} \
+			QPushButton:hover{ border-image:url(image/homehover.png) }")
+		btn.setCursor(QCursor(Qt.PointingHandCursor))
+		btn = QPushButton("",funcList)
+		btn.setGeometry(15,60,30,30)
+		btn.setStyleSheet("QPushButton{ border-image:url(image/tuijian.png) } \
+			QPushButton:hover{ border-image:url(image/tuijianhover.png) }")
+		btn.setCursor(QCursor(Qt.PointingHandCursor))
+		btn = QPushButton("",funcList)
+		btn.setGeometry(15,100,30,30)
+		btn.setStyleSheet("QPushButton{ border-image:url(image/shoucang.png) }\QPushButton:hover{ border-image:url(image/shoucanghover.png) }")
+		btn.setCursor(QCursor(Qt.PointingHandCursor))
+
+		btn = QPushButton("",funcList)
+		btn.setGeometry(15,140,30,30)
+		btn.setStyleSheet("QPushButton{ border-image:url(image/rizhi.png) }\
+			QPushButton:hover{ border-image:url(image/rizhihover.png) }")
+		btn.setCursor(QCursor(Qt.PointingHandCursor))
+
+		btn = QPushButton("",funcList)
+		btn.setGeometry(17,180,30,30)
+		btn.setStyleSheet("QPushButton{ border-image:url(image/mv.png) }\
+			QPushButton:hover{ border-image:url(image/mvhover.png) }")
+		btn.setCursor(QCursor(Qt.PointingHandCursor))
+
+		# btn = QPushButton("日志",funcList).setGeometry(0,120,55,40)
+		# btn = QPushButton("M V",funcList).setGeometry(0,160,55,40)
 		# btn = QPushButton("关于",funcList).setGeometry(0,200,60,40)
 		#底部状态栏
 		wg = QWidget(self)

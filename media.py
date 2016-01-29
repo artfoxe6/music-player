@@ -157,17 +157,17 @@ class Player():
         lwg.setGeometry(20,0,140,30)
         lwg.setObjectName("hehe")
         # lwg.clicked.connect(self.playit)
-        lwg.setStyleSheet("QWidget#hehe:hover{ background:#999; }\
-          QWidget#hehe{border-radius:2px;} \
+        lwg.setStyleSheet("QWidget#hehe:hover{background:#A448C4;margin-left:-5px} \
+          QWidget#hehe{border-radius:0px;} \
           ")
         btn = QPushButton(str(x),lwg)
         btn.setGeometry(5,8,24,24)
-        btn.setStyleSheet("QPushButton{ border-radius:12px;background:#5E0000;color:#DDD;font-size:10px;opacity:0.5;font-weight:bold; }")
+        btn.setStyleSheet("QPushButton{ border-radius:12px;background:#3698DB;color:#DDD;font-size:12px;font-weight:blod }")
         ql = listlabel()
         ql.setText(songname)
         ql.setParent(lwg)
         ql.setGeometry(40,0,190,40)  #transparent
-        ql.setStyleSheet("QLabel{ font-weight:bold;color:#666;background:transparent } \
+        ql.setStyleSheet("QLabel{ font-weight:100;color:#2D2D2D;background:transparent ;font-size:14px;} \
          QLabel:hover{ color:#fff }")
         ql.doubleclicked.connect(self.playit)
         self.music.songList.addItem(item)
@@ -194,7 +194,10 @@ class Player():
     self.music.player.play()
   # 当前播放文件改变
   def metaDataChanged(self):
-
+    # 当前播放的文件索引
+    currentindex = self.music.playlist.currentIndex()
+    # x = self.music.songList.findChildren(QListWidgetItem,'',Qt.FindChildrenRecursively)
+    # print(x)
     if self.music.player.isMetaDataAvailable(): 
       current_song_path = self.music.playlist.currentMedia().canonicalUrl().toString()
       #当前播放的是item index
@@ -224,12 +227,12 @@ class Player():
   # 播放状态改变
   def stateChanged(self):
     if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):
-      self.setPlayBtn('play11')
+      self.setPlayBtn('playnew')
       if hasattr(self,'timer'):
         self.timer.stop()
       # print(self.lrcmap)
     elif self.music.player.state() == QMediaPlayer.PlayingState:
-      self.setPlayBtn('pause11')
+      self.setPlayBtn('pausenew')
       if hasattr(self.music,'lrctext'):
         if self.music.lrctext.isVisible():
           if not hasattr(self,'timer'):
@@ -249,7 +252,7 @@ class Player():
         self.timer.stop()
 
   def setPlayBtn(self,stat):
-    self.music.playBtn.setStyleSheet("QPushButton{ border-image:url(image/%s.png);border:none }" % stat)
+    self.music.playBtn.setStyleSheet("QPushButton{ border-image:url(image/"+stat+".png);border:none } QPushButton:hover{ border-image:url(image/"+stat+"hover.png)} ")
   def refreshlrc(self):
     # print(random.randint(0,99))
     if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):
