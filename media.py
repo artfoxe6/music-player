@@ -63,9 +63,13 @@ class Player():
     # print(pro,self.songpro)
 
   def durationChanged(self,duration):
+    # 清空前一首歌词
     self.lrcmap = {}
     duration /= 1000
     self.duration = duration
+    self.music.processSlider.setMaximum(duration)
+    # print(self.duration)
+    # print(self.music.processSlider.maximum())
     # print(duration)
     # 加载歌词
     filename = conf['mp3dir']+self.filename+".lrc"
@@ -116,7 +120,7 @@ class Player():
     # totalTime = QTime((duration/3600)%60, (duration/60)%60, duration%60, (duration*1000)%1000);
     # format = 'hh:mm:ss' if duration > 3600 else 'mm:ss'
     # tStr = totalTime.toString()
-    self.music.processSlider.setMaximum(duration)
+
   def positionChanged(self,progress):
     progress /= 1000
     self.songpro = progress
@@ -212,6 +216,7 @@ class Player():
       # print(audio.get('TALB'))  #专辑
       # s = str(audio.get('TIT2'))+"-"+str(audio.get('TPE1'))
       s = str(audio.get('TIT2'))
+      # print(s)
       if len(s) > 12:
           s = s[0:12]+"..."
       # print(s)

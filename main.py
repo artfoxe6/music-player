@@ -65,19 +65,19 @@ class Music(QWidget):
 		btn.clicked.connect(self.close)
 		# 设置封面
 		btn = QPushButton("封面",self)
-		btn.setGeometry(210,0,40,20)
+		btn.setGeometry(230,0,40,20)
 		# btn.setCursor(QCursor(Qt.PointingHandCursor))
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background:transparent } ")
 		btn.clicked.connect(self.setHeaderImg)
 		# 开启/关闭歌词
 		btn = QPushButton("歌词",self)
-		btn.setGeometry(160,0,40,20)
+		btn.setGeometry(200,0,40,20)
 		btn.setCursor(QCursor(Qt.PointingHandCursor))
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background:transparent } ")
 		btn.clicked.connect(self.lrc)
 		# 播放模式  单曲循环  整体循环  随机播放
-		self.btnmoshi = QPushButton("单曲循环",self)
-		self.btnmoshi.setGeometry(90,0,70,20)
+		self.btnmoshi = QPushButton("全部",self)
+		self.btnmoshi.setGeometry(150,0,40,20)
 		self.btnmoshi.setCursor(QCursor(Qt.PointingHandCursor))
 		self.btnmoshi.setStyleSheet("QPushButton{ border:none;color:white;background:transparent } ")
 		self.btnmoshi.clicked.connect(self.moshi)
@@ -169,6 +169,12 @@ class Music(QWidget):
 		btn.setGeometry(17,180,30,30)
 		btn.setStyleSheet("QPushButton{ border-image:url(image/mv.png) }\
 			QPushButton:hover{ border-image:url(image/mvhover.png) }")
+		btn.setCursor(QCursor(Qt.PointingHandCursor))
+
+		btn = QPushButton("",funcList)
+		btn.setGeometry(15,225,33,33)
+		btn.setStyleSheet("QPushButton{ border-image:url(image/settinghover.png) }\
+			QPushButton:hover{ border-image:url(image/setting.png) }")
 		btn.setCursor(QCursor(Qt.PointingHandCursor))
 
 		# btn = QPushButton("日志",funcList).setGeometry(0,120,55,40)
@@ -321,16 +327,16 @@ class Music(QWidget):
 			self.p.showgeci()
 	def moshi(self):
 		ct = self.btnmoshi;
-		if ct.text() == '整体循环':
-			ct.setText(str("随机播放"))
+		if ct.text() == '全部':
+			ct.setText(str("随机"))
 			self.playlist.setPlaybackMode(QMediaPlaylist.Random)
 			return False
-		if ct.text() == '随机播放':
-			ct.setText(str("单曲循环"))
+		if ct.text() == '随机':
+			ct.setText(str("单曲"))
 			self.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
 			return False
-		if ct.text() == '单曲循环':
-			ct.setText(str("整体循环"))
+		if ct.text() == '单曲':
+			ct.setText(str("全部"))
 			self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
 			return False
 
