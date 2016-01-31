@@ -21,7 +21,6 @@ class Music(QWidget):
 		self.setWindowIcon(QIcon("image/tray.png"))
 		self.setWindowTitle("SYL")
 		self.setObjectName("box")
-		self.setStyleSheet("QWidget#box{ border-radius:100px; }")
 		# 窗口无边框
 		self.setWindowFlags(Qt.FramelessWindowHint)
 		# 窗口居于所有窗口的顶端 
