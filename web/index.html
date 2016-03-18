@@ -8,7 +8,7 @@
 	<script src="js/swiper.js" ></script>
 </head>
 <body>
-
+	<!-- <div class="allbox" > -->
 		<div class="swiper-container">
 		    <div class="swiper-wrapper">
 		        <div class="swiper-slide"><img src="../image/slider1.jpg" ></div>
@@ -19,7 +19,7 @@
 		<form onsubmit="mysearch()" >
 			<div class="search">
 				<input type="text" id="search" placeholder="输入关键字搜索" value="张杰" />  
-				<button type="submit"   >Search</button>
+				<button type="submit"   >搜 索</button>
 			</div>
 		</form>
 		<div class="item">
@@ -31,21 +31,55 @@
 			<div><a href="javascript:void(0)"><img src="../image/item6.jpg" ></a><br>流派</div>
 			<div><a href="javascript:void(0)"><img src="../image/item7.jpg" ></a><br>场景</div>
 			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
+			<div><a href="javascript:void(0)"><img src="../image/item8.jpg" ></a><br>特色</div>
 		</div>
-	
+	<!-- </div> -->
 </body>
 </html>
 
 <style>
-	body,img,div{ margin:0;padding:0;-webkit-user-select: none; }
+	body,img,div{ margin:0;padding:0;-webkit-user-select: none;background: :#fff; }
+	body{ overflow: hidden }
 	a{ outline: none }
-	.search{ background:#EAD9EA;height:60px;line-height:60px;text-align:center; }
-	.search input{ height:30px;width:300px;border:none;border-radius:2px;text-indent:2em;outline: none;font-size: 12px;background:white; }
-	.search button{ height:32px;width:60px;border:none;border-radius:5px;background:#770077;color:white;outline: none;font-size: 12px;cursor:pointer;font-weight: bold;  }
-	.item div{ width:25%;height:130px;display:block;float:left;background:none;text-align:center;color:#999;font-size: 14px; }
-	.item div img{ width:80px;height:80px;border-radius:40px;margin-top:15px;cursor:pointer;; }
+	.search{ background:none;height:60px;line-height:60px;text-align:center;position:absolute;top:150px;z-index:20;width:600px;}
+	.search input:hover{ opacity: 0.95 }
+	.search button:hover{ opacity: 0.95 }
+	.search input{ height:30px;width:300px;border:none;border-radius:2px;text-indent:2em;outline: none;font-size: 12px;background:white;opacity: 0.7 }
+	.search button{ height:32px;width:60px;border:none;border-radius:2px;background:#5EB9FF;color:white;outline: none;font-size: 12px;cursor:pointer;font-weight: bold; opacity:0.8; }
+	.item div{ width:120px;height:130px;display:block;float:left;background:#FFF;text-align:center;color:#999;font-size: 14px; }
+	.item div img{ width:80px;height:80px;border-radius:40px;margin-top:15px;cursor:pointer; }
+	.item{ height:370px;width:630px;overflow: auto; }
 	.swiper-wrapper{ height:210px; }
 	.swiper-wrapper img{ display:block;width:100%;cursor:pointer;cursor:pointer; }
+	/*.allbox{ height:600px;overflow: auto;width:630px; }*/
 </style>
 
 <script>

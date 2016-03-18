@@ -36,6 +36,7 @@ class index(QWidget):
 
         # 内嵌web网页
         self.web = QWebView(self)
+        self.web.setStyleSheet("QWidget{ background-color:white }")
         self.web.setGeometry(0, 0, 600, 580)
         self.web.load(QUrl.fromLocalFile(os.path.abspath("web/index.html")))
         
@@ -310,10 +311,10 @@ class listlabel(QLabel):
 
 
 
-# if __name__ == '__main__':
-    # app = QApplication(sys.argv)
-    # # music = search()
-    # music = index()
-    # music.show()
-    # # app.exec_()
-    # sys.exit(app.exec_())
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    # music = search()
+    music = index()
+    music.show()
+    # app.exec_()
+    sys.exit(app.exec_())

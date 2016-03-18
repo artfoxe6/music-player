@@ -124,11 +124,11 @@ class Music(QWidget):
 		# 补白
 		bu = QWidget(listWgt)
 		bu.setGeometry(0,0,5,370)
-		bu.setStyleSheet("QWidget{ border-image:url(image/borderleft.png) }")
+		# bu.setStyleSheet("QWidget{ border-image:url(image/borderleft.png) }")
 
 		bu2 = QWidget(listWgt)
 		bu2.setGeometry(295,0,5,370)
-		bu2.setStyleSheet("QWidget{ border-image:url(image/borderright.png) }")
+		# bu2.setStyleSheet("QWidget{ border-image:url(image/borderright.png) }")
 
 		#列表
 		self.songList = QListWidget(listWgt)

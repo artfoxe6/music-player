@@ -4,7 +4,7 @@
 
 qss_scrollbar = """
 
-QWidget{ background:#F9F9F9 }
+QWidget{ background:#fff }
 QScrollBar:vertical{width:2px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}
 QScrollBar::handle:vertical{width:2px;background:#777; border-radius:2px;  }
 QScrollBar::handle:vertical:hover{width:2px;background:#009BB7;border-radius:2px;}
@@ -32,8 +32,8 @@ QListWidget::item:selected{background:#E8FFE3;}
 # QPushButton:hover{ background:pink;color:black }
 qss_menu = """
 
-QListWidget{ background:#F9F9F9;color:red ;border:none; } 
-QPushButton{ background:#F9F9F9;border:none;color:grey; } 
+QListWidget{ background:#fff;color:red ;border:none; } 
+QPushButton{ background:#fff;border:none;color:grey; } 
 
 
 """
