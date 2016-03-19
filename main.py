@@ -50,9 +50,9 @@ class Music(QWidget):
 		self.picture.resize(300,200)
 		self.picture.setStyleSheet("QLabel{ background:#000;border-image:url(image/newimg/back.jpg)}")
 
-		syl = QLabel(" S Y L ",songer_img)
-		syl.setGeometry(5,0,150,25)
-		syl.setStyleSheet("QLabel{ background:transparent;color:white}")
+		# syl = QLabel(songer_img)
+		# syl.setGeometry(15,5,34,15)
+		# syl.setStyleSheet("QLabel{ border-image:url(image/newimg/logo.png);}")
 
 		# ================================
 		songinfo = QLabel(songer_img)
@@ -66,9 +66,10 @@ class Music(QWidget):
 		self.songname = QLabel("老鼠爱大米 - 香香",songinfo)
 		self.songname.setGeometry(105,0,210,25)
 		self.songname.setStyleSheet("QLabel{ color:#EEE;font-size:15px;}")
-		singer = QLabel("By 张三的歌",songinfo)
-		singer.setGeometry(105,25,210,25)
-		singer.setStyleSheet("QLabel{ color:yellow;font-size:15px;}")
+		uploaduser = QLabel("By 张三的歌",songinfo)
+		uploaduser.move(105,25)
+		uploaduser.setCursor(QCursor(Qt.PointingHandCursor))
+		uploaduser.setStyleSheet("QLabel{ color:yellow;font-size:15px;} QLabel:hover{color:red}")
 
 		fenshu = QLabel("评分 - 7.6",songinfo)
 		fenshu.setGeometry(105,50,210,25)
@@ -91,9 +92,9 @@ class Music(QWidget):
 		pinglun.setStyleSheet("QLabel{ border-image:url(image/newimg/pinglun.png);}")
 
 		pingfen = QLabel("查看这首歌的更多资料",songtool)
-		pingfen.setGeometry(100,5,200,25)
+		pingfen.move(100,10)
 		pingfen.setCursor(QCursor(Qt.PointingHandCursor))
-		pingfen.setStyleSheet("QLabel{ color:#BBB} QLabel:hover{color:red}")
+		pingfen.setStyleSheet("QLabel{ color:#BBB} QLabel:hover{color:pink}")
 
 
 		# ======================================
