@@ -220,24 +220,25 @@ class Player():
       if len(s) > 12:
           s = s[0:12]+"..."
       # print(s)
-      self.music.currentMusicName.setText(s)
+      
       self.filename = s
       self.music.currentSonger = str(audio.get('TPE1'))
       # print(self.music.currentSonger)
+      self.music.songname.setText(s+" - "+str(audio.get('TPE1')))
       local = os.path.join('./cache/', str(audio.get('TPE1'))+'.jpg')
       if not os.path.isfile(local):
-        local = os.path.join('.', 'image/zhangjie.jpg')
+        local = os.path.join('.', 'image/newimg/back.jpg')
       self.music.picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url("+local+")}")
       
   # 播放状态改变
   def stateChanged(self):
     if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):
-      self.setPlayBtn('playnew')
+      self.setPlayBtn('statusbar_btn_play')
       if hasattr(self,'timer'):
         self.timer.stop()
       # print(self.lrcmap)
     elif self.music.player.state() == QMediaPlayer.PlayingState:
-      self.setPlayBtn('pausenew')
+      self.setPlayBtn('kg_ic_playing_bar_pause_pressed')
       if hasattr(self.music,'lrctext'):
         if self.music.lrctext.isVisible():
           if not hasattr(self,'timer'):
@@ -257,7 +258,7 @@ class Player():
         self.timer.stop()
 
   def setPlayBtn(self,stat):
-    self.music.playBtn.setStyleSheet("QPushButton{ border-image:url(image/"+stat+".png);border:none } QPushButton:hover{ border-image:url(image/"+stat+"hover.png)} ")
+    self.music.playBtn.setStyleSheet("QPushButton{ border-image:url(image/newimg/"+stat+".png);border:none } QPushButton:hover{ border-image:url(image/newimg/"+stat+".png)} ")
   def refreshlrc(self):
     # print(random.randint(0,99))
     if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):

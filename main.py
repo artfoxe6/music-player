@@ -39,65 +39,118 @@ class Music(QWidget):
 		wh = QApplication.desktop().screenGeometry()
 		self.screen_w , self.screen_h = wh.width() ,wh.height()
 		self.setGeometry(int((self.screen_w-300)/2),int((self.screen_h-600)/2),300,600)
+		self.setWindowOpacity(0.97); 
 
 		#当前播放歌曲的封面 
 		songer_img = DragLabel(self)
 		songer_img.setParent(self)
 		songer_img.resize(300,200)
-		# 模糊封面
-		# shadow_effect = QGraphicsDropShadowEffect()
-		# shadow_effect.setOffset(-50, -50)
-		# shadow_effect.setColor(Qt.black)
-		# shadow_effect.setBlurRadius(100)
-		# songer_img.setGraphicsEffect(shadow_effect)
+
 		self.picture = QLabel(songer_img)
 		self.picture.resize(300,200)
+		self.picture.setStyleSheet("QLabel{ background:#000;border-image:url(image/newimg/back.jpg)}")
+
+		syl = QLabel(" S Y L ",songer_img)
+		syl.setGeometry(5,0,150,25)
+		syl.setStyleSheet("QLabel{ background:transparent;color:white}")
+
+		# ================================
+		songinfo = QLabel(songer_img)
+		songinfo.setGeometry(0,30,300,80)
+		songinfo.setStyleSheet("QLabel{ background:transparent;}")
+
+		songpic = QLabel(songinfo)
+		songpic.setGeometry(10,0,80,80)
+		songpic.setStyleSheet("QLabel{ border-image:url(image/newimg/user.jpg);border-radius:2px;}")
+
+		self.songname = QLabel("老鼠爱大米 - 香香",songinfo)
+		self.songname.setGeometry(105,0,210,25)
+		self.songname.setStyleSheet("QLabel{ color:#EEE;font-size:15px;}")
+		singer = QLabel("By 张三的歌",songinfo)
+		singer.setGeometry(105,25,210,25)
+		singer.setStyleSheet("QLabel{ color:yellow;font-size:15px;}")
+
+		fenshu = QLabel("评分 - 7.6",songinfo)
+		fenshu.setGeometry(105,50,210,25)
 		# self.picture.setGraphicsEffect(QGraphicsBlurEffect())
-		self.picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url(image/zhangjie.jpg)}")
+		fenshu.setStyleSheet("QLabel{ color:#EEE;font-size:15px;}")
+
+
+		songtool = QLabel(songer_img)
+		songtool.setGeometry(0,110,300,35)
+		songtool.setStyleSheet("QLabel{ background:transparent;}")
+
+		playmodel = QLabel(songtool)
+		playmodel.setGeometry(20,10,25,25)
+		# self.picture.setGraphicsEffect(QGraphicsBlurEffect())
+		playmodel.setStyleSheet("QLabel{ border-image:url(image/newimg/kg_ic_player_liked.png);}")
+
+		pinglun = QLabel(songtool)
+		pinglun.setGeometry(50,5,33,33)
+		# self.picture.setGraphicsEffect(QGraphicsBlurEffect())
+		pinglun.setStyleSheet("QLabel{ border-image:url(image/newimg/pinglun.png);}")
+
+		pingfen = QLabel("查看这首歌的更多资料",songtool)
+		pingfen.setGeometry(100,5,200,25)
+		pingfen.setCursor(QCursor(Qt.PointingHandCursor))
+		pingfen.setStyleSheet("QLabel{ color:#BBB} QLabel:hover{color:red}")
+
+
+		# ======================================
 
 		# 顶部工具栏
 		# 隐藏
-		btn = QPushButton("x",self)
-		btn.setGeometry(260,0,40,20)
-		# btn.setCursor(QCursor(Qt.PointingHandCursor))
-		btn.setStyleSheet("QPushButton{ border:none;color:white;background:transparent } ")
+		btn = QPushButton("",self)
+		btn.setGeometry(270,0,15,32)
+		btn.setCursor(QCursor(Qt.PointingHandCursor))
+		btn.setStyleSheet("QPushButton{ border:none;color:white;background:transparent;border-image:url(image/newimg/mini.png) } ")
 		btn.clicked.connect(self.close)
 		# 设置封面
-		btn = QPushButton("封面",self)
-		btn.setGeometry(230,0,40,20)
+		# btn = QPushButton("",self)
+		# btn.setGeometry(230,-10,41,48)
 		# btn.setCursor(QCursor(Qt.PointingHandCursor))
-		btn.setStyleSheet("QPushButton{ border:none;color:white;background:transparent } ")
-		btn.clicked.connect(self.setHeaderImg)
+		# btn.setStyleSheet("QPushButton{ border:none;color:white;background:transparent;border-image:url(image/newimg/fengmian.png) } ")
+		# btn.clicked.connect(self.setHeaderImg)
 		# 开启/关闭歌词
-		btn = QPushButton("歌词",self)
-		btn.setGeometry(200,0,40,20)
-		btn.setCursor(QCursor(Qt.PointingHandCursor))
-		btn.setStyleSheet("QPushButton{ border:none;color:white;background:transparent } ")
-		btn.clicked.connect(self.lrc)
+		# btn = QPushButton("",self)
+		# btn.setGeometry(200,0,30,30)
+		# btn.setCursor(QCursor(Qt.PointingHandCursor))
+		# btn.setStyleSheet("QPushButton{ border:none;color:white;background:transparent;border-image:url(image/newimg/geci.png) } ")
+		# btn.clicked.connect(self.lrc)
 		# 播放模式  单曲循环  整体循环  随机播放
-		self.btnmoshi = QPushButton("全部",self)
-		self.btnmoshi.setGeometry(170,0,40,20)
-		self.btnmoshi.setCursor(QCursor(Qt.PointingHandCursor))
-		self.btnmoshi.setStyleSheet("QPushButton{ border:none;color:white;background:transparent } ")
-		self.btnmoshi.clicked.connect(self.moshi)
+		# self.btnmoshi = QPushButton("全部",self)
+		# self.btnmoshi.setGeometry(170,0,40,20)
+		# self.btnmoshi.setCursor(QCursor(Qt.PointingHandCursor))
+		# self.btnmoshi.setStyleSheet("QPushButton{ border:none;color:white;background:transparent } ")
+		# self.btnmoshi.clicked.connect(self.moshi)
 
 		# 播放组件  ( 播放  前进 后退 播放时间 进度条 歌曲名 音量 )
 		# 播放/暂停
 		self.playBtn = QPushButton("",songer_img)
-		self.playBtn.setGeometry(116,110,68,68)
-		self.playBtn.setStyleSheet("QPushButton{ border-image:url(image/playnew.png);border:none } QPushButton:hover{ border-image:url(image/playnewhover.png)} ")
+		self.playBtn.setGeometry(130,155,32,25)
+		self.playBtn.setStyleSheet("QPushButton{ border-image:url(image/newimg/statusbar_btn_play.png);border:none } QPushButton:hover{ border-image:url(image/newimg/statusbar_btn_play.png)} ")
 		# 下一首
 		self.nextBtn = QPushButton("",songer_img)
-		self.nextBtn.setGeometry(176,129,34,34)
-		self.nextBtn.setStyleSheet("QPushButton{ border-image:url(image/nextnew.png);border:none } QPushButton:hover{ border-image:url(image/nextnewhover.png)}")
+		self.nextBtn.setGeometry(186,159,20,20)
+		self.nextBtn.setStyleSheet("QPushButton{ border-image:url(image/newimg/statusbar_btn_next.png);border:none } QPushButton:hover{ border-image:url(image/newimg/statusbar_btn_next.png)}")
+		# 播放模式
+		self.prevBtn = QPushButton("",songer_img)
+		self.prevBtn.setGeometry(236,159,20,20)
+		self.prevBtn.setStyleSheet("QPushButton{ border-image:url(image/newimg/ic_player_menu_volume.png);border:none } QPushButton:hover{ border-image:url(image/newimg/ic_player_menu_volume.png)}")
+
 		# 上一首
 		self.prevBtn = QPushButton("",songer_img)
-		self.prevBtn.setGeometry(83,129,34,34)
-		self.prevBtn.setStyleSheet("QPushButton{ border-image:url(image/prenew.png);border:none } QPushButton:hover{ border-image:url(image/prenewhover.png)}")
+		self.prevBtn.setGeometry(85,159,20,20)
+		self.prevBtn.setStyleSheet("QPushButton{ border-image:url(image/newimg/statusbar_btn_prev.png);border:none } QPushButton:hover{ border-image:url(image/newimg/statusbar_btn_prev.png)}")
+		# 播放模式
+		self.prevBtn = QPushButton("",songer_img)
+		self.prevBtn.setGeometry(35,156,25,25)
+		self.prevBtn.setStyleSheet("QPushButton{ border-image:url(image/newimg/ic_player_mode_single_default.png);border:none } QPushButton:hover{ border-image:url(image/newimg/ic_player_mode_single_default.png)}")
+
 		# 当前播放时间
 		self.songTime = QLabel("",self)
 		self.songTime.setGeometry(220,180,80,20)
-		self.songTime.setStyleSheet("QLabel{ color:white;}")
+		self.songTime.setStyleSheet("QLabel{ color:#AAA;font-size:12px;}")
 		self.songTime.setAlignment(Qt.AlignHCenter)
 		# 音量
 		# self.vol = QSlider(Qt.Horizontal,self)
@@ -106,33 +159,33 @@ class Music(QWidget):
 		# self.vol.setStyleSheet(qss_vol)
 		# 当前歌曲名   
 		self.currentMusicName = QLabel("",songer_img)
-		# self.currentMusicName.setGeometry(0,50,300,80)
 		self.currentMusicName.setGeometry(0,180,200,20)
-		# self.currentMusicName.setAlignment(Qt.AlignHCenter)
 		self.currentMusicName.setStyleSheet("QLabel{ color:white ;font-weight:100;font-size:12px;margin-left:5px;}")
 		# 歌曲进度条
 		self.processSlider = QSlider(Qt.Horizontal,self)
-		self.processSlider.setGeometry(0,200,300,10)
+		self.processSlider.setGeometry(0,193,300,7)
 		# self.processSlider.setRange(1,100)
 		# self.processSlider.setValue(0)
 		self.processSlider.setStyleSheet(qss_process_slider)
+		
+		self.processSlider.setCursor(QCursor(Qt.UpArrowCursor))
 
 		# 歌曲列表 ---------------------------
 		listWgt = QWidget(self)
-		listWgt.setGeometry(0, 210, 300,370)
+		listWgt.setGeometry(0, 200, 300,380)
 		listWgt.setStyleSheet(qss_scrollbar)
 		# 补白
 		bu = QWidget(listWgt)
-		bu.setGeometry(0,0,5,370)
+		bu.setGeometry(0,0,5,380)
 		# bu.setStyleSheet("QWidget{ border-image:url(image/borderleft.png) }")
 
 		bu2 = QWidget(listWgt)
-		bu2.setGeometry(295,0,5,370)
+		bu2.setGeometry(295,0,5,380)
 		# bu2.setStyleSheet("QWidget{ border-image:url(image/borderright.png) }")
 
 		#列表
 		self.songList = QListWidget(listWgt)
-		self.songList.setGeometry(5,0,235,370)   
+		self.songList.setGeometry(5,0,235,380)   
 		self.songList.setStyleSheet(qss_songlist)	
 		# 列表添加右键菜单
 		# self.songList.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -140,7 +193,7 @@ class Music(QWidget):
 
 		#歌曲列表右边的功能列表
 		funcList = QListWidget(listWgt)
-		funcList.setGeometry(240,0,55,370)   
+		funcList.setGeometry(240,0,55,380)   
 		funcList.setStyleSheet(qss_menu)
 		btn = QPushButton("",funcList)
 		btn.clicked.connect(self.newwindow)
@@ -183,7 +236,7 @@ class Music(QWidget):
 		wg = QWidget(self)
 		wg.setGeometry(0, 580, 300,20)
 		wg.setStyleSheet("QWidget{ background:#2D2D2D; } ")
-		ql = QLabel(" <a style='color:grey;text-decoration:none;'  href ='https://github.com/codeAB/music-player' >sylsong.com 一首歌一段故事 </a>",wg)
+		ql = QLabel(" <a style='color:grey;text-decoration:none;font-size:12px;'  href ='https://github.com/codeAB/music-player' >www.sylsong.com </a>",wg)
 		ql.resize(300,20)
 		ql.setAlignment(Qt.AlignRight)
 		ql.linkActivated.connect(self.openurl)
