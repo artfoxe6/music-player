@@ -81,20 +81,19 @@ class Music(QWidget):
 		songtool.setGeometry(0,110,300,35)
 		songtool.setStyleSheet("QLabel{ background:transparent;}")
 
-		playmodel = QLabel(songtool)
-		playmodel.setGeometry(20,10,25,25)
-		# self.picture.setGraphicsEffect(QGraphicsBlurEffect())
-		playmodel.setStyleSheet("QLabel{ border-image:url(image/newimg/kg_ic_player_liked.png);}")
-
+		# 喜欢歌曲
+		lovesong = QLabel(songtool)
+		lovesong.setGeometry(20,10,25,25)
+		lovesong.setStyleSheet("QLabel{ border-image:url(image/newimg/kg_ic_player_liked.png);}")
+		# 评论
 		pinglun = QLabel(songtool)
 		pinglun.setGeometry(50,5,33,33)
-		# self.picture.setGraphicsEffect(QGraphicsBlurEffect())
 		pinglun.setStyleSheet("QLabel{ border-image:url(image/newimg/pinglun.png);}")
-
-		pingfen = QLabel("查看这首歌的更多资料",songtool)
-		pingfen.move(100,10)
-		pingfen.setCursor(QCursor(Qt.PointingHandCursor))
-		pingfen.setStyleSheet("QLabel{ color:#BBB} QLabel:hover{color:pink}")
+		# 歌曲更多信息
+		songmore = QLabel("查看这首歌的更多资料",songtool)
+		songmore.move(100,10)
+		songmore.setCursor(QCursor(Qt.PointingHandCursor))
+		songmore.setStyleSheet("QLabel{ color:#BBB} QLabel:hover{color:pink}")
 
 
 		# ======================================
@@ -134,19 +133,20 @@ class Music(QWidget):
 		self.nextBtn = QPushButton("",songer_img)
 		self.nextBtn.setGeometry(186,159,20,20)
 		self.nextBtn.setStyleSheet("QPushButton{ border-image:url(image/newimg/statusbar_btn_next.png);border:none } QPushButton:hover{ border-image:url(image/newimg/statusbar_btn_next.png)}")
-		# 播放模式
-		self.prevBtn = QPushButton("",songer_img)
-		self.prevBtn.setGeometry(236,159,20,20)
-		self.prevBtn.setStyleSheet("QPushButton{ border-image:url(image/newimg/ic_player_menu_volume.png);border:none } QPushButton:hover{ border-image:url(image/newimg/ic_player_menu_volume.png)}")
+		# 银狼调节
+		self.songvolume = QPushButton("",songer_img)
+		self.songvolume.setGeometry(236,159,20,20)
+		self.songvolume.setStyleSheet("QPushButton{ border-image:url(image/newimg/ic_player_menu_volume.png);border:none } QPushButton:hover{ border-image:url(image/newimg/ic_player_menu_volume.png)}")
 
 		# 上一首
 		self.prevBtn = QPushButton("",songer_img)
 		self.prevBtn.setGeometry(85,159,20,20)
 		self.prevBtn.setStyleSheet("QPushButton{ border-image:url(image/newimg/statusbar_btn_prev.png);border:none } QPushButton:hover{ border-image:url(image/newimg/statusbar_btn_prev.png)}")
 		# 播放模式
-		self.prevBtn = QPushButton("",songer_img)
-		self.prevBtn.setGeometry(35,156,25,25)
-		self.prevBtn.setStyleSheet("QPushButton{ border-image:url(image/newimg/ic_player_mode_single_default.png);border:none } QPushButton:hover{ border-image:url(image/newimg/ic_player_mode_single_default.png)}")
+		self.playmodel = QPushButton("",songer_img)
+		self.playmodel.setGeometry(35,156,25,25)
+		self.playmodel.setStyleSheet("QPushButton{ border-image:url(image/newimg/allmodel.png);border:none } QPushButton:hover{ border-image:url(image/newimg/allmodel.png)}")
+		self.playmodel.clicked.connect(self.moshi)
 
 		# 当前播放时间
 		self.songTime = QLabel("",self)
@@ -379,19 +379,20 @@ class Music(QWidget):
 			self.lrctext = DLabel(self)
 			self.p.showgeci()
 	def moshi(self):
-		ct = self.btnmoshi;
-		if ct.text() == '全部':
-			ct.setText(str("随机"))
-			self.playlist.setPlaybackMode(QMediaPlaylist.Random)
-			return False
-		if ct.text() == '随机':
-			ct.setText(str("单曲"))
-			self.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
-			return False
-		if ct.text() == '单曲':
-			ct.setText(str("全部"))
+		ct = self.playmodel;
+		currentModel = self.playlist.playbackMode()
+		if currentModel == 1:
+			self.playlist.setPlaybackMode(QMediaPlaylist.Sequential)
+			self.playmodel.setStyleSheet("QPushButton{ border-image:url(image/newimg/ic_player_mode_all_default.png); } QPushButton:hover{ border-image:url(image/newimg/ic_player_mode_all_default.png)}")
+		elif currentModel == 2:
 			self.playlist.setPlaybackMode(QMediaPlaylist.Loop)
-			return False
+			self.playmodel.setStyleSheet("QPushButton{ border-image:url(image/newimg/allmodel.png); } QPushButton:hover{ border-image:url(image/newimg/allmodel.png)}")
+		elif currentModel == 3:
+			self.playlist.setPlaybackMode(QMediaPlaylist.Random)
+			self.playmodel.setStyleSheet("QPushButton{ border-image:url(image/newimg/ic_player_mode_random_default.png); } QPushButton:hover{ border-image:url(image/newimg/ic_player_mode_random_default.png)}")
+		elif currentModel == 4:
+			self.playlist.setPlaybackMode(QMediaPlaylist.CurrentItemInLoop)
+			self.playmodel.setStyleSheet("QPushButton{ border-image:url(image/newimg/ic_player_mode_single_default.png); } QPushButton:hover{ border-image:url(image/newimg/ic_player_mode_single_default.png)}")
 
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
