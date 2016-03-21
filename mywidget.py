@@ -6,12 +6,13 @@ import os
 import urllib.request
 from conf.conf import conf
 from PyQt5.QtWidgets import (
-    QApplication, QWidget, QPushButton, QLineEdit, QLabel)
+    QApplication, QWidget, QPushButton, QLineEdit, QLabel,QMenu,QAction)
 from PyQt5.QtWebKitWidgets import QWebPage, QWebView
 from PyQt5.QtCore import (Qt, QUrl, pyqtSlot,QPropertyAnimation,QRect,pyqtSignal,QThread)
 from PyQt5.QtGui import ( QCursor, QIcon,QLinearGradient,QLinearGradient,QFont,QPainter,QColor,QPen )
 from baidumusic import bdmusic
 import threading
+from qss import *
 
 #音乐窗首页
 class index(QWidget):
@@ -136,7 +137,7 @@ class index(QWidget):
 
 
 class DragLabel(QLabel):
-
+    setwinflag = pyqtSignal(int)
     def __init__(self,window):
         super().__init__()
         self.window = window
@@ -144,26 +145,22 @@ class DragLabel(QLabel):
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.drag_flag = True
-            # if hasattr(self.window, 'widget1'):
-            #     self.begin_position2 = event.globalPos() - \
-            #         self.window.widget1.pos()
             self.begin_position = event.globalPos() - self.window.pos()
             event.accept()
             self.setCursor(QCursor(Qt.OpenHandCursor))
 
     def mouseMoveEvent(self, QMouseEvent):
         if Qt.LeftButton and self.drag_flag:
-            # if hasattr(self.window, 'widget1'):
-            #     self.window.widget1.move(
-            #         QMouseEvent.globalPos() - self.begin_position2)
-            #     self.window.move(QMouseEvent.globalPos() - self.begin_position)
-            # else:
             self.window.move(QMouseEvent.globalPos() - self.begin_position)
             QMouseEvent.accept()
 
     def mouseReleaseEvent(self, QMouseEvent):
         self.drag_flag = False
         self.setCursor(QCursor(Qt.ArrowCursor))
+        # if self.window.pos().y() < 100:
+        #     self.setwinflag.emit(2)
+        # else:
+        #     self.setwinflag.emit(1)
 
 
 class DLabel(QLabel):
@@ -304,17 +301,64 @@ class listlabel(QLabel):
     def __init__(self):
         super().__init__()
     def mouseDoubleClickEvent(self, QMouseEvent):
-        index = self.parent().findChild(QPushButton,'',Qt.FindDirectChildrenOnly).text()
+        index = self.findChild(QPushButton,'',Qt.FindDirectChildrenOnly).text()
         self.doubleclicked.emit(int(index))
+    # 设置当前播放的label样式
+    def currentplay(self,flag=0):
+        if flag == 0:
+            self.setStyleSheet("QLabel{ font-weight:100;color:#2D2D2D;background:transparent ;font-size:14px;padding-left:40px;} QLabel:hover{ color:#fff;background:#A448C4  }")
+        else:
+            self.setStyleSheet("QLabel{ font-weight:100;color:#fff;background:#A448C4 ;font-size:14px;padding-left:40px;}   }")
     # def enterEvent(self,QMouseEvent):
     #     print("hover")
+    # def mouseReleaseEvent(self,QMouseEvent):
+    #     self.setStyleSheet("QLabel{ font-weight:100;color:#2D2D2D;background:red ;font-size:14px;padding-left:40px;} \
+    #      QLabel:hover{ color:#fff;background:#A448C4  }")
 
 
+class youjianWidget(QWidget):
+    deletesong = pyqtSignal(int)
+    def __init__(self):
+        super().__init__()
+    def contextMenuEvent(self,event):
+        # print(dir(event))
+        rightMenu = QMenu(self)
+        rightMenu.setWindowOpacity(0.95); 
+        # print(dir(rightMenu))
+        rightMenu.setStyleSheet(qss_rightmenu) 
+        loveAction = QAction(u"添加收藏", self, triggered=self.noexc)
+        delAction = QAction(u"删除文件", self, triggered=self.deleteSongItem)    
+        rateAction = QAction(u"我要打分", self, triggered=self.noexc)    
+        cmAction = QAction(u"评论", self, triggered=self.noexc)  
+        moreAction = QAction(u"歌曲详情", self, triggered=self.noexc)  
+        moneyAction = QAction(u"打赏", self, triggered=self.noexc)  
+        rightMenu.addAction(loveAction)
+        rightMenu.addAction(delAction)
+        rightMenu.addAction(rateAction)
+        rightMenu.addAction(cmAction)
+        rightMenu.addAction(moreAction)
+        rightMenu.addAction(moneyAction)
+        rightMenu.exec_(QCursor.pos())
+    def noexc(self):
+        pass
+    def deleteSongItem(self):
+        listlabelitem = self.findChildren(QLabel,'songitem',Qt.FindChildrenRecursively)
+        # 要删除的行  实际上要减一
+        index = listlabelitem[0].findChild(QPushButton,'',Qt.FindDirectChildrenOnly).text()
+        self.deletesong.emit(int(index))
+        # 删除后随即刷新编号
+        allitem = self.parent().findChildren(QLabel,'songitem',Qt.FindChildrenRecursively)
+        for x in allitem:
+            xbtn = x.findChild(QPushButton,'',Qt.FindDirectChildrenOnly)
+            if int(xbtn.text()) > int(index):
+                xbtn.setText(str(int(xbtn.text())-1))
+        # removeItemWidget
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     # music = search()
-    music = index()
-    music.show()
+    music = QLabel()
+    # music.show()
+    print(dir(music))
     # app.exec_()
-    sys.exit(app.exec_())
+    # sys.exit(app.exec_())

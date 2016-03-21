@@ -23,9 +23,10 @@ QListWidget::item{ color:grey ;height:40px;margin-left:0px;}
 """
 
 """
-QListWidget::item{ color:grey ;height:40px;margin-left:5px;}  
-QListWidget::item:hover{background:pink} 
-QListWidget::item:selected{background:#E8FFE3;} 
+QListWidget::item{ color:red ;height:40px;margin-left:5px;}  
+QListWidget::item:hover{color:red} 
+QListWidget::item:selected{color:red;} 
+QListWidget::item:checked{color:red;} 
 """
 
 # 菜单  
@@ -75,7 +76,7 @@ QSlider::add-page:horizontal {
 QSlider::sub-page:horizontal {
     background: #666;
     margin-left:0px;
-    border-radius:3px;
+    border-radius:2px;
 }
 
 """
@@ -83,24 +84,31 @@ QSlider::sub-page:horizontal {
 qss_vol = """
 
 QSlider::groove:horizontal {
-    background: #5FF199;
+    background: #A4A4A4;
     position: absolute;
+    border-radius:2px;
 }
 
 QSlider::handle:horizontal {
     width: 10px;
-    background: white;
+    background: #CCC;
     margin:0 2px;
 }
 
 QSlider::add-page:horizontal {
-    background: #5FF199;
+    background: #A4A4A4;
+    border-radius:2px;
 }
 
 QSlider::sub-page:horizontal {
-    background: #5FF199;
+    background: #A4A4A4;
     margin-left:2px;
+    border-radius:2px;
 }
 
 
+"""
+
+qss_rightmenu = """
+    QMenu{ width:100px;border:none;padding:5px;background:#EEE } QMenu::item{ background-color: transparent;width:70px;text-align:center;height:25px; margin:0px 0px;border-bottom:1px solid #EEE;padding-left:20px;color:#333 }  QMenu::item:selected{ color:red;border-bottom:1px solid pink;background:none; }
 """

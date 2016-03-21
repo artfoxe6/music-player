@@ -4,12 +4,12 @@
 from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent,QMediaMetaData)
 from conf.conf import conf
 from PyQt5.QtCore import QUrl,Qt,QTime,QSize,QTimer
-from PyQt5.QtWidgets import QListWidgetItem,QMenu,QAction,QWidget,QPushButton,QLabel
+from PyQt5.QtWidgets import QListWidgetItem,QMenu,QAction,QWidget,QPushButton,QLabel,QDialog
 from PyQt5.QtGui import QBrush,QIcon,QCursor
 import os
 import re
 from mutagen.mp3 import MP3
-from mywidget import listlabel
+from mywidget import listlabel,youjianWidget
 import random
 
 class Player():
@@ -17,9 +17,11 @@ class Player():
   def __init__(self,music):
     self.duration = 0  #当前歌曲时长
     self.music = music
+    # self.music.setWindowFlags(Qt.X11BypassWindowManagerHint)
     self.lrcmap = {}
     self.filename = ""
     self.music.player = QMediaPlayer()
+    self.music.player.setVolume(self.music.volslider.value())
     
     # print(dir(self.music.player))
     self.music.playlist = QMediaPlaylist()
@@ -42,6 +44,7 @@ class Player():
     self.music.player.durationChanged.connect(self.durationChanged)
     self.music.player.error.connect(self.displayErrorMessage)
     self.music.processSlider.valueChanged.connect(self.song_pro)
+    self.music.volslider.valueChanged.connect(self.songvol)
 
     preAction = QAction(u"上一曲 ", self.music,triggered=self.prevone)
     pauseAction = QAction(u"暂停|播放 ", self.music,triggered=self.play_or_pause)
@@ -61,7 +64,9 @@ class Player():
     else:
       self.music.processSlider.setValue(0)
     # print(pro,self.songpro)
-
+  def songvol(self,vl):
+    self.music.player.setVolume(vl)
+    # print(self.music.player.volume())
   def durationChanged(self,duration):
     # 清空前一首歌词
     self.lrcmap = {}
@@ -136,7 +141,8 @@ class Player():
       currentTime = QTime((currentInfo/3600)%60, (currentInfo/60)%60, currentInfo%60, (currentInfo*1000)%1000)
       totalTime = QTime((duration/3600)%60, (duration/60)%60, duration%60, (duration*1000)%1000);
       format = 'hh:mm:ss' if duration > 3600 else 'mm:ss'
-      tStr = currentTime.toString(format) + " / " + totalTime.toString(format)
+      # tStr = currentTime.toString(format) + " / " + totalTime.toString(format)
+      tStr = currentTime.toString(format)
     else:
       Str = ""
     self.music.songTime.setText(tStr)
@@ -148,32 +154,40 @@ class Player():
     listfile = os.listdir(conf['mp3dir'])
     x = 0
     for name in listfile:
+      # print(name)
       s = os.path.splitext(name)[1][1:]
       if(s.upper() == 'MP3'):
         x+=1
-        songname = name.split(".")[0]
+        songname = name[0:-4]
         item = QListWidgetItem()
+        item.setFlags(Qt.NoItemFlags)
+
         item.setSizeHint(QSize(210,40))
-        lwg = QWidget()
-        # lwg.setParent(item)
-        lwg.setObjectName("songlist")
-        lwg.setCursor(QCursor(Qt.PointingHandCursor))
+        lwg = youjianWidget()
+        lwg.deletesong.connect(self.deletesong)
+        # print(dir(lwg))
+        # return False
+        # lwg.setObjectName("songlist")
         lwg.setGeometry(20,0,140,30)
-        lwg.setObjectName("hehe")
+        # lwg.setObjectName("songitem")
         # lwg.clicked.connect(self.playit)
-        lwg.setStyleSheet("QWidget#hehe:hover{background:#A448C4;margin-left:-5px} \
-          QWidget#hehe{border-radius:0px;} \
-          ")
-        btn = QPushButton(str(x),lwg)
-        btn.setGeometry(5,8,24,24)
-        btn.setStyleSheet("QPushButton{ border-radius:12px;background:#3698DB;color:#DDD;font-size:12px;font-weight:blod }")
+        # lwg.setStyleSheet("QWidget#songitem:hover{background:#A448C4;margin-left:-5px} \
+        #   QWidget#songitem{border-radius:0px;} \
+        #   ")
+        
+        # 使用自定义list组件  响应自定义信号
         ql = listlabel()
+        ql.setObjectName("songitem")
         ql.setText(songname)
         ql.setParent(lwg)
-        ql.setGeometry(40,0,190,40)  #transparent
-        ql.setStyleSheet("QLabel{ font-weight:100;color:#2D2D2D;background:transparent ;font-size:14px;} \
-         QLabel:hover{ color:#fff }")
+        ql.setGeometry(0,0,240,40)  #transparent
+        ql.setStyleSheet("QLabel{ font-weight:100;color:#2D2D2D;background:transparent ;font-size:14px;padding-left:40px;} \
+         QLabel:hover{ color:#fff;background:#A448C4  }")
         ql.doubleclicked.connect(self.playit)
+        btn = QPushButton(str(x),ql)
+        btn.setGeometry(5,8,24,24)
+        btn.setStyleSheet("QPushButton{ border-radius:12px;background:#3698DB;color:#DDD;font-size:12px;font-weight:blod }")
+
         self.music.songList.addItem(item)
         self.music.songList.setItemWidget(item, lwg)
 
@@ -206,8 +220,17 @@ class Player():
       current_song_path = self.music.playlist.currentMedia().canonicalUrl().toString()
       #当前播放的是item index
       ci = self.music.playlist.currentIndex()
+      # print(ci)
       playitem = self.music.songList.item(ci)
-      playitem.setSelected(True)
+      # playitem.setSelected(True)
+      songitemlabel = self.music.songList.findChildren(QLabel,'songitem',Qt.FindChildrenRecursively)
+      # print(len(songitemlabel))
+      # songitemlabel[0]
+      # currentplay
+      for x in songitemlabel:
+        x.currentplay()
+      songitemlabel[ci].currentplay(1)
+      # print(dir(playitem))
       #把qt的路径格式转换为绝对路径
       audio = MP3(current_song_path[7:])
       # print(audio)
@@ -215,20 +238,12 @@ class Player():
       # print(audio.get('TPE1'))  #歌手
       # print(audio.get('TALB'))  #专辑
       # s = str(audio.get('TIT2'))+"-"+str(audio.get('TPE1'))
-      s = str(audio.get('TIT2'))
-      # print(s)
-      if len(s) > 12:
-          s = s[0:12]+"..."
-      # print(s)
+      s = str(audio.get('TIT2')) or "未命名"
       
       self.filename = s
-      self.music.currentSonger = str(audio.get('TPE1'))
+      self.music.currentSonger = str(audio.get('TPE1')) or "未知"
       # print(self.music.currentSonger)
       self.music.songname.setText(s+" - "+str(audio.get('TPE1')))
-      local = os.path.join('./cache/', str(audio.get('TPE1'))+'.jpg')
-      if not os.path.isfile(local):
-        local = os.path.join('.', 'image/newimg/back.jpg')
-      self.music.picture.setStyleSheet("QLabel{ background:#9B0069;border-image:url("+local+")}")
       
   # 播放状态改变
   def stateChanged(self):
@@ -258,7 +273,7 @@ class Player():
         self.timer.stop()
 
   def setPlayBtn(self,stat):
-    self.music.playBtn.setStyleSheet("QPushButton{ border-image:url(image/newimg/"+stat+".png);border:none } QPushButton:hover{ border-image:url(image/newimg/"+stat+".png)} ")
+    self.music.playBtn.setStyleSheet("QPushButton{ border-image:url(image/newimg/"+stat+".png);border:none } QPushButton:hover{ border-image:url(image/newimg/"+stat+"_2.png)} ")
   def refreshlrc(self):
     # print(random.randint(0,99))
     if self.music.player.state() in (QMediaPlayer.StoppedState, QMediaPlayer.PausedState):
@@ -278,8 +293,20 @@ class Player():
           if self.lrcmap[k] != '':
             self.music.lrctext.setText(self.lrcmap[k])
             break
-
-
+  def deletesong(self,index):
+    item = self.music.songList.item(index-1)
+    # print(index-1)
+    
+    # print(self.music.songList.count())
+    allitem = self.music.songList.findChildren(QLabel,'songitem',Qt.FindChildrenRecursively)
+    songpath = self.music.playlist.media(index-1).canonicalUrl().toString()
+    # print(songpath[7:])
+    self.music.playlist.removeMedia(index-1)
+    self.music.songList.takeItem(index-1)
+    # os.remove(songpath[7:])
+    # QDialog().exec()
+    # if not os.remove(songpath[7:]):
+        # QDialog("cdcds").exec()
   
 
 if __name__ == "__main__":
