@@ -22,17 +22,19 @@ class Music(QWidget):
 		self.setWindowTitle("SYL")
 		self.setObjectName("box")
 		# 窗口无边框
-		# self.setWindowFlags(Qt.FramelessWindowHint)
+		self.setWindowFlags(Qt.FramelessWindowHint)
 		# 窗口居于所有窗口的顶端 
 		# self.setWindowFlags(Qt.WindowOverridesSystemGestures)
 		# 窗口居于所有窗口的顶端  针对部分X11
-		self.setWindowFlags(Qt.X11BypassWindowManagerHint)
+		# self.setWindowFlags(Qt.X11BypassWindowManagerHint)
 		# 初始化基本UI界面
 		self.initUI()
 		# 初始化播放核心
 		self.initplayer()
 		# 显示主界面
 		self.show()
+		self.widget1 = index()
+		self.widget1.setParent(self)
 		
 	def initUI(self):
 		# 获取电脑屏幕宽高 让主界面初始化后处于屏幕中间
@@ -215,15 +217,12 @@ class Music(QWidget):
 			QPushButton:hover{ border-image:url(image/mvhover.png) }")
 		# btn.setCursor(QCursor(Qt.PointingHandCursor))
 
-		btn = QPushButton("",funcList)
-		btn.setGeometry(15,225,33,33)
-		btn.setStyleSheet("QPushButton{ border-image:url(image/settinghover.png) }\
+		setbtn = QPushButton("",funcList)
+		setbtn.setGeometry(15,225,33,33)
+		setbtn.setStyleSheet("QPushButton{ border-image:url(image/settinghover.png) }\
 			QPushButton:hover{ border-image:url(image/setting.png) }")
-		btn.setCursor(QCursor(Qt.PointingHandCursor))
+		setbtn.clicked.connect(self.openseting)
 
-		# btn = QPushButton("日志",funcList).setGeometry(0,120,55,40)
-		# btn = QPushButton("M V",funcList).setGeometry(0,160,55,40)
-		# btn = QPushButton("关于",funcList).setGeometry(0,200,60,40)
 		#底部状态栏
 		wg = QWidget(self)
 		wg.setGeometry(0, 580, 300,20)
@@ -289,14 +288,23 @@ class Music(QWidget):
 	#打开音乐窗
 	def newwindow(self):
 		if not hasattr(self,'widget1'):
-			self.widget1 = index()
-			self.widget1.setParent(self)
+			# self.widget1 = index()
+			# self.widget1.setParent(self)
+
 			# 获取屏幕宽高
 			wh = QApplication.desktop().screenGeometry()
 			self.screen_w , self.screen_h = wh.width() ,wh.height()
 			self.move(int((self.screen_w-900)/2),int((self.screen_h-600)/2))
 			self.widget1.show()
 		else:
+			if self.size().width() == 900:
+				self.resize(300,600)
+				self.widget1.hide()
+				return True
+
+			# wh = QApplication.desktop().screenGeometry()
+			# self.screen_w , self.screen_h = wh.width() ,wh.height()
+			# self.move(int((self.screen_w-900)/2),int((self.screen_h-600)/2))
 			self.widget1.show()
 		self.resize(900,600)
 		
@@ -411,6 +419,14 @@ class Music(QWidget):
 	# 		self.setWindowFlags(Qt.FramelessWindowHint)
 	# 		self.update()
 	# 		self.show()
+	def openseting(self):
+		
+		if not hasattr(self,'popwindow'):
+			self.popwindow = popWindow(1)
+		else:
+			self.popwindow.show()
+		
+		
 if __name__ == '__main__':
 	app = QApplication(sys.argv)
 	music = Music()

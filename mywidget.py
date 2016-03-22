@@ -6,13 +6,14 @@ import os
 import urllib.request
 from conf.conf import conf
 from PyQt5.QtWidgets import (
-    QApplication, QWidget, QPushButton, QLineEdit, QLabel,QMenu,QAction)
+    QApplication, QWidget, QPushButton, QLineEdit, QLabel,QMenu,QAction,QFileDialog)
 from PyQt5.QtWebKitWidgets import QWebPage, QWebView
 from PyQt5.QtCore import (Qt, QUrl, pyqtSlot,QPropertyAnimation,QRect,pyqtSignal,QThread)
 from PyQt5.QtGui import ( QCursor, QIcon,QLinearGradient,QLinearGradient,QFont,QPainter,QColor,QPen )
 from baidumusic import bdmusic
 import threading
 from qss import *
+from conf.conf import conf
 
 #音乐窗首页
 class index(QWidget):
@@ -44,11 +45,11 @@ class index(QWidget):
         self.web.page().mainFrame().javaScriptWindowObjectCleared.connect(
             self.populateJavaScriptWindowObject)
         # 关闭按钮
-        btn = QPushButton("收起", self)
-        btn.setGeometry(540, 5, 60, 30)
-        btn.setCursor(QCursor(Qt.PointingHandCursor))
+        btn = QPushButton("", self)
+        btn.setGeometry(540, 5, 44, 34)
+        # btn.setCursor(QCursor(Qt.PointingHandCursor))
         btn.setStyleSheet(  
-            "QPushButton{ border:none;color:white;background-color:black } ")
+            "QPushButton{ border-image:url(image/newimg/ic_common_title_bar_back_2.png) } QPushButton:hover{ border-image:url(image/newimg/ic_common_title_bar_back.png) } ")
         btn.clicked.connect(self.myclose)
     # 接收一个字符串参数
 
@@ -354,11 +355,90 @@ class youjianWidget(QWidget):
                 xbtn.setText(str(int(xbtn.text())-1))
         # removeItemWidget
 
+# 弹出框 
+class popWindow(QLabel):
+    setwinflag = pyqtSignal(int)
+    def __init__(self,func):
+        super().__init__()
+        # 窗口居于所有窗口的顶端 
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        # 窗口居于所有窗口的顶端  针对部分X11
+        # self.setWindowFlags(Qt.X11BypassWindowManagerHint)
+        self.resize(600,450)
+
+        self.title = QLabel(self);
+        self.title.setGeometry(0,0,600,40)
+        self.title.setStyleSheet("QLabel{ background:#252C34 }")
+        self.setStyleSheet("QWidget{ background:#fff }")
+        closebtn = QPushButton(self.title)
+        closebtn.setGeometry(550, 0, 44, 34)
+        # btn.setCursor(QCursor(Qt.PointingHandCursor))
+        closebtn.setStyleSheet(  
+            "QPushButton{ background:#252C34;border-image:url(image/newimg/ic_common_title_bar_back_2.png) } QPushButton:hover{ border-image:url(image/newimg/ic_common_title_bar_back.png) } ")
+        closebtn.clicked.connect(self.close)
+
+        wh = QApplication.desktop().screenGeometry()
+        screen_w , screen_h = wh.width() ,wh.height()
+        self.move(int((screen_w-600)/2),int((screen_h-450)/2))
+        if func == 1:
+            self.setting()
+        elif func == 2:
+            self.other()
+        self.show()
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.drag_flag = True
+            self.begin_position = event.globalPos() - self.pos()
+            event.accept()
+            self.setCursor(QCursor(Qt.OpenHandCursor))
+
+    def mouseMoveEvent(self, QMouseEvent):
+        if Qt.LeftButton and self.drag_flag:
+            self.move(QMouseEvent.globalPos() - self.begin_position)
+            QMouseEvent.accept()
+
+    def mouseReleaseEvent(self, QMouseEvent):
+        self.drag_flag = False
+        self.setCursor(QCursor(Qt.ArrowCursor))
+        # self.close()
+    def setting(self):
+        label = QLabel("设置音乐文件目录（确保目录有读写权限）",self)
+        label.move(10,50)
+        label.setStyleSheet("QLabel{ color:#252C34;font-size:18px; }")
+
+        btn = QPushButton("选择",self)
+        btn.move(10,80)
+        btn.clicked.connect(self.selectdir) 
+
+        self.currentdir = QLabel(conf['mp3dir'],self)
+        self.currentdir.move(100,85)
+
+        tip = QLabel(" ● 所有设置重启播放器后生效",self)
+        tip.move(5,10)
+        tip.setStyleSheet("QLabel{ color:white;background:transparent;font-size:16px; }")
+
+    def selectdir(self):
+        fileinput = QFileDialog.getExistingDirectory(self,"选择你的音乐目录","/")
+        
+        if not fileinput:
+            return False
+        else: 
+            f=open("conf/conf.py","w+")
+            conf['mp3dir'] = fileinput
+            f.write("conf = "+str(conf))
+            f.close()
+            self.currentdir.setText(fileinput)
+    def other(self):
+        print("other")
+
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     # music = search()
-    music = QLabel()
-    # music.show()
-    print(dir(music))
+    music = popWindow(1)
+    music.show()
+    # print(dir(music))
     # app.exec_()
-    # sys.exit(app.exec_())
+    sys.exit(app.exec_())
