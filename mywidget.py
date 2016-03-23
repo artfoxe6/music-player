@@ -6,8 +6,9 @@ import os
 import urllib.request
 from conf.conf import conf
 from PyQt5.QtWidgets import (
-    QApplication, QWidget, QPushButton, QLineEdit, QLabel,QMenu,QAction,QFileDialog)
+    QApplication, QWidget, QPushButton, QLineEdit, QLabel,QMenu,QAction,QFileDialog,QMessageBox)
 from PyQt5.QtWebKitWidgets import QWebPage, QWebView
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import (Qt, QUrl, pyqtSlot,QPropertyAnimation,QRect,pyqtSignal,QThread)
 from PyQt5.QtGui import ( QCursor, QIcon,QLinearGradient,QLinearGradient,QFont,QPainter,QColor,QPen )
 from baidumusic import bdmusic
@@ -362,6 +363,8 @@ class popWindow(QLabel):
         super().__init__()
         # 窗口居于所有窗口的顶端 
         self.setWindowFlags(Qt.FramelessWindowHint)
+        # 窗口居于所有窗口的顶端 
+        # self.setWindowFlags(Qt.WindowOverridesSystemGestures)
         # 窗口居于所有窗口的顶端  针对部分X11
         # self.setWindowFlags(Qt.X11BypassWindowManagerHint)
         self.resize(600,450)
@@ -410,15 +413,29 @@ class popWindow(QLabel):
         btn = QPushButton("选择",self)
         btn.move(10,80)
         btn.clicked.connect(self.selectdir) 
+        btn.setStyleSheet("QPushButton{ border:1px solid #333;background:white;height:25px;width:70px;border-radius:2px;margin-left:5px;color:#333 } QPushButton:hover{ background:#DDD }")
 
         self.currentdir = QLabel(conf['mp3dir'],self)
         self.currentdir.move(100,85)
 
-        tip = QLabel(" ● 所有设置重启播放器后生效",self)
+        tip = QLabel(" ● 所有设置下次生效",self)
         tip.move(5,10)
         tip.setStyleSheet("QLabel{ color:white;background:transparent;font-size:16px; }")
 
+        label = QLabel("解决乱码(只针对Linux/Mac系统),开始后请耐心等待几秒",self)
+        label.move(10,125)
+        label.setStyleSheet("QLabel{ color:#252C34;font-size:18px; }")
+
+        btn = QPushButton("执行",self)
+        btn.move(10,160)
+        btn.clicked.connect(self.luanma) 
+        btn.setStyleSheet("QPushButton{ border:1px solid #333;background:white;height:25px;width:70px;border-radius:2px;margin-left:5px;color:#333 } QPushButton:hover{ background:#DDD }")
+
     def selectdir(self):
+        # pos = QFileDialog(self)
+        # pos.setWindowFlags(Qt.FramelessWindowHint)
+        # 窗口居于所有窗口的顶端  针对部分X11
+        # pos.setWindowFlags(Qt.X11BypassWindowManagerHint)
         fileinput = QFileDialog.getExistingDirectory(self,"选择你的音乐目录","/")
         
         if not fileinput:
@@ -431,6 +448,12 @@ class popWindow(QLabel):
             self.currentdir.setText(fileinput)
     def other(self):
         print("other")
+    def luanma(self):
+        pos = QMessageBox(self)
+
+        x = os.system('find . -iname "*.mp3" -execdir mid3iconv -e GBK {} \;')
+        if x == 0:
+            pos.information(self, "提示", "所有文件编码已刷新", QMessageBox.Yes)
 
 
 

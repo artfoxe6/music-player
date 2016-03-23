@@ -19,7 +19,7 @@ class Music(QWidget):
 		super().__init__()
 		self.currentSonger = ''
 		self.setWindowIcon(QIcon("image/tray.png"))
-		self.setWindowTitle("SYL")
+		self.setWindowTitle("SYL - 音乐盛宴")
 		self.setObjectName("box")
 		# 窗口无边框
 		self.setWindowFlags(Qt.FramelessWindowHint)
@@ -33,8 +33,8 @@ class Music(QWidget):
 		self.initplayer()
 		# 显示主界面
 		self.show()
-		self.widget1 = index()
-		self.widget1.setParent(self)
+		# self.widget1 = index()
+		# self.widget1.setParent(self)
 		
 	def initUI(self):
 		# 获取电脑屏幕宽高 让主界面初始化后处于屏幕中间
@@ -51,7 +51,7 @@ class Music(QWidget):
 
 		self.picture = QLabel(songer_img)
 		self.picture.resize(300,200)
-		self.picture.setStyleSheet("QLabel{ background:#000;border-image:url(image/newimg/back.jpg)}")
+		self.picture.setStyleSheet("QLabel{ border-image:url("+conf['pifu']+")}")
 
 		# syl = QLabel(songer_img)
 		# syl.setGeometry(15,5,34,15)
@@ -107,7 +107,14 @@ class Music(QWidget):
 		btn.setGeometry(270,0,15,32)
 		# btn.setCursor(QCursor(Qt.PointingHandCursor))
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background:transparent;border-image:url(image/newimg/mini.png) } QPushButton:hover{ border-image:url(image/newimg/mini_2.png) } ")
-		btn.clicked.connect(self.close)
+		btn.clicked.connect(self.hide)
+
+		# 换皮肤
+		btn = QPushButton("",self)
+		btn.setGeometry(230,10,20,20)
+		# btn.setCursor(QCursor(Qt.PointingHandCursor))
+		btn.setStyleSheet("QPushButton{ border:none;color:white;background:transparent;border-image:url(image/newimg/fx_slide_menu_change_bg_2.png) } QPushButton:hover{ border-image:url(image/newimg/fx_slide_menu_change_bg.png) } ")
+		btn.clicked.connect(self.huanfu)
 		# 设置封面
 		# btn = QPushButton("",self)
 		# btn.setGeometry(230,-10,41,48)
@@ -138,7 +145,7 @@ class Music(QWidget):
 		self.volslider = QSlider(Qt.Horizontal,self)
 		self.volslider.setCursor(QCursor(Qt.UpArrowCursor))
 		self.volslider.setGeometry(250,165,45,6)
-		self.volslider.setValue(10)
+		self.volslider.setValue(70)
 		self.volslider.setRange(0,100)
 		self.volslider.setStyleSheet(qss_vol)
 		self.volslider.setVisible(False)
@@ -167,7 +174,7 @@ class Music(QWidget):
 		self.processSlider = QSlider(Qt.Horizontal,self)
 		self.processSlider.setGeometry(0,193,300,7)
 		# self.processSlider.setRange(1,100)
-		# self.processSlider.setValue(0)
+		self.processSlider.setValue(0)
 		self.processSlider.setStyleSheet(qss_process_slider)
 		
 		self.processSlider.setCursor(QCursor(Qt.UpArrowCursor))
@@ -288,8 +295,8 @@ class Music(QWidget):
 	#打开音乐窗
 	def newwindow(self):
 		if not hasattr(self,'widget1'):
-			# self.widget1 = index()
-			# self.widget1.setParent(self)
+			self.widget1 = index()
+			self.widget1.setParent(self)
 
 			# 获取屏幕宽高
 			wh = QApplication.desktop().screenGeometry()
@@ -425,6 +432,17 @@ class Music(QWidget):
 			self.popwindow = popWindow(1)
 		else:
 			self.popwindow.show()
+	def huanfu(self):
+		# self.picture.setStyleSheet("QLabel{ border-image:url(image/newimg/back.jpg)}")
+		fileinput = QFileDialog.getOpenFileName(self,"选择一张图片作为皮肤","/opt/music-player/","Images (*.jpg)")
+		if not fileinput[0]:
+			return False
+		else:
+			f=open("conf/conf.py","w+")
+			conf['pifu'] = fileinput[0]
+			f.write("conf = "+str(conf))
+			f.close()
+			self.picture.setStyleSheet("QLabel{ border-image:url("+fileinput[0]+")}")
 		
 		
 if __name__ == '__main__':

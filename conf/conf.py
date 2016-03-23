@@ -1,1 +1,1 @@
-conf = {'mp3dir': '/opt/music-player/mp3', 'footer': 'grey'}
+conf = {'pifu': '/opt/music-player/image/newimg/back.jpg', 'mp3dir': '/home/caojie/Music', 'footer': 'grey'}

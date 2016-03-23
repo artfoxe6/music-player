@@ -8,16 +8,16 @@ QWidget{ background:#fff }
 QScrollBar:vertical{width:2px;background:white; margin:0px,0px,0px,0px;padding-top:9px;  padding-bottom:9px;}
 QScrollBar::handle:vertical{width:2px;background:#777; border-radius:2px;  }
 QScrollBar::handle:vertical:hover{width:2px;background:#009BB7;border-radius:2px;}
-QScrollBar::add-line:vertical {height:9px;width:2px;background:white;subcontrol-position:bottom;}
-QScrollBar::sub-line:vertical {height:9px;width:2px;background:white;subcontrol-position:top;}
-QScrollBar::add-line:vertical:hover {height:9px;width:2px;background:white;subcontrol-position:bottom;}
-QScrollBar::sub-line:vertical:hover{ height:9px;width:2px; background:white;subcontrol-position:top; }
-QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:white;border-radius:4px;} 
+QScrollBar::add-line:vertical {height:9px;width:2px;background:#fff;subcontrol-position:bottom;}
+QScrollBar::sub-line:vertical {height:9px;width:2px;background:#fff;subcontrol-position:top;}
+QScrollBar::add-line:vertical:hover {height:9px;width:2px;background:#fff;subcontrol-position:bottom;}
+QScrollBar::sub-line:vertical:hover{ height:9px;width:2px; background:#fff;subcontrol-position:top; }
+QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:#fff;border-radius:4px;} 
 
 """
 qss_songlist = """
 
-QListWidget{ background:#F9F9F9;font-size:12px;border:none;margin-left:0px;} 
+QListWidget{ background:#fff;font-size:12px;border:none;margin-left:0px;} 
 QListWidget::item{ color:grey ;height:40px;margin-left:0px;}  
 
 """
@@ -60,7 +60,7 @@ qss_process_slider = """
 QSlider::groove:horizontal {
     background: transparent;
     position: absolute;
-
+    margin-left:-1px
 }
 
 QSlider::handle:horizontal {
@@ -74,8 +74,7 @@ QSlider::add-page:horizontal {
 }
 
 QSlider::sub-page:horizontal {
-    background: #666;
-    margin-left:0px;
+    background: #888;
     border-radius:2px;
 }
 

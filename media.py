@@ -238,12 +238,22 @@ class Player():
       # print(audio.get('TPE1'))  #歌手
       # print(audio.get('TALB'))  #专辑
       # s = str(audio.get('TIT2'))+"-"+str(audio.get('TPE1'))
-      s = str(audio.get('TIT2')) or "未命名"
+      # pos = audio.get('TIT2')
+      # print(dir())
+      # pos.encode("utf-8").decode("utf-8")
+      # print(pos)
+      sname = str(audio.get('TIT2'))
+      if not sname or sname == 'None':
+        sname = songitemlabel[ci].text()
       
-      self.filename = s
-      self.music.currentSonger = str(audio.get('TPE1')) or "未知"
+      self.filename = sname
+      ssinger = str(audio.get('TPE1'))
+      if not ssinger or ssinger == 'None':
+        ssinger = ""
+      else:
+        ssinger = " - "+ssinger
       # print(self.music.currentSonger)
-      self.music.songname.setText(s+" - "+str(audio.get('TPE1')))
+      self.music.songname.setText(sname+" "+str(ssinger))
       
   # 播放状态改变
   def stateChanged(self):
