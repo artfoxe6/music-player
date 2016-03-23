@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent,QMediaMetaData)
-from conf.conf import conf
+from conf import conf
 from PyQt5.QtCore import QUrl,Qt,QTime,QSize,QTimer
 from PyQt5.QtWidgets import QListWidgetItem,QMenu,QAction,QWidget,QPushButton,QLabel,QDialog
 from PyQt5.QtGui import QBrush,QIcon,QCursor
@@ -151,7 +151,10 @@ class Player():
     print(self.music.player.errorString())
   def init_list(self):
     #读取配置歌曲目录里面的音乐文件
-    listfile = os.listdir(conf['mp3dir'])
+    try:
+      listfile = os.listdir(conf['mp3dir'])
+    except Exception:
+      return False
     x = 0
     for name in listfile:
       # print(name)

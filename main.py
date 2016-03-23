@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLabel,QProgressBa
 from PyQt5.QtCore import Qt,QSize,QUrl,QThread,QPoint,pyqtSignal
 from PyQt5.QtGui import ( QCursor,QIcon,QBrush,QDesktopServices,QLinearGradient,QLinearGradient,QFont,QPainter,QColor)
 from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent)
-from conf.conf import conf
+from conf import conf
 from mywidget import *
 from qss import *
 from media import *
@@ -33,8 +33,8 @@ class Music(QWidget):
 		self.initplayer()
 		# 显示主界面
 		self.show()
-		# self.widget1 = index()
-		# self.widget1.setParent(self)
+		self.widget1 = index()
+		self.widget1.setParent(self)
 		
 	def initUI(self):
 		# 获取电脑屏幕宽高 让主界面初始化后处于屏幕中间
@@ -107,7 +107,7 @@ class Music(QWidget):
 		btn.setGeometry(270,0,15,32)
 		# btn.setCursor(QCursor(Qt.PointingHandCursor))
 		btn.setStyleSheet("QPushButton{ border:none;color:white;background:transparent;border-image:url(image/newimg/mini.png) } QPushButton:hover{ border-image:url(image/newimg/mini_2.png) } ")
-		btn.clicked.connect(self.hide)
+		btn.clicked.connect(self.close)
 
 		# 换皮肤
 		btn = QPushButton("",self)
@@ -258,14 +258,14 @@ class Music(QWidget):
 		tray.activated.connect(self.dbclick_tray)
 	# 重写两个方法实现拖动播放器到屏幕顶端自动隐藏
 	def enterEvent(self,QMouseEvent):
-		if self.y() < 1:
+		if self.y() < 1 and self.size().width() == 300:
 			self.setGeometry(self.x(),0,300,600) 
 			# 窗口居于所有窗口的顶端 
 			# self.setWindowFlags(Qt.WindowOverridesSystemGestures)
 			#针对X11
 			# self.setWindowFlags(Qt.X11BypassWindowManagerHint)
 	def leaveEvent(self,QMouseEvent):
-		if self.y() < 1:
+		if self.y() < 1 and self.size().width() == 300:
 			self.setGeometry(self.x(),0,300,1)
 			# 窗口居于所有窗口的顶端 
 			# self.setWindowFlags(Qt.WindowOverridesSystemGestures)
@@ -308,7 +308,6 @@ class Music(QWidget):
 				self.resize(300,600)
 				self.widget1.hide()
 				return True
-
 			# wh = QApplication.desktop().screenGeometry()
 			# self.screen_w , self.screen_h = wh.width() ,wh.height()
 			# self.move(int((self.screen_w-900)/2),int((self.screen_h-600)/2))

@@ -1,0 +1,1 @@
+conf = {'mp3dir': '/opt/music-player/mp3', 'pifu': '/opt/music-player/image/newimg/back.jpg', 'footer': 'grey'}

@@ -4,17 +4,16 @@ import time
 import sys
 import os
 import urllib.request
-from conf.conf import conf
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QPushButton, QLineEdit, QLabel,QMenu,QAction,QFileDialog,QMessageBox)
 from PyQt5.QtWebKitWidgets import QWebPage, QWebView
-from PyQt5.QtWebEngineWidgets import QWebEngineView
+# from PyQt5 import QtWebEngineWidgets
 from PyQt5.QtCore import (Qt, QUrl, pyqtSlot,QPropertyAnimation,QRect,pyqtSignal,QThread)
 from PyQt5.QtGui import ( QCursor, QIcon,QLinearGradient,QLinearGradient,QFont,QPainter,QColor,QPen )
 from baidumusic import bdmusic
 import threading
 from qss import *
-from conf.conf import conf
+from conf import conf
 
 #音乐窗首页
 class index(QWidget):
@@ -42,6 +41,7 @@ class index(QWidget):
         self.web.setStyleSheet("QWidget{ background-color:white }")
         self.web.setGeometry(0, 0, 600, 580)
         self.web.load(QUrl.fromLocalFile(os.path.abspath("web/index.html")))
+        # self.web.load(QUrl("http://localhost/index.php/Home/Index/index.html"))
         
         self.web.page().mainFrame().javaScriptWindowObjectCleared.connect(
             self.populateJavaScriptWindowObject)
@@ -325,7 +325,7 @@ class youjianWidget(QWidget):
     def contextMenuEvent(self,event):
         # print(dir(event))
         rightMenu = QMenu(self)
-        rightMenu.setWindowOpacity(0.95); 
+        rightMenu.setWindowOpacity(0.9); 
         # print(dir(rightMenu))
         rightMenu.setStyleSheet(qss_rightmenu) 
         loveAction = QAction(u"添加收藏", self, triggered=self.noexc)
@@ -460,7 +460,8 @@ class popWindow(QLabel):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     # music = search()
-    music = popWindow(1)
+    # music = popWindow(1)
+    music = index()
     music.show()
     # print(dir(music))
     # app.exec_()

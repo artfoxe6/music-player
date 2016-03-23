@@ -1,1 +1,0 @@
-conf = {'pifu': '/opt/music-player/image/newimg/back.jpg', 'mp3dir': '/home/caojie/Music', 'footer': 'grey'}
