@@ -5,7 +5,7 @@ import sys
 import os
 import urllib.request
 from PyQt5.QtWidgets import (
-    QApplication, QWidget, QPushButton, QLineEdit, QLabel,QMenu,QAction,QFileDialog,QMessageBox)
+    QApplication, QWidget, QPushButton, QLineEdit, QLabel,QMenu,QAction,QFileDialog,QMessageBox,QGraphicsColorizeEffect)
 from PyQt5.QtWebKitWidgets import QWebPage, QWebView
 # from PyQt5 import QtWebEngineWidgets
 from PyQt5.QtCore import (Qt, QUrl, pyqtSlot,QPropertyAnimation,QRect,pyqtSignal,QThread)
@@ -310,7 +310,7 @@ class listlabel(QLabel):
         if flag == 0:
             self.setStyleSheet("QLabel{ font-weight:100;color:#2D2D2D;background:transparent ;font-size:14px;padding-left:40px;} QLabel:hover{ color:#fff;background:#A448C4  }")
         else:
-            self.setStyleSheet("QLabel{ font-weight:100;color:#fff;background:#A448C4 ;font-size:14px;padding-left:40px;}   }")
+            self.setStyleSheet("QLabel{ font-weight:100;color:#555;background:#9BFFE0 ;font-size:14px;padding-left:40px;}   }")
     # def enterEvent(self,QMouseEvent):
     #     print("hover")
     # def mouseReleaseEvent(self,QMouseEvent):
@@ -322,10 +322,17 @@ class youjianWidget(QWidget):
     deletesong = pyqtSignal(int)
     def __init__(self):
         super().__init__()
+        
     def contextMenuEvent(self,event):
         # print(dir(event))
         rightMenu = QMenu(self)
-        rightMenu.setWindowOpacity(0.9); 
+        # rightMenu.setWindowOpacity(0.9); 
+        # pos = QGraphicsColorizeEffect(rightMenu)
+        # pos.setColor(QColor("red"))
+        # pos.setStrength()
+        # rightMenu.setGraphicsEffect(pos)
+        
+
         # print(dir(rightMenu))
         rightMenu.setStyleSheet(qss_rightmenu) 
         loveAction = QAction(u"添加收藏", self, triggered=self.noexc)

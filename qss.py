@@ -109,5 +109,11 @@ QSlider::sub-page:horizontal {
 """
 
 qss_rightmenu = """
-    QMenu{ width:100px;border:1px solid #DDD;padding:5px;background:#fff } QMenu::item{ background-color: transparent;width:70px;text-align:center;height:25px; margin:0px 0px;border-bottom:1px solid #EEE;padding-left:20px;color:#333 }  QMenu::item:selected{ color:red;border-bottom:1px solid pink;background:none; }
+    QMenu{ width:100px;border:none;padding:5px;background:#fff } QMenu::item{ background-color: transparent;width:70px;text-align:center;height:25px; margin:0px 0px;border-bottom:1px solid #EEE;padding-left:20px;color:#333 }  QMenu::item:selected{ color:red;border-bottom:1px solid pink;background:none; }
+"""
+
+
+qss_tray = """
+QMenu{ width:100px;border:none;padding:5px;background:#fff; } QMenu::item{ background-color: transparent;width:70px;text-align:center;height:25px; margin:0px 0px;border-bottom:1px solid #EEE;padding-left:20px;color:#333 }  QMenu::item:selected{ color:red;border-bottom:1px solid pink;background:none; }
+
 """

@@ -3,7 +3,7 @@
 
 
 import sys,ctypes,os
-from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLabel,QProgressBar,QListWidget, QSystemTrayIcon,QMenu,QAction,QGraphicsDropShadowEffect,QGraphicsBlurEffect,QListWidgetItem,QSlider,QDialog)
+from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLabel,QProgressBar,QListWidget, QSystemTrayIcon,QMenu,QAction,QGraphicsDropShadowEffect,QGraphicsBlurEffect,QListWidgetItem,QSlider,QDialog,QGraphicsColorizeEffect)
 from PyQt5.QtCore import Qt,QSize,QUrl,QThread,QPoint,pyqtSignal
 from PyQt5.QtGui import ( QCursor,QIcon,QBrush,QDesktopServices,QLinearGradient,QLinearGradient,QFont,QPainter,QColor)
 from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent)
@@ -35,6 +35,8 @@ class Music(QWidget):
 		self.show()
 		self.widget1 = index()
 		self.widget1.setParent(self)
+
+		
 		
 	def initUI(self):
 		# 获取电脑屏幕宽高 让主界面初始化后处于屏幕中间
@@ -243,10 +245,7 @@ class Music(QWidget):
 		tray = QSystemTrayIcon(self)
 		tray.setIcon(QIcon('image/tray.png'))
 		self.trayIconMenu = QMenu(self)
-		# preAction = QAction(u"上一曲 ", self,triggered=self.close)
-		# pauseAction = QAction(u"暂停|播放 ", self,triggered=self.close)
-		# nextAction = QAction(u"下一曲 ", self,triggered=self.close)
-		# quitAction = QAction(u"退出 ", self,triggered=self.close)
+		self.trayIconMenu.setStyleSheet(qss_tray)
 		showAction = QAction(QIcon('image/tray.png'),u"显示主面板", self,triggered=self.show)
 		self.trayIconMenu.addAction(showAction)
 		# self.trayIconMenu.addAction(preAction)

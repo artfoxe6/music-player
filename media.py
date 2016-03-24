@@ -4,8 +4,8 @@
 from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent,QMediaMetaData)
 from conf import conf
 from PyQt5.QtCore import QUrl,Qt,QTime,QSize,QTimer
-from PyQt5.QtWidgets import QListWidgetItem,QMenu,QAction,QWidget,QPushButton,QLabel,QDialog
-from PyQt5.QtGui import QBrush,QIcon,QCursor
+from PyQt5.QtWidgets import QListWidgetItem,QMenu,QAction,QWidget,QPushButton,QLabel,QDialog,QGraphicsColorizeEffect
+from PyQt5.QtGui import QBrush,QIcon,QCursor,QColor
 import os
 import re
 from mutagen.mp3 import MP3
@@ -167,6 +167,8 @@ class Player():
 
         item.setSizeHint(QSize(210,40))
         lwg = youjianWidget()
+        
+
         lwg.deletesong.connect(self.deletesong)
         # print(dir(lwg))
         # return False
