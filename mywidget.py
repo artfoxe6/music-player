@@ -4,12 +4,15 @@ import time
 import sys
 import os
 import urllib.request
+# from PyQt5 import QWebSettings
+from PyQt5.QtWebKit import QWebSettings
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QPushButton, QLineEdit, QLabel,QMenu,QAction,QFileDialog,QMessageBox,QGraphicsColorizeEffect)
 from PyQt5.QtWebKitWidgets import QWebPage, QWebView
-# from PyQt5 import QtWebEngineWidgets
+from PyQt5 import QtWebEngineWidgets
 from PyQt5.QtCore import (Qt, QUrl, pyqtSlot,QPropertyAnimation,QRect,pyqtSignal,QThread)
 from PyQt5.QtGui import ( QCursor, QIcon,QLinearGradient,QLinearGradient,QFont,QPainter,QColor,QPen )
+from PyQt5.QtNetwork import *
 from baidumusic import bdmusic
 import threading
 from qss import *
@@ -36,15 +39,17 @@ class index(QWidget):
         ql.setGeometry(0,580,600,20)
         ql.setStyleSheet("QLabel{ background:#2D2D2D }")
 
+
         # 内嵌web网页
         self.web = QWebView(self)
+        self.web.settings().setAttribute(QWebSettings.PluginsEnabled, True);
         self.web.setStyleSheet("QWidget{ background-color:white }")
         self.web.setGeometry(0, 0, 600, 580)
-        self.web.load(QUrl.fromLocalFile(os.path.abspath("web/index.html")))
-        # self.web.load(QUrl("http://localhost/index.php/Home/Index/index.html"))
+        # self.web.load(QUrl.fromLocalFile(os.path.abspath("web/index.html")))
+        # self.web.page().setNetworkAccessManager(QNetworkAccessManager())
+        self.web.load(QUrl("http://www.dongting.com"))
         
-        self.web.page().mainFrame().javaScriptWindowObjectCleared.connect(
-            self.populateJavaScriptWindowObject)
+        self.web.page().mainFrame().javaScriptWindowObjectCleared.connect( self.populateJavaScriptWindowObject)
         # 关闭按钮
         btn = QPushButton("", self)
         btn.setGeometry(540, 5, 44, 34)
@@ -240,20 +245,12 @@ class DLabel(QLabel):
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.drag_flag = True
-            # if hasattr(self.window, 'widget1'):
-            #     self.begin_position2 = event.globalPos() - \
-            #         self.window.widget1.pos()
             self.begin_position = event.globalPos() - self.pos()
             event.accept()
             self.setCursor(QCursor(Qt.OpenHandCursor))
 
     def mouseMoveEvent(self, QMouseEvent):
         if Qt.LeftButton and self.drag_flag:
-            # if hasattr(self.window, 'widget1'):
-            #     self.window.widget1.move(
-            #         QMouseEvent.globalPos() - self.begin_position2)
-            #     self.window.move(QMouseEvent.globalPos() - self.begin_position)
-            # else:
             self.move(QMouseEvent.globalPos() - self.begin_position)
             QMouseEvent.accept()
 
@@ -351,6 +348,7 @@ class youjianWidget(QWidget):
     def noexc(self):
         pass
     def deleteSongItem(self):
+        print(help(self.findChildren))
         listlabelitem = self.findChildren(QLabel,'songitem',Qt.FindChildrenRecursively)
         # 要删除的行  实际上要减一
         index = listlabelitem[0].findChild(QPushButton,'',Qt.FindDirectChildrenOnly).text()

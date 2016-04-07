@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import (QApplication,QWidget,QPushButton,QLabel,QProgressBa
 from PyQt5.QtCore import Qt,QSize,QUrl,QThread,QPoint,pyqtSignal
 from PyQt5.QtGui import ( QCursor,QIcon,QBrush,QDesktopServices,QLinearGradient,QLinearGradient,QFont,QPainter,QColor)
 from PyQt5.QtMultimedia import (QMediaPlayer, QMediaPlaylist, QMediaContent)
+from PyQt5.QtNetwork import *
 from conf import conf
 from mywidget import *
 from qss import *
@@ -16,10 +17,14 @@ from singer import *
 # ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
 class Music(QWidget):
 	def __init__(self):
+		s = QSslSocket()
+		s.setProtocol(QSsl.TlsV1_0)
+		# print(s.protocol())
+		# exit()
 		super().__init__()
 		self.currentSonger = ''
 		self.setWindowIcon(QIcon("image/tray.png"))
-		self.setWindowTitle("SYL - 音乐盛宴")
+		self.setWindowTitle("SYL - 乐人馆")
 		self.setObjectName("box")
 		# 窗口无边框
 		self.setWindowFlags(Qt.FramelessWindowHint)
