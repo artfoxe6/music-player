@@ -40,6 +40,7 @@ class Music(QWidget):
 		self.show()
 		self.widget1 = index()
 		self.widget1.setParent(self)
+		# self.widget1.setGeometry(0,0,900,600)
 
 		
 		

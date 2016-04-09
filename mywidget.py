@@ -45,14 +45,17 @@ class index(QWidget):
         self.web.settings().setAttribute(QWebSettings.PluginsEnabled, True);
         self.web.setStyleSheet("QWidget{ background-color:white }")
         self.web.setGeometry(0, 0, 600, 580)
-        # self.web.load(QUrl.fromLocalFile(os.path.abspath("web/index.html")))
+        self.web.load(QUrl.fromLocalFile(os.path.abspath("web/index.html")))
         # self.web.page().setNetworkAccessManager(QNetworkAccessManager())
-        self.web.load(QUrl("http://www.dongting.com"))
+        # self.web.load(QUrl("http://web.kugou.com/"))
+        self.web.loadFinished.connect(self.test)
+
         
+
         self.web.page().mainFrame().javaScriptWindowObjectCleared.connect( self.populateJavaScriptWindowObject)
         # 关闭按钮
         btn = QPushButton("", self)
-        btn.setGeometry(540, 5, 44, 34)
+        btn.setGeometry(550, 5, 44, 34)
         # btn.setCursor(QCursor(Qt.PointingHandCursor))
         btn.setStyleSheet(  
             "QPushButton{ border-image:url(image/newimg/ic_common_title_bar_back_2.png) } QPushButton:hover{ border-image:url(image/newimg/ic_common_title_bar_back.png) } ")
@@ -138,6 +141,17 @@ class index(QWidget):
          self.backbtn.close()
          self.web.back()
          self.download_pro = {}
+    def test(self):
+        print("oooo");
+        self.web.page().mainFrame().findFirstElement("#userInfo").takeFromDocument()
+        self.web.page().mainFrame().findFirstElement(".otherBar").takeFromDocument()
+        
+        self.web.page().mainFrame().findFirstElement("#footer").takeFromDocument()
+        pos = self.web.page().mainFrame().findAllElements("#nav ul li")
+        pos.at(5).takeFromDocument()
+        pos.at(6).takeFromDocument()
+        pos.at(7).takeFromDocument()
+        pos.at(8).takeFromDocument()
 
 # 自定义label，用于鼠标拖动主窗口
 # 第二个参数就是要拖动的对象

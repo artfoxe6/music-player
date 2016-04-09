@@ -23,9 +23,9 @@ class Singer(QWidget):
     def __init__(self,singer):
         super().__init__()
         # 窗口居于所有窗口的顶端 
-        self.setWindowFlags(Qt.WindowOverridesSystemGestures)
+        # self.setWindowFlags(Qt.WindowOverridesSystemGestures)
         #针对X11
-        self.setWindowFlags(Qt.X11BypassWindowManagerHint)
+        # self.setWindowFlags(Qt.X11BypassWindowManagerHint)
         self.singer = singer
         # self.music = music
         self.initUI()
@@ -35,15 +35,15 @@ class Singer(QWidget):
 
         self.w= QWidget(self)
         self.setGeometry(300,100,1000,600)
-        l = QLabel("实用说明,搜索需要的图片，在搜索结果页面点击选择的图片即可设置。。双击此处退出",self)
-        l.move(0,0)
+        # l = QLabel("实用说明,搜索需要的图片，在搜索结果页面点击选择的图片即可设置。。双击此处退出",self)
+        # l.move(0,0)
         self.web = QWebView(self)
         self.web.loadFinished.connect(self.test)
         
         self.web.page().setLinkDelegationPolicy(QWebPage.DelegateAllLinks)
         self.web.page().linkClicked.connect(self.linkClicked)
 
-        self.web.setGeometry(0, 30, 1000, 570)
+        self.web.setGeometry(0, 0, 1000, 600)
         # self.btn = QPushButton("测试",self);
         # self.btn.clicked.connect(self.test)
         # self.btn.move(300,550)
@@ -58,7 +58,8 @@ class Singer(QWidget):
         searchinput.setAttribute("value",self.singer)
         # searchinput.setAttribute("readonly","readonly")
     def linkClicked(self,url):
-        # print(url.toString())
+        print(url.toString())
+        return False;
         url = url.toString()
         pattern = re.compile(r'&word=(.*?)&')
         s = pattern.findall(url)
@@ -117,5 +118,5 @@ class Singer(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    s = Singer("张杰")
+    s = Singer("nan")
     sys.exit(app.exec_())
