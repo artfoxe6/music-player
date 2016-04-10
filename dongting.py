@@ -78,9 +78,8 @@ class index(QWidget):
         self.minibtn = QPushButton("", self)
         self.minibtn.hide()
         self.minibtn.setGeometry(850, 5, 44, 34)
-        self.minibtn.setStyleSheet(  
-            "QPushButton{ border-image:url(image/newimg/ic_common_title_bar_back.png);background-color:#D21F70 }")
-        self.minibtn.clicked.connect(self.close)
+        self.minibtn.setStyleSheet(   "QPushButton{ border-image:url(back.png);background-color:#D21F70 }")
+        self.minibtn.clicked.connect(self.hide)
 
         #设置托盘图标
         tray = QSystemTrayIcon(self)
