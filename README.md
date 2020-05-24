@@ -6,12 +6,6 @@
 
 Linux下一直没找到我满意的音乐播放器（主要是界面老套）
 所以就萌发了自己写一个播放器的念头
-看了一下python(我本身是从事PHP的)，只了解基本语法，模块不熟悉。就开始自己动手做了，Qt之前也没有了解过
-
-所以。各位在看代码的时候不要太挑剔了，限于对python和qt知识有限，写的较乱
-还好的是逻辑是清晰的，代码按功能分割。
-
-
 
 <h2 >软件截图</h2>
 <img src="https://github.com/codeAB/music-player/blob/master/image/s8.png" />
